@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="deploymentTargetDropDown">
+    <value>
+      <entry key="app">
+        <State />
+      </entry>
+      <entry key="common">
+        <State />
+      </entry>
+      <entry key="common.composable">
+        <State />
+      </entry>
+      <entry key="common.theme">
+        <State />
+      </entry>
+      <entry key="core">
+        <State />
+      </entry>
+      <entry key="data">
+        <State />
+      </entry>
+      <entry key="feature">
+        <State />
+      </entry>
+      <entry key="feature.authentication">
+        <State />
+      </entry>
+      <entry key="feature.camera">
+        <State />
+      </entry>
+      <entry key="feature.home">
+        <State />
+      </entry>
+      <entry key="feature.post">
+        <State />
+      </entry>
+      <entry key="feature.profile">
+        <State />
+      </entry>
+    </value>
+  </component>
+</project>
