@@ -5,9 +5,6 @@
       <entry key="app">
         <State />
       </entry>
-      <entry key="common">
-        <State />
-      </entry>
       <entry key="common.composable">
         <State />
       </entry>
@@ -18,9 +15,6 @@
         <State />
       </entry>
       <entry key="data">
-        <State />
-      </entry>
-      <entry key="feature">
         <State />
       </entry>
       <entry key="feature.authentication">
