@@ -35,3 +35,41 @@ Cần imlement `androidx.compose.material3:material3:xxxx`
 ## Thêm các theme vào file `Theme\theme.kt`
 
 Thêm theme dark và light vào
+
+## Thêm folder `extension` trong `core` và 2 file `Extension.kt` và `Space.kt`
+
+Trong **main** của **core** tạo java folder.  
+Trong java folder tạo package `com.example.core.extension`.  
+Trong package tạo 2 file `Extension.kt` và `Space.kt`.
+
+## Để các file trong module `app` dùng được cách hàm được định nghĩa ở module khác.
+
+Cách làm: Chuyển các module khác về dạng `library` và sau đó module `app` implementation các `library` này.
+
+- B1: Chuyển các module về dạng `library`. 
+    - Nhìn chung thì `library` và `module` có cấu trúc giống hệt nhau. Ta chỉ cần sửa trong file `gradle.build.kts`
+    - Sửa: 
+    >       plugins {
+    >           id("com.android.application")
+    >       }
+
+    Thành 
+
+    >       plugins {
+    >           id("com.android.library")
+    >       }
+
+    - Trong default config, xóa các dòng:
+    >       applicationId = "com.example.profile"
+    >       targetSdk = 34
+    >       versionCode = 1
+    >       versionName = "1.0"
+
+    - Chỉ để lại:
+    >       minSdk = 28
+    >       testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+- B2: Vào **file** --> **project structure** --> **Dependencies**
+- B3: Chọn module **app**
+- B4: Nhấn dấu `+` và chọn `Module Dependency`
+- B5: Chọn `module` muốn implementation và nhấn `apply`
