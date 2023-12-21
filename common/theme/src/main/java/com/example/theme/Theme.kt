@@ -33,7 +33,7 @@ private val DarkColors = darkColorScheme(
 
 
 @Composable
-fun TikTokTheme(
+fun TinyReelTheme(
     darkTheme: Boolean = true,
     content: @Composable() () -> Unit
 ) {
