@@ -73,3 +73,18 @@ Cách làm: Chuyển các module khác về dạng `library` và sau đó module
 - B3: Chọn module **app**
 - B4: Nhấn dấu `+` và chọn `Module Dependency`
 - B5: Chọn `module` muốn implementation và nhấn `apply`
+
+## Cách tạo 1 package và thêm 1 file
+
+Ví dụ tạo một file `PostScreen.kt` trong module **post**
+- B1: Vào góc nhìn project
+- B2: Vào folder **main** của module **post**
+![Alt text](./readme_images/create_package_1.png)
+
+- B3: Tạo một java folder 
+![Alt text](./readme_images/create_package_2.png)
+
+- B4: Tạo một package trong java folder (đặt tên package là gì cũng được vd: `com.example.post`)
+![Alt text](./readme_images/create_package_3.png)
+
+- B5: Tạo file `PostScreen.kt` trong package này
