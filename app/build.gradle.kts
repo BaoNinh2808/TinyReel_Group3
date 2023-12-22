@@ -69,6 +69,8 @@ dependencies {
     implementation("com.google.accompanist:accompanist-permissions:0.33.2-alpha")
     implementation("com.google.accompanist:accompanist-navigation-material:0.33.2-alpha")
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.33.2-alpha")
+    implementation("androidx.compose.material:material:1.6.0-beta03")
+    implementation("androidx.compose.foundation:foundation:1.6.0-beta03")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
