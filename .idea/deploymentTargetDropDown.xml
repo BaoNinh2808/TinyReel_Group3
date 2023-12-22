@@ -8,12 +8,6 @@
       <entry key="common.composable">
         <State />
       </entry>
-      <entry key="common.theme">
-        <State />
-      </entry>
-      <entry key="core">
-        <State />
-      </entry>
       <entry key="data">
         <State />
       </entry>
@@ -21,9 +15,6 @@
         <State />
       </entry>
       <entry key="feature.camera">
-        <State />
-      </entry>
-      <entry key="feature.home">
         <State />
       </entry>
       <entry key="feature.post">
