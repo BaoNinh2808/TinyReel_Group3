@@ -11,6 +11,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.navigation.material.BottomSheetNavigator
+import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
+import com.google.accompanist.navigation.material.ModalBottomSheetLayout
+import com.google.accompanist.systemuicontroller.SystemUiController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.example.core.DestinationRoute.AUTHENTICATION_ROUTE
 import com.example.core.DestinationRoute.CAMERA_ROUTE
 import com.example.core.DestinationRoute.COMMENT_BOTTOM_SHEET_ROUTE
