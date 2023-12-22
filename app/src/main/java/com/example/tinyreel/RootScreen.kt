@@ -3,6 +3,14 @@ package com.example.tinyreel
 import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.AnimationSpec
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material.SwipeableDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -111,7 +119,11 @@ fun rememberBottomSheetNavigator(
     val sheetState = rememberModalBottomSheetState(
         ModalBottomSheetValue.Hidden,
         animationSpec,
-        skipHalfExpanded,
+        confirmStateChange = { proposedState ->
+            // Logic similar to skipHalfExpanded:
+            // If the proposed state is half-expanded, don't allow it; go directly to expanded
+            proposedState != ModalBottomSheetValue.HalfExpanded
+        },
     )
     return remember(sheetState) {
         BottomSheetNavigator(sheetState = sheetState)
