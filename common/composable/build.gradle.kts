@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.application")
+    id("com.android.library")
     id("org.jetbrains.kotlin.android")
 }
 
@@ -8,12 +8,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.composable"
         minSdk = 28
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -40,6 +35,9 @@ dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
+    implementation("androidx.compose.foundation:foundation-android:1.5.4")
+    implementation(project(":common:theme"))
+    implementation("androidx.compose.material3:material3-android:1.2.0-beta01")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
