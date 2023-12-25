@@ -5,13 +5,15 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
 import com.example.core.DestinationRoute.HOME_SCREEN_ROUTE
+import com.example.core.DestinationRoute.POST_ROUTE
 import com.example.home.homeNavGraph
+import com.example.post.postNavGraph
 
 @Composable
 fun AppNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    startDestination: String = HOME_SCREEN_ROUTE
+    startDestination: String = POST_ROUTE
 ) {
     NavHost(
         navController = navController,
@@ -19,6 +21,7 @@ fun AppNavHost(
         modifier = modifier
     ) {
         homeNavGraph(navController)
+        postNavGraph(navController)
 //        commentListingNavGraph(navController)
 //        creatorProfileNavGraph(navController)
 //        inboxNavGraph(navController)

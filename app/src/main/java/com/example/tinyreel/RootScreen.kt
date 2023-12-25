@@ -40,8 +40,6 @@ import com.example.theme.TinyReelTheme
 import com.example.tinyreel.component.BottomBar
 import com.example.tinyreel.navigation.AppNavHost
 
-//import com.example.tinyreel.navigation.AppNavHost
-
 @OptIn(
     ExperimentalMaterial3Api::class, ExperimentalMaterialNavigationApi::class,
     ExperimentalAnimationApi::class
