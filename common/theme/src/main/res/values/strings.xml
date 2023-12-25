@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">TinyReel</string>
 
+    <string name="home">Home</string>
+    <string name="friends">Friends</string>
     <string name="profile">Profile</string>
+    <string name="inbox">Inbox</string>
+
 </resources>
