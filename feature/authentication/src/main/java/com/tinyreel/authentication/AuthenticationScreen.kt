@@ -1,4 +1,4 @@
-package com.puskal.authentication
+package com.tinyreel.authentication
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

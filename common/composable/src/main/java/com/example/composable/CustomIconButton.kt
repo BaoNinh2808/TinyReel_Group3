@@ -2,9 +2,7 @@ package com.example.composable
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,10 +21,6 @@ import androidx.compose.ui.unit.dp
 // import com.example.core.extension.Space
 import com.example.theme.SeparatorColor
 
-/**
- * Created by Puskal Khadka on 3/27/2023.
- */
-
 @Composable
 fun CustomIconButton(
     modifier: Modifier = Modifier,
@@ -40,7 +34,7 @@ fun CustomIconButton(
     border: BorderStroke = BorderStroke(1.dp, color = SeparatorColor),
     containerColor: Color = MaterialTheme.colorScheme.primary,
     contentColor: Color = MaterialTheme.colorScheme.onPrimary,
-    borderColor: Color = SeparatorColor,
+    // borderColor: Color = SeparatorColor,
     onClickButton: () -> Unit
 ) {
     Button(
