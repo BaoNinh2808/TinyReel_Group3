@@ -6,7 +6,18 @@
     <string name="profile">Profile</string>
     <string name="inbox">Inbox</string>
 
+    <string name="following">Following</string>
+
     <string name="sign_up">Sign up</string>
+
+    <!--following tab-->
+    <string name="follow">Follow</string>
+
+    <string name="followers">Followers</string>
+    <string name="likes">Likes</string>
+
+    <!-- profile -->
+    <string name="no_bio_yet">No bio yet</string>
 
     <!-- my profile -->
     <string name="sign_up_for_an_account">Sign up for and account</string>

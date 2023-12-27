@@ -49,9 +49,15 @@ dependencies {
     implementation("androidx.compose.runtime:runtime:1.5.4")
     implementation("androidx.compose.ui:ui:1.5.4")
     implementation("androidx.navigation:navigation-compose:2.7.6")
-    // Own
+    implementation("com.google.dagger:hilt-android:2.49")
+    implementation("androidx.hilt:hilt-navigation:1.1.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+    implementation("io.coil-kt:coil-compose:2.5.0")
     implementation(project(":common:composable"))
     implementation(project(":common:theme"))
     implementation(project(":core"))
+    implementation(project(":feature:creatorprofile"))
+    implementation(project(":data"))
 
 }

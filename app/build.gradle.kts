@@ -76,7 +76,6 @@ dependencies {
     implementation("androidx.compose.material:material:1.5.4")
     implementation(project(":feature:myprofile"))
 
-
     implementation("com.google.accompanist:accompanist-adaptive:0.33.2-alpha")
     implementation("com.google.accompanist:accompanist-permissions:0.33.2-alpha")
     implementation("com.google.accompanist:accompanist-navigation-material:0.33.2-alpha")
