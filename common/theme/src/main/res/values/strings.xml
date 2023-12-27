@@ -6,4 +6,9 @@
     <string name="profile">Profile</string>
     <string name="inbox">Inbox</string>
 
+    <string name="sign_up">Sign up</string>
+
+    <!-- my profile -->
+    <string name="sign_up_for_an_account">Sign up for and account</string>
+
 </resources>

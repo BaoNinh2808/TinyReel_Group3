@@ -1,4 +1,4 @@
-package com.example.profile
+package com.example.myprofile
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

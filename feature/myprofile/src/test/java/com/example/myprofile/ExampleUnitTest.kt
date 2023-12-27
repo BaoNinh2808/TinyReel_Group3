@@ -1,4 +1,4 @@
-package com.example.profile
+package com.example.myprofile
 
 import org.junit.Test
 
