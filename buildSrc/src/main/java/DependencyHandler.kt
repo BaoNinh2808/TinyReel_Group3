@@ -13,6 +13,9 @@ fun DependencyHandler.androidTestImplementation(dependencyNotation: Any): Depend
 fun DependencyHandler.kapt(dependencyNotation: Any): Dependency? =
     add("kapt", dependencyNotation)
 
+fun DependencyHandler.debugImplementation(dependencyNotation: Any): Dependency? =
+    add("debugImplementation", dependencyNotation)
+
 fun DependencyHandler.baseDependencies() {
     implementation(platform(Deps.Compose.composeBom))
     implementation(Deps.Compose.composeActivity)
@@ -32,6 +35,10 @@ fun DependencyHandler.baseDependencies() {
 
     //accompanist
     accompanistDependencies()
+
+    //debug
+    debugImplementation(Deps.Debug.ui_tooling)
+    debugImplementation(Deps.Debug.ui_test_manifest)
 }
 
 fun DependencyHandler.composeDependencies() {
@@ -55,6 +62,9 @@ fun DependencyHandler.testDependencies() {
     androidTestImplementation(Deps.Test.junitExtKtx)
 }
 
+fun DependencyHandler.googleDependencies(){
+    implementation(Deps.Google.material)
+}
 fun DependencyHandler.moduleDependencies() {
     DATA
     CORE

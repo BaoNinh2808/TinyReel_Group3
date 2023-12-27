@@ -40,4 +40,5 @@ dependencies {
     baseDependencies()
     composeDependencies()
     testDependencies()
+    googleDependencies()
 }

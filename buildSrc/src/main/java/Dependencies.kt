@@ -83,6 +83,14 @@ object Deps {
         const val junitExtKtx = "androidx.test.ext:junit-ktx:$JunitExtKtx"
     }
 
+    object Debug {
+        const val ui_tooling = "androidx.compose.ui:ui-tooling"
+        const val ui_test_manifest =  "androidx.compose.ui:ui-test-manifest"
+    }
+
+    object Google {
+        const val material = "com.google.android.material:material:1.11.0"
+    }
     object Hilt {
         const val hiltAndroid = "com.google.dagger:hilt-android:$HiltAndroidVersion"
         const val hiltCompiler = "com.google.dagger:hilt-android-compiler:$HiltAndroidVersion"
