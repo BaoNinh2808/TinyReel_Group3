@@ -372,3 +372,77 @@ Và tất nhiên ta phải định nghĩa các `route`.
 ![Alt text](./readme_images/routeDestination.png)
 
 Các route được định nghĩa trong file **DestinationRoute.kt** thuộc **core**.
+
+----
+
+----
+
+# buildSrc
+
+buildSrc là một folder đặc biệt trong Android. Khi chạy chương trình thì Android sẽ tìm folder này trước. Nếu có nó thì Android sẽ config các dependency của ứng dụng theo định nghĩa của folder này.
+
+Nó giải quyết vấn đề Dependency management trong project của mình. Khi tạo một project có nhiều module thì các module sẽ implements một số dependency giống nhau. Nếu mà chúng ta implementation một cách thủ công thì khi upgrade một cái thì phải tìm và upgrade tất cả các dependency còn lại, để không gây ra xung đột giữa các module.  
+--> Chúng ta cần một cách quản lý tập trung và hiệu quả hơn. Đó là buildSrc.
+
+**buildSrc** sẽ khai báo các dependency mà ứng dụng mình sử dụng cộng với version của nó. Và các module khác khi implementation trong file `build.gradle.kts` thì sẽ gọi ở trong **buildSrc**.
+
+## Tạo folder buildSrc
+
+- Tạo folder tên là `buildSrc` (chính xác tên) ở cùng cấp với các module
+- Trong folder này, tạo file `build.gradle.kts` và gõ vào đó
+
+    ```
+    plugins{
+        `kotlin-dsl`
+    }
+    ```
+- Nhấn **sync**
+
+![Alt text](./readme_images/buildSrc_1.png)
+
+Android sẽ tự sinh ra cho chúng ta thêm 2 thư mục như này.
+
+## Tạo folder src/main/java trong buildSrc
+
+- B1: Tạo folder **src**
+- B2: Tạo folder **main** trong **src**
+- B3: Tạo folder **java** trong **main**
+
+![Alt text](./readme_images/buildSrc_2.png)
+
+## Và thêm các file cần thiết để định nghĩa các dependency 
+
+- File `AppConfig.kt` để quản lý các các thông tin của app (như minSdk, targetSdk, ...)
+- File `Dependencies.kt` để định nghĩa các dependency trong ứng dụng và version của nó
+- File `DependencyHandler.kt` để tạo đối tượng **DependencyHandler** để đóng gói các Dependency và cho các module gọi tới nó - giống kiểu một class sinh ra làm nhiệm vụ là quản lý dependency.
+
+### `AppConfig.kt`
+
+![Alt text](./readme_images/AppConfig.png)
+
+## `Dependencies.kt`
+
+Dùng để định nghĩa các dependency dùng trong ứng dụng và version của nó. Nghĩa là đặt cho nó một cái tên để dễ gọi nó sau này.
+
+```
+object Versions {
+    // Version of dependencies
+
+}
+
+object Deps {
+    // Dependencies and split them follow each group
+    object AndroidX{ }
+    object Compose { }
+    object Accompanist { }
+    object Navigation { }
+    object Test { }
+    object Hilt { }
+}
+```
+
+Sẽ điền thông tin vào các object này. Và các object này sẽ được gọi ở trong `DependencyHandler.kt`
+
+- Versions: định nghĩa version của các dependency. Sau này muốn upgrade thì chỉ cần sửa version của dependency đó ở đây.
+
+- Deps: định nghĩa các dependency cùng với version tương ứng. Ở đây ta còn chia các dependency thành các nhóm tương ứng để dễ gọi.
