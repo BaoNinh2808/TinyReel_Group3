@@ -36,9 +36,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.composable.TopBar
 import com.example.core.DestinationRoute.HOME_SCREEN_ROUTE
 import com.example.theme.R
@@ -323,4 +325,13 @@ fun DropdownComponent() {
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun PostScreenPreview() {
+    // Create a preview using the PostScreen composable
+    // For example, you can pass a NavController instance to simulate usage
+    val navController = rememberNavController()
+    PostScreen(navController = navController)
 }
