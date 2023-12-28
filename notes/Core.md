@@ -141,3 +141,4 @@ object AppContract {
 - `Annotate`: một số constant dùng trong xây dựng annotated string ở màn hình authentication.
 
 ## `DestinationRoute.kt`
+[Navigation](Navigation.md)
