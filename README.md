@@ -446,3 +446,116 @@ Sẽ điền thông tin vào các object này. Và các object này sẽ đượ
 - Versions: định nghĩa version của các dependency. Sau này muốn upgrade thì chỉ cần sửa version của dependency đó ở đây.
 
 - Deps: định nghĩa các dependency cùng với version tương ứng. Ở đây ta còn chia các dependency thành các nhóm tương ứng để dễ gọi.
+
+## `DependencyHandler.kt`
+
+Cài đặt interface **DependencyHandler** trong api `org.gradle.api.artifacts.dsl.DependencyHandler`. DependencyHandler cung cấp các method và mechenism để định nghĩa các Dependency trong Gradle.
+
+- Định nghĩa các phương thức implementation:
+    ![Alt text](./readme_images/DependencyHandler_1.png)
+- Định nghĩa các dependency cụ thể được implementation:
+    ```
+    fun DependencyHandler.baseDependencies() {
+        implementation(platform(Deps.Compose.composeBom))
+        implementation(Deps.Compose.composeActivity)
+        implementation(Deps.Compose.composeUi)
+        implementation(Deps.Compose.composeUiToolingPreview)
+        implementation(Deps.Compose.composeUiUtil)
+        implementation(Deps.Compose.composeFoundation)
+        implementation(Deps.Compose.composeRuntime)
+        implementation(Deps.Compose.composeMaterial3)
+        implementation(Deps.Compose.composeMaterial)
+
+        //navigation
+        implementation(Deps.Navigation.navigationCompose)
+        
+        //hilt navigation
+        implementation(Deps.Hilt.hiltNavigationCompse)
+
+        //accompanist
+        accompanistDependencies()
+    }
+
+    fun DependencyHandler.composeDependencies() {
+        implementation(Deps.AndroidX.appCompat)
+        implementation(Deps.AndroidX.coreKtx)
+        implementation(Deps.AndroidX.lifecycleRunTimeKtx)
+        implementation(Deps.AndroidX.splashScreen)
+        implementation(Deps.Hilt.hiltAndroid)
+        implementation(Deps.Hilt.hiltCompiler)
+    }
+
+    fun DependencyHandler.accompanistDependencies() {
+        implementation(Deps.Accompanist.systemuicontroller)
+        implementation(Deps.Accompanist.navigationMaterial)
+        implementation(Deps.Accompanist.navigationAnimation)
+        implementation(Deps.Accompanist.permission)
+    }
+
+    fun DependencyHandler.testDependencies() {
+        androidTestImplementation(Deps.Test.espressorCore)
+        androidTestImplementation(Deps.Test.junitExtKtx)
+    }
+
+    fun DependencyHandler.moduleDependencies() {
+        DATA
+        CORE
+        COMMON_THEME
+        COMMON_COMPOSABLE
+        FEATURE_HOME
+        FEATURE_AUTHENTICATION
+        FEATURE_MY_PROFILE
+    }
+
+- Định nghĩa các phương thức gọi đến module khác trong project:
+
+    ```
+    val DependencyHandler.DATA
+    get() = implementation(project(mapOf("path" to ":data")))
+
+    val DependencyHandler.CORE
+        get() = implementation(project(mapOf("path" to ":core")))
+
+    val DependencyHandler.COMMON_COMPOSABLE
+        get() = implementation(project(mapOf("path" to ":common:composable")))
+
+    val DependencyHandler.COMMON_THEME
+        get() = implementation(project(mapOf("path" to ":common:theme")))
+
+    val DependencyHandler.FEATURE_HOME
+        get() = implementation(project(mapOf("path" to ":feature:home")))
+
+    val DependencyHandler.FEATURE_POST
+        get() = implementation(project(mapOf("path" to ":feature:post")))
+
+    val DependencyHandler.FEATURE_AUTHENTICATION
+        get() = implementation(project(mapOf("path" to ":feature:authentication")))
+
+    val DependencyHandler.FEATURE_MY_PROFILE
+        get() = implementation(project(mapOf("path" to ":feature:profile")))
+        
+    ```
+
+# Màn hình POST (đăng bài):
+
+Layout của màn hình POST:
+
+![Alt text](./readme_images/post_screen_layout.png)
+
+Các component cụ thể:
+
+![Alt text](./readme_images/post_screen_layout_1.png)
+
+## Mô tả màn hình:
+
+**-** Dùng Scaffold để có Topbar, dùng Topbar để hiển thị nút back (Tại vì Topbar nó có hỗ trợ sẵn navIcon dùng để show icon của navigation --> dùng cho tiện)  
+
+**-** Phần content sẽ để trong 1 **column**
+
+**--CONTENT--**
+
+- `Hiển thị khung mô tả nội dung và thumbnail cho bài đăng` : Dùng một **row** có 2 **box** (mỗi **box** cho mỗi khung)
+- `Hiển thị các tag` : Dùng một **row** có 3 **row** nhỏ hơn. Trong mỗi **row** nhỏ hiển thị 1 **text** và 1 **iconButton** - đây là các tag
+- Hiển thị mục chọn quyền riêng tư
+    + `Khung chọn "Ai có thể xem bài đăng"` : Dùng một **row**, trong đó chứa 1 **Text** và 1 **DropdownComponent** (để chọn các lựa chọn)
+    + `Khung chọn "Ai có thể bình luận" `: Dùng một **row**, trong đó chứa 1 **Text** và 1 **DropdownComponent** (để chọn các lựa chọn)
