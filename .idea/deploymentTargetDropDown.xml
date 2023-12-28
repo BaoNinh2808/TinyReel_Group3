@@ -5,13 +5,7 @@
       <entry key="app">
         <State />
       </entry>
-      <entry key="common.composable">
-        <State />
-      </entry>
       <entry key="data">
-        <State />
-      </entry>
-      <entry key="feature.authentication">
         <State />
       </entry>
       <entry key="feature.camera">
