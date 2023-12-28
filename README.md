@@ -536,6 +536,27 @@ Cài đặt interface **DependencyHandler** trong api `org.gradle.api.artifacts.
         
     ```
 
+# PREVIEW
+
+Để xem được preview thì cứ mỗi màn hình / mỗi hàm Composable sau khi code xong thì tạo một hàm @Preview để hiển thị
+
+Ví dụ: Tôi muốn xem màn hình Post trong PostScreen.kt
+
+```
+@Preview
+@Composable
+fun PostScreenPreview() {
+    // Create a preview using the PostScreen composable
+    // For example, you can pass a NavController instance to simulate usage
+    val navController = rememberNavController()
+    PostScreen(navController = navController)
+}
+```
+
+Tôi sẽ tạo một hàm được đánh dấu là @Preview và gọi hàm `PostScreen` mà muốn xem giao diện. Vì PostScreen cần truyền vào một navController nên mình cần tạo một `navController` để truyền vào nó. 
+
+Nói chung thì dùng Preview chỉ đơn giản là gọi hàm với các tham số truyền vào tương ứng. Giống như mình thực sự gọi nó ở trong ứng dụng của mình.
+
 # Màn hình POST (đăng bài):
 
 Layout của màn hình POST:
