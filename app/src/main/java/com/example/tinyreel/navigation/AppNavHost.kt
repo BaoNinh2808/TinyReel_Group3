@@ -2,9 +2,9 @@ package com.example.tinyreel.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
-import com.example.core.DestinationRoute.AUTHENTICATION_ROUTE
+import androidx.navigation.compose.NavHost
+import com.example.camera.cameraMediaNavGraph
 import com.example.core.DestinationRoute.HOME_SCREEN_ROUTE
 import com.example.home.homeNavGraph
 import com.tinyreel.authentication.authenticationNavGraph
@@ -13,7 +13,7 @@ import com.tinyreel.authentication.authenticationNavGraph
 fun AppNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    startDestination: String = AUTHENTICATION_ROUTE
+    startDestination: String = HOME_SCREEN_ROUTE
 ) {
     NavHost(
         navController = navController,
@@ -29,6 +29,6 @@ fun AppNavHost(
 //        friendsNavGraph(navController)
 //        myProfileNavGraph(navController)
 //        settingNavGraph(navController)
-//        cameraMediaNavGraph(navController)
+        cameraMediaNavGraph(navController)
     }
 }
