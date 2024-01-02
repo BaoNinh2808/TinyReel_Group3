@@ -8,9 +8,6 @@ import android.util.Log
 import com.example.core.AppContract.Type.INSTAGRAM
 import com.example.core.AppContract.Type.YOUTUBE
 
-/**
- * Created by example Khadka on 3/24/2023.
- */
 object IntentUtils {
     fun Context.share(
         type: String = "text/plain",
@@ -47,3 +44,4 @@ fun Context.openAppSetting() {
         }
     startActivity(intent)
 }
+
