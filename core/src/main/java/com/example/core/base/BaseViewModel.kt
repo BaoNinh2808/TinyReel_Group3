@@ -13,5 +13,4 @@ abstract class BaseViewModel<ViewState, Event> : ViewModel() {
         _viewState.value=viewState
     }
     abstract fun onTriggerEvent(event:Event)
-
 }
