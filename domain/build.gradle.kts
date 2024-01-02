@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.data"
+    namespace = "com.example.domain"
     compileSdk = 34
 
     defaultConfig {
@@ -38,9 +38,10 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     implementation(project(":core"))
+    implementation(project(":common:theme"))
+    implementation(project(":data"))
+    implementation(project(":common:composable"))
     implementation("javax.inject:javax.inject:1")
-    implementation("com.google:google:5")
-    implementation("com.google.code.gson:gson:2.10.1")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
