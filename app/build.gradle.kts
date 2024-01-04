@@ -59,8 +59,9 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
-//    implementation("com.google.dagger:hilt-android:2.49")
-    kapt("com.google.dagger:hilt-android:2.49")
+    implementation("com.google.dagger:hilt-android:2.50")
+
+//    kapt("com.google.dagger:hilt-android:2.49")
 
     implementation(project(":common:theme"))
     implementation("androidx.navigation:navigation-runtime-ktx:2.7.6")

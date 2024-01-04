@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.lifecycle.SavedStateHandle
 import com.example.theme.R
 import com.example.core.DestinationRoute
 import com.example.composable.TopBar
@@ -38,8 +39,10 @@ import com.example.core.AppContract.Type.YOUTUBE
 import com.example.theme.Gray
 
 import coil.compose.rememberImagePainter
+import com.example.data.repository.creatorprofile.CreatorProfileRepository
 import com.example.data.source.UsersDataSource.kylieJenner
-
+import com.example.domain.creatorprofile.GetCreatorProfileUseCase
+import com.example.domain.creatorprofile.GetCreatorPublicVideoUseCase
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -103,8 +106,17 @@ fun UnAuthorizedInboxScreen(onClickSignup: () -> Unit) {
 fun LoggedInProfileScreen(
     navController: NavController,
 //    viewModel: CreatorProfileViewModel = hiltViewModel(),
+    viewModel: CreatorProfileViewModel = CreatorProfileViewModel(
+        savedStateHandle = SavedStateHandle(),
+        getCreatorProfileUseCase = GetCreatorProfileUseCase(
+            creatorProfileRepository = CreatorProfileRepository(),
+        ),
+        getCreatorPublicVideoUseCase = GetCreatorPublicVideoUseCase(
+            creatorProfileRepository = CreatorProfileRepository(),
+        ),
+    )
 ) {
-//    val viewState by viewModel.viewState.collectAsState()
+    val viewState by viewModel.viewState.collectAsState()
     val scrollState = rememberScrollState()
 
     Column {
@@ -277,7 +289,7 @@ fun ColumnScope.ProfileDetails(creatorProfile: UserModel?) {
                     SocialMediaType.INSTAGRAM -> R.drawable.ic_instagram
                     SocialMediaType.YOUTUBE -> R.drawable.ic_youtube
                 }
-                Icon(painter = painterResource(id = icon), contentDescription = null)
+                Icon(painter = painterResource(id = icon), contentDescription = null, tint = Color.Unspecified)
             }
         }
         Box(
@@ -289,7 +301,7 @@ fun ColumnScope.ProfileDetails(creatorProfile: UserModel?) {
                 ),
             contentAlignment = Alignment.Center
         ) {
-            Icon(painter = painterResource(id = R.drawable.ic_down_more), contentDescription = null)
+            Icon(painter = painterResource(id = R.drawable.ic_down_more), contentDescription = null, tint = Color.Unspecified)
         }
     }
 
