@@ -42,8 +42,9 @@ dependencies {
     baseDependencies()
     composeDependencies()
     testDependencies()
-    kapt_hiltCompiler()
     COMMON_THEME
     COMMON_COMPOSABLE
     CORE
+    DOMAIN
+    DATA
 }
