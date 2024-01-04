@@ -1,8 +1,8 @@
 package com.example.composable
 
-
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
+import androidx.compose.animation.core.KeyframesSpec.KeyframesSpecConfig
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -40,9 +40,6 @@ import com.example.theme.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-/**
- * Created by example Khadka on 3/16/2023.
- */
 @OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
 @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
 @Composable
@@ -59,7 +56,7 @@ fun TikTokVerticalVideoPager(
     onClickFavourite: (isFav: Boolean) -> Unit = {},
     onClickShare: (() -> Unit)? = null
 ) {
-    val pagerState = rememberPagerState(initialPage = initialPage ?: 0,pageCount={videos.size})
+    val pagerState = rememberPagerState(initialPage = initialPage ?: 0, initialPageOffsetFraction = 0f,pageCount={videos.size})
     val coroutineScope = rememberCoroutineScope()
     val localDensity = LocalDensity.current
 
@@ -338,13 +335,13 @@ fun FooterUi(
             4.dp.Space()
             Button(
                 onClick = {
-                    //khi nhấn vào sẽ đổi thành "Đã theo dõi" và biến mất
+
 
 
                 }, modifier = Modifier, shape = RoundedCornerShape(2.dp), colors = ButtonDefaults.buttonColors(
                     //backgroundColor = Red,
                     contentColor = Color.White,
-                    //bo góc tròn +
+
                 )
             ) {
                 Text(text = stringResource(id = R.string.follow))

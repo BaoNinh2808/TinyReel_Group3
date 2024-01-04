@@ -13,13 +13,20 @@ import androidx.navigation.NavController
 import com.example.composable.TikTokVerticalVideoPager
 import com.example.core.DestinationRoute.COMMENT_BOTTOM_SHEET_ROUTE
 import com.example.core.DestinationRoute.CREATOR_PROFILE_ROUTE
+import com.example.data.repository.home.ForYouRepository
+import com.example.domain.foryou.GetForYouPageFeedUseCase
 import com.example.theme.DarkBlue
 import com.example.theme.DarkPink
 
 @Composable
 fun ForYouTabScreen(
     navController: NavController,
-    viewModel: ForYouViewModel = hiltViewModel()
+//    viewModel: ForYouViewModel = hiltViewModel()
+    viewModel: ForYouViewModel = ForYouViewModel(
+        getForYouPageFeedUseCase = GetForYouPageFeedUseCase(
+            forYouRepository = ForYouRepository()
+        )
+    )
 ) {
     val viewState by viewModel.viewState.collectAsState()
 

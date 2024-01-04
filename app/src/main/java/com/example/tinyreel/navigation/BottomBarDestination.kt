@@ -9,9 +9,6 @@ import com.example.core.DestinationRoute.INBOX_ROUTE
 import com.example.core.DestinationRoute.MY_PROFILE_ROUTE
 import com.example.theme.R
 
-/**
- * Created by Puskal Khadka on 3/14/2023.
- */
 
 enum class BottomBarDestination(
     val route: String,

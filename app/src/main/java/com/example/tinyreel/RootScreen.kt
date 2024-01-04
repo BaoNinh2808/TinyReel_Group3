@@ -1,6 +1,7 @@
-package com.example.tinyreel
+package com.example.tiktokcompose
 
 import android.app.Activity
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.AnimationSpec
@@ -9,15 +10,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material.SwipeableDefaults
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -39,8 +37,6 @@ import com.example.core.DestinationRoute.MY_PROFILE_ROUTE
 import com.example.theme.TinyReelTheme
 import com.example.tinyreel.component.BottomBar
 import com.example.tinyreel.navigation.AppNavHost
-
-//import com.example.tinyreel.navigation.AppNavHost
 
 @OptIn(
     ExperimentalMaterial3Api::class, ExperimentalMaterialNavigationApi::class,
@@ -110,7 +106,7 @@ fun SetupSystemUi(
 }
 
 @ExperimentalMaterialNavigationApi
-@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun rememberBottomSheetNavigator(
     animationSpec: AnimationSpec<Float> = SwipeableDefaults.AnimationSpec,
@@ -119,11 +115,7 @@ fun rememberBottomSheetNavigator(
     val sheetState = rememberModalBottomSheetState(
         ModalBottomSheetValue.Hidden,
         animationSpec,
-        confirmStateChange = { proposedState ->
-            // Logic similar to skipHalfExpanded:
-            // If the proposed state is half-expanded, don't allow it; go directly to expanded
-            proposedState != ModalBottomSheetValue.HalfExpanded
-        },
+//        skipHalfExpanded,
     )
     return remember(sheetState) {
         BottomSheetNavigator(sheetState = sheetState)

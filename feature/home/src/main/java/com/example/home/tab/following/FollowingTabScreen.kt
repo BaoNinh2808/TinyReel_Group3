@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -21,6 +22,8 @@ import androidx.navigation.NavController
 import com.example.core.DestinationRoute.CREATOR_PROFILE_ROUTE
 import com.example.core.extension.Space
 import com.example.data.model.ContentCreatorFollowingModel
+import com.example.data.repository.home.FollowingRepository
+import com.example.domain.following.GetContentCreatorsUseCase
 import com.example.home.tab.following.component.CreatorCard
 import com.example.theme.DarkBlue
 import com.example.theme.R
@@ -31,7 +34,12 @@ import com.example.theme.SubTextColor
 fun FollowingScreen(
     navController: NavController,
     parentPagerState: PagerState,
-    viewModel: FollowingViewModel = hiltViewModel()
+//    viewModel: FollowingViewModel = hiltViewModel()
+    viewModel: FollowingViewModel= FollowingViewModel(
+        getContentCreatorsUseCase = GetContentCreatorsUseCase(
+            followingRepository = FollowingRepository()
+        )
+    )
 ) {
     val viewState by viewModel.viewState.collectAsState()
     Column(
@@ -94,4 +102,5 @@ fun VideoItem(
         )
     }
 }
+
 
