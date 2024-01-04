@@ -17,7 +17,7 @@ import com.example.post.postNavGraph
 fun AppNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    startDestination: String = MY_PROFILE_ROUTE
+    startDestination: String = HOME_SCREEN_ROUTE
 ) {
     NavHost(
         navController = navController,

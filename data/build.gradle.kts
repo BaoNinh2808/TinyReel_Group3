@@ -43,5 +43,4 @@ dependencies {
     baseDependencies()
     composeDependencies()
     testDependencies()
-    kapt_hiltCompiler()
 }
