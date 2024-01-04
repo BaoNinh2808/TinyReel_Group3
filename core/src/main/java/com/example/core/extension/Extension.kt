@@ -9,15 +9,15 @@ fun Long.formattedCount(): String {
     return if (this < 10000) {
         this.toString()
     } else if (this < 1000000) {
-        "${decimalFormat.format(this.div(1000))}N"
+        "${decimalFormat.format(this.div(1000))}K"
     } else if (this < 1000000000) {
-        "${decimalFormat.format(this.div(1000000))}Tr"
+        "${decimalFormat.format(this.div(1000000))}M"
     } else {
-        "${decimalFormat.format(this.div(1000000000))}Tỷ"
+        "${decimalFormat.format(this.div(1000000000))}B"
     }
 }
 
-fun randomUploadDate(): String = "${(1..24).random()}g"
+fun randomUploadDate(): String = "${(1..24).random()}h"
 
 
 fun Pair<String, String>.getFormattedInternationalNumber() = "${this.first}-${this.second}".trim()
