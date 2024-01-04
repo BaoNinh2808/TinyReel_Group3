@@ -2,6 +2,15 @@ plugins{
     `kotlin-dsl`
 }
 
+gradlePlugin {
+    plugins {
+        register("AndroidCoreLibraryPlugin") {
+            id = "android.core.library.plugin"
+            implementationClass = "commons.AndroidCoreLibraryPlugin"
+        }
+    }
+}
+
 repositories {
     gradlePluginPortal()
     google()

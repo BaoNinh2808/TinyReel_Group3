@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
+import com.example.camera.cameraMediaNavGraph
+import com.example.core.DestinationRoute.CAMERA_ROUTE
 import com.example.core.DestinationRoute.HOME_SCREEN_ROUTE
 import com.example.core.DestinationRoute.MY_PROFILE_ROUTE
 import com.example.core.DestinationRoute.POST_ROUTE
@@ -32,6 +34,6 @@ fun AppNavHost(
 //        friendsNavGraph(navController)
         myProfileNavGraph(navController)
 //        settingNavGraph(navController)
-//        cameraMediaNavGraph(navController)
+        cameraMediaNavGraph(navController)
     }
 }

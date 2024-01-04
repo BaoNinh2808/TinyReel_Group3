@@ -1,10 +1,13 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.plugin.parcelize")
+    id("com.google.dagger.hilt.android")
+    kotlin("kapt")
 }
 
 android {
-    namespace = "com.example.myprofile"
+    namespace = "com.example.core"
     compileSdk = 34
 
     defaultConfig {
@@ -21,7 +24,7 @@ android {
             )
         }
     }
-    buildFeatures {
+    buildFeatures{
         compose = true
     }
     composeOptions {
@@ -36,12 +39,18 @@ android {
     }
 }
 
+kapt {
+    correctErrorTypes = true
+}
+
 dependencies {
     COMMON_THEME
     COMMON_COMPOSABLE
     CORE
     DATA
+    DOMAIN
     baseDependencies()
     composeDependencies()
     testDependencies()
+    hiltCompiler()
 }

@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.post"
+    namespace = "com.example.core"
     compileSdk = 34
 
     defaultConfig {
@@ -21,7 +21,7 @@ android {
             )
         }
     }
-    buildFeatures {
+    buildFeatures{
         compose = true
     }
     composeOptions {

@@ -102,7 +102,7 @@ fun UnAuthorizedInboxScreen(onClickSignup: () -> Unit) {
 @Composable
 fun LoggedInProfileScreen(
     navController: NavController,
-//    viewModel: CreatorProfileViewModel = hiltViewModel(),
+    viewModel: CreatorProfileViewModel = hiltViewModel(),
 ) {
 //    val viewState by viewModel.viewState.collectAsState()
     val scrollState = rememberScrollState()

@@ -57,6 +57,11 @@ fun DependencyHandler.composeDependencies() {
     implementation(Deps.Hilt.hiltCompiler)
 }
 
+fun DependencyHandler.hiltCompiler() {
+    implementation(Deps.Hilt.hiltAndroid)
+    kapt(Deps.Hilt.hiltCompiler)
+    implementation(Deps.Hilt.hiltNavigationCompse)
+}
 fun DependencyHandler.accompanistDependencies() {
     implementation(Deps.Accompanist.systemuicontroller)
     implementation(Deps.Accompanist.navigationMaterial)
@@ -69,6 +74,14 @@ fun DependencyHandler.media3Dependency() {
     implementation(Deps.AudioVideo.expplayerDash)
     implementation(Deps.AudioVideo.media3Ui)
 }
+fun DependencyHandler.cameraXDependencies() {
+    implementation(Deps.CameraX.cameraCore)
+    implementation(Deps.CameraX.camera2)
+    implementation(Deps.CameraX.cameraLifecycle)
+    implementation(Deps.CameraX.cameraVideo)
+    implementation(Deps.CameraX.cameraView)
+    implementation(Deps.CameraX.CameraExt)
+}
 fun DependencyHandler.testDependencies() {
     androidTestImplementation(Deps.Test.espressorCore)
     androidTestImplementation(Deps.Test.junitExtKtx)
@@ -76,6 +89,9 @@ fun DependencyHandler.testDependencies() {
 
 fun DependencyHandler.googleDependencies(){
     implementation(Deps.Google.material)
+}
+fun DependencyHandler.devDependencies(){
+    implementation(Deps.Dev.dev)
 }
 fun DependencyHandler.moduleDependencies() {
     DATA
@@ -85,6 +101,7 @@ fun DependencyHandler.moduleDependencies() {
     FEATURE_HOME
     FEATURE_AUTHENTICATION
     FEATURE_MY_PROFILE
+    FEATURE_CAMERA
 }
 
 
@@ -93,7 +110,8 @@ val DependencyHandler.DATA
 
 val DependencyHandler.CORE
     get() = implementation(project(mapOf("path" to ":core")))
-
+val DependencyHandler.DOMAIN
+    get() = implementation(project(mapOf("path" to ":domain")))
 val DependencyHandler.COMMON_COMPOSABLE
     get() = implementation(project(mapOf("path" to ":common:composable")))
 
@@ -111,3 +129,6 @@ val DependencyHandler.FEATURE_AUTHENTICATION
 
 val DependencyHandler.FEATURE_MY_PROFILE
     get() = implementation(project(mapOf("path" to ":feature:myprofile")))
+val DependencyHandler.FEATURE_CAMERA
+    get() = implementation(project(mapOf("path" to ":feature:camera")))
+

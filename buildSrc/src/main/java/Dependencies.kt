@@ -1,5 +1,6 @@
 import Versions.ActivityCompose
 import Versions.AppCompat
+import Versions.CameraXVersion
 import Versions.Coil
 import Versions.ComposeBom
 import Versions.ConstraintLayoutCompose
@@ -38,20 +39,16 @@ object Versions {
 
     const val navigation_runtime_ktx = "2.7.6"
     const val NavigationCompose = "2.7.6"
-
     const val accompanist = "0.33.2-alpha"
-
     const val JunitExtKtx = "1.1.5"
     const val EspressoCore = "3.5.1"
     const val test_ui_test_junit4 = "1.6.0-beta03"
-
     const val debug_ui_tooling = "1.6.0-beta03"
     const val debug_ui_test_manifest = "1.6.0-beta03"
-
     const val ConstraintLayoutCompose = "1.0.1"
     const val Coil = "2.2.2"
-
     const val Media3 = "1.0.0-rc02"
+    const val CameraXVersion = "1.3.0-alpha05"
 }
 
 object Deps {
@@ -117,5 +114,17 @@ object Deps {
 
         //hilt compose
         const val hiltNavigationCompse = "androidx.hilt:hilt-navigation-compose:$HiltNavigationCompose"
+    }
+
+    object CameraX {
+        const val cameraCore = "androidx.camera:camera-core:$CameraXVersion"
+        const val camera2 = "androidx.camera:camera-camera2:$CameraXVersion"
+        const val cameraLifecycle = "androidx.camera:camera-lifecycle:$CameraXVersion"
+        const val cameraVideo = "androidx.camera:camera-video:$CameraXVersion"
+        const val cameraView = "androidx.camera:camera-view:$CameraXVersion"
+        const val CameraExt = "androidx.camera:camera-extensions:$CameraXVersion"
+    }
+    object Dev{
+        const val dev = "dev.chrisbanes.snapper:snapper:0.3.0"
     }
 }

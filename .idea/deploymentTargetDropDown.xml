@@ -17,6 +17,9 @@
       <entry key="feature.myprofile">
         <State />
       </entry>
+      <entry key="feature.myprofile.creatorprofile">
+        <State />
+      </entry>
       <entry key="feature.profile">
         <State />
       </entry>

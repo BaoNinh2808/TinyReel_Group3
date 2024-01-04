@@ -69,4 +69,5 @@ dependencies {
     FEATURE_HOME
     FEATURE_POST
     FEATURE_MY_PROFILE
+    FEATURE_CAMERA
 }
