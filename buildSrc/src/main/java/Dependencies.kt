@@ -1,12 +1,15 @@
 import Versions.ActivityCompose
 import Versions.AppCompat
+import Versions.Coil
 import Versions.ComposeBom
+import Versions.ConstraintLayoutCompose
 import Versions.CoreKtx
 import Versions.EspressoCore
 import Versions.HiltAndroidVersion
 import Versions.HiltNavigationCompose
 import Versions.JunitExtKtx
 import Versions.LifecycleRunTimeKtx
+import Versions.Media3
 import Versions.NavigationCompose
 import Versions.SplashScreenApi
 import Versions.accompanist
@@ -44,6 +47,11 @@ object Versions {
 
     const val debug_ui_tooling = "1.6.0-beta03"
     const val debug_ui_test_manifest = "1.6.0-beta03"
+
+    const val ConstraintLayoutCompose = "1.0.1"
+    const val Coil = "2.2.2"
+
+    const val Media3 = "1.0.0-rc02"
 }
 
 object Deps {
@@ -65,6 +73,7 @@ object Deps {
         const val composeRuntime = "androidx.compose.runtime:runtime"
         const val composeActivity = "androidx.activity:activity-compose:$ActivityCompose"
         const val composeUiUtil = "androidx.compose.ui:ui-util"
+        const val constraintLayoutCompose = "androidx.constraintlayout:constraintlayout-compose:$ConstraintLayoutCompose"
     }
 
     object Accompanist {
@@ -81,6 +90,17 @@ object Deps {
     object Test {
         const val espressorCore = "androidx.test.espresso:espresso-core:$EspressoCore"
         const val junitExtKtx = "androidx.test.ext:junit-ktx:$JunitExtKtx"
+    }
+
+    object AudioVideo {
+        const val exoplayer = "androidx.media3:media3-exoplayer:$Media3"
+        const val expplayerDash = "androidx.media3:media3-exoplayer-dash:$Media3"
+        const val media3Ui = "androidx.media3:media3-ui:$Media3"
+    }
+
+    object Coil {
+        const val coilCompose = "io.coil-kt:coil-compose:${Versions.Coil}"
+        const val coilVideo = "io.coil-kt:coil-video:${Versions.Coil}"
     }
 
     object Debug {

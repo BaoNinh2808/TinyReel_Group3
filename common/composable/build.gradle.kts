@@ -39,6 +39,7 @@ android {
 dependencies {
     COMMON_THEME
     CORE
+    DATA
     baseDependencies()
     composeDependencies()
     testDependencies()

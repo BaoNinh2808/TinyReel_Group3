@@ -36,6 +36,7 @@ android {
 }
 
 dependencies {
+    CORE
     baseDependencies()
     composeDependencies()
     testDependencies()

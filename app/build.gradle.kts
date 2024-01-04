@@ -68,4 +68,5 @@ dependencies {
     COMMON_THEME
     FEATURE_HOME
     FEATURE_POST
+    FEATURE_MY_PROFILE
 }

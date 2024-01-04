@@ -26,12 +26,19 @@ fun DependencyHandler.baseDependencies() {
     implementation(Deps.Compose.composeRuntime)
     implementation(Deps.Compose.composeMaterial3)
     implementation(Deps.Compose.composeMaterial)
+    implementation(Deps.Compose.constraintLayoutCompose)
+
+    media3Dependency()
 
     //navigation
     implementation(Deps.Navigation.navigationCompose)
 
     //hilt navigation
     implementation(Deps.Hilt.hiltNavigationCompse)
+
+    //coil
+    implementation(Deps.Coil.coilCompose)
+    implementation(Deps.Coil.coilVideo)
 
     //accompanist
     accompanistDependencies()
@@ -57,6 +64,11 @@ fun DependencyHandler.accompanistDependencies() {
     implementation(Deps.Accompanist.permission)
 }
 
+fun DependencyHandler.media3Dependency() {
+    implementation(Deps.AudioVideo.exoplayer)
+    implementation(Deps.AudioVideo.expplayerDash)
+    implementation(Deps.AudioVideo.media3Ui)
+}
 fun DependencyHandler.testDependencies() {
     androidTestImplementation(Deps.Test.espressorCore)
     androidTestImplementation(Deps.Test.junitExtKtx)
@@ -98,4 +110,4 @@ val DependencyHandler.FEATURE_AUTHENTICATION
     get() = implementation(project(mapOf("path" to ":feature:authentication")))
 
 val DependencyHandler.FEATURE_MY_PROFILE
-    get() = implementation(project(mapOf("path" to ":feature:profile")))
+    get() = implementation(project(mapOf("path" to ":feature:myprofile")))
