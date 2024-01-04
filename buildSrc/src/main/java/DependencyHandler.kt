@@ -53,14 +53,17 @@ fun DependencyHandler.composeDependencies() {
     implementation(Deps.AndroidX.coreKtx)
     implementation(Deps.AndroidX.lifecycleRunTimeKtx)
     implementation(Deps.AndroidX.splashScreen)
+//    implementation(Deps.Hilt.hiltAndroid)
+//    implementation(Deps.Hilt.hiltCompiler)
+}
+
+fun DependencyHandler.im_hiltCompiler() {
     implementation(Deps.Hilt.hiltAndroid)
     implementation(Deps.Hilt.hiltCompiler)
 }
-
-fun DependencyHandler.hiltCompiler() {
+fun DependencyHandler.kapt_hiltCompiler() {
     implementation(Deps.Hilt.hiltAndroid)
     kapt(Deps.Hilt.hiltCompiler)
-    implementation(Deps.Hilt.hiltNavigationCompse)
 }
 fun DependencyHandler.accompanistDependencies() {
     implementation(Deps.Accompanist.systemuicontroller)

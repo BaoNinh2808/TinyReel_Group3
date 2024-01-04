@@ -63,6 +63,8 @@ dependencies {
     baseDependencies()
     composeDependencies()
     testDependencies()
+    kapt_hiltCompiler()
+    kapt("com.google.dagger:hilt-android-compiler:2.50")
 //    moduleDependencies()
     CORE
     COMMON_THEME

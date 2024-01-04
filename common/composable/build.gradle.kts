@@ -1,8 +1,9 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("com.google.dagger.hilt.android")
+    kotlin("kapt")
 }
-
 android {
     namespace = "com.example.composable"
     compileSdk = 34
@@ -43,4 +44,5 @@ dependencies {
     baseDependencies()
     composeDependencies()
     testDependencies()
+    kapt_hiltCompiler()
 }

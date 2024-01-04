@@ -1,6 +1,8 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    id("com.google.dagger.hilt.android")
+    kotlin("kapt")
 }
 
 android {
@@ -40,6 +42,7 @@ dependencies {
     baseDependencies()
     composeDependencies()
     testDependencies()
+    kapt_hiltCompiler()
     COMMON_THEME
     COMMON_COMPOSABLE
     CORE

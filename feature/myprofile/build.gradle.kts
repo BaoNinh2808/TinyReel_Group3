@@ -1,7 +1,6 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.plugin.parcelize")
     id("com.google.dagger.hilt.android")
     kotlin("kapt")
 }
@@ -52,5 +51,6 @@ dependencies {
     baseDependencies()
     composeDependencies()
     testDependencies()
-    hiltCompiler()
+    kapt_hiltCompiler()
+    kapt("com.google.dagger:hilt-android-compiler:2.50")
 }
