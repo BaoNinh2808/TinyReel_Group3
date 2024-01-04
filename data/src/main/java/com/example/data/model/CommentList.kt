@@ -7,7 +7,7 @@ data class CommentList(
     val isCommentPrivate: Boolean
 ) {
     data class Comment(
-        val commentBy: UserModel,
+        // val commentBy: UserModel,
         val comment: String?,
         val createdAt: String,
         val totalLike: Long,

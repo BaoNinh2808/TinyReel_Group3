@@ -4,14 +4,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.core.DestinationRoute.AUTHENTICATION_ROUTE
 import com.example.core.DestinationRoute.HOME_SCREEN_ROUTE
 import com.example.home.homeNavGraph
+import com.tinyreel.authentication.LoginWithEmailPhoneViewModel
 import com.tinyreel.authentication.authenticationNavGraph
 
 @Composable
 fun AppNavHost(
-    navController: NavHostController,
+    viewModel: LoginWithEmailPhoneViewModel,
+    navController: NavHostController = rememberNavController(),
     modifier: Modifier = Modifier,
     startDestination: String = AUTHENTICATION_ROUTE
 ) {
@@ -24,7 +27,7 @@ fun AppNavHost(
 //        commentListingNavGraph(navController)
 //        creatorProfileNavGraph(navController)
 //        inboxNavGraph(navController)
-        authenticationNavGraph(navController)
+        authenticationNavGraph(viewModel, navController)
 //        loginEmailPhoneNavGraph(navController)
 //        friendsNavGraph(navController)
 //        myProfileNavGraph(navController)

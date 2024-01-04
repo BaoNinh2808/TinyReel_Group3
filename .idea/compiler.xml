@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="1.7" />
+    <bytecodeTargetLevel target="17">
+      <module name="TinyReel.dataa" target="17" />
+      <module name="TinyReel.feature.camera" target="17" />
+      <module name="TinyReel.feature.post" target="17" />
+      <module name="TinyReel.feature.profile" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>

@@ -4,14 +4,14 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
-import com.google.accompanist.navigation.material.bottomSheet
 import com.example.core.DestinationRoute.AUTHENTICATION_ROUTE
-import com.tinyreel.authentication.AuthenticationScreen
+//import com.tinyreel.authentication.screen.AuthenticationScreen
+import com.tinyreel.authentication.screen.LoginScreen
 
 
 @OptIn(ExperimentalMaterialNavigationApi::class)
-fun NavGraphBuilder.authenticationNavGraph(navController: NavController) {
+fun NavGraphBuilder.authenticationNavGraph(viewModel: LoginWithEmailPhoneViewModel, navController: NavController) {
     composable(route = AUTHENTICATION_ROUTE) {
-        AuthenticationScreen(navController)
+        LoginScreen(viewModel, navController)
     }
 }

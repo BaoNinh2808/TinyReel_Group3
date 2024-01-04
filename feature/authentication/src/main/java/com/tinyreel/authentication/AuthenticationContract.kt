@@ -44,11 +44,11 @@ data class ViewState(
 )
 
 sealed class LoginEmailPhoneEvent {
-    data class EventPageChange(val settledPage: Int) : LoginEmailPhoneEvent()
-    data class OnChangePhoneNumber(val newValue: String) : LoginEmailPhoneEvent()
-    data class OnChangeEmailEntry(val newValue: String) : LoginEmailPhoneEvent()
+    // data class EventPageChange(val settledPage: Int) : LoginEmailPhoneEvent()
+     // data class OnChangePhoneNumber(val newValue: String) : LoginEmailPhoneEvent()
+     data class OnChangeEmailEntry(val newValue: String) : LoginEmailPhoneEvent()
 
-    data class OnChangePasswordEntry(val newValue: String) : LoginEmailPhoneEvent()
+     data class OnChangePasswordEntry(val newValue: String) : LoginEmailPhoneEvent()
 }
 
 

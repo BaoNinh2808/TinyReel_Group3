@@ -11,6 +11,9 @@
       <entry key="data">
         <State />
       </entry>
+      <entry key="feature.authentication">
+        <State />
+      </entry>
       <entry key="feature.camera">
         <State />
       </entry>
