@@ -11,15 +11,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.theme.TinyReelTheme
+import com.example.tiktokcompose.RootScreen
+import dagger.hilt.android.AndroidEntryPoint
 
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            RootScreen()
-        }
-    }
-}
+//class MainActivity : ComponentActivity() {
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        setContent {
+//            RootScreen()
+//        }
+//    }
+//}
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
@@ -28,6 +30,24 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
         modifier = modifier
     )
 }
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        //installSplashScreen()
+        super.onCreate(savedInstanceState)
+        setContent {
+            RootScreen()
+        }
+    }
+}
+
+
+private object Destinations {
+    const val Home = "HOME"
+    const val Feed = "FEED"
+    const val Sheet = "SHEET"
+}
+
 
 @Preview(showBackground = true)
 @Composable

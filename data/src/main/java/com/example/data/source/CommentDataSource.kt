@@ -9,9 +9,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.util.*
 
-/**
- * Created by example Khadka on 3/21/2023.
- */
+
 object CommentDataSource {
     private val bio = arrayListOf("Life is beautiful")
     private val isVerified = listOf(true, false)
