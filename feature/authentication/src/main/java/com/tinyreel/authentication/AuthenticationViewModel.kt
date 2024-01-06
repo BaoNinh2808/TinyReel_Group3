@@ -16,8 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginWithEmailPhoneViewModel @Inject constructor(
-    private  val repository: AuthRepository
-) : ViewModel() {
+    private val repository: AuthRepository
+) : BaseViewModel<ViewState, LoginEmailPhoneEvent>() {
 //    private val _settledPage = MutableStateFlow<Int?>(null)
 //    val settledPage = _settledPage.asStateFlow()
 
@@ -37,8 +37,8 @@ class LoginWithEmailPhoneViewModel @Inject constructor(
     private val _loginFlow = MutableStateFlow<Resource<FirebaseUser>?>(null)
     val loginFlow: StateFlow<Resource<FirebaseUser>?> = _loginFlow
 
-//    private val _signupFlow = MutableStateFlow<Resource<FirebaseUser>?>(null)
-//    val signupFlow: StateFlow<Resource<FirebaseUser>?> = _loginFlow
+    private val _signupFlow = MutableStateFlow<Resource<FirebaseUser>?>(null)
+    val signupFlow: StateFlow<Resource<FirebaseUser>?> = _loginFlow
 
     val currentUser: FirebaseUser?
         get() = repository.currentUser
@@ -54,11 +54,11 @@ class LoginWithEmailPhoneViewModel @Inject constructor(
         _loginFlow.value = result
     }
 
-//    fun signup(name:String, email: String, password: String) = viewModelScope.launch {
-//        _signupFlow.value = Resource.Loading
-//        val result = repository.signup(name, email, password)
-//        _signupFlow.value = result
-//    }
+    fun signup(name:String, email: String, password: String) = viewModelScope.launch {
+        _signupFlow.value = Resource.Loading
+        val result = repository.signup(name, email, password)
+        _signupFlow.value = result
+    }
 
     fun logout(){
         repository.logout()

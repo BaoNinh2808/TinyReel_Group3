@@ -48,6 +48,7 @@
     <string name="forget_password">Quên mật khẩu?</string>
     <string name="create_new_account">Tạo tài khoản mới</string>
     <string name="Guess_account">Tài khoản khách</string>
+    <string name="Already_has_account">Đã có tài khoản</string>
     <string name="continue_with_twitter">Continue with Twitter</string>
     <string name="terms_of_service">Terms of service</string>
     <string name="privacy_policy">Privacy Policy</string>

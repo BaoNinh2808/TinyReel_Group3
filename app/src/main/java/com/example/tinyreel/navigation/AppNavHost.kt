@@ -10,6 +10,7 @@ import com.example.core.DestinationRoute.HOME_SCREEN_ROUTE
 import com.example.home.homeNavGraph
 import com.tinyreel.authentication.LoginWithEmailPhoneViewModel
 import com.tinyreel.authentication.authenticationNavGraph
+import com.tinyreel.authentication.signUpNavGraph
 
 @Composable
 fun AppNavHost(
@@ -28,6 +29,7 @@ fun AppNavHost(
 //        creatorProfileNavGraph(navController)
 //        inboxNavGraph(navController)
         authenticationNavGraph(viewModel, navController)
+        signUpNavGraph(viewModel, navController)
 //        loginEmailPhoneNavGraph(navController)
 //        friendsNavGraph(navController)
 //        myProfileNavGraph(navController)

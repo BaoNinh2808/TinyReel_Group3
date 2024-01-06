@@ -2,6 +2,6 @@
 2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
 3    package="com.example.domain" >
 4
-5    <uses-sdk android:minSdkVersion="34" />
+5    <uses-sdk android:minSdkVersion="28" />
 6
 7</manifest>

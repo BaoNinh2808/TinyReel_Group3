@@ -57,11 +57,15 @@ import com.example.theme.R
 import com.example.theme.SubTextColor
 import com.example.theme.fontFamily
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.composable.CustomButton
+import com.example.core.DestinationRoute.AUTHENTICATION_ROUTE
+import com.example.core.DestinationRoute.SIGNUP_ROUTE
 import com.example.theme.spacing
 import com.tinyreel.authentication.LoginEmailPhoneEvent
 import com.tinyreel.authentication.LoginOption
 import com.tinyreel.authentication.LoginWithEmailPhoneViewModel
+import com.tinyreel.authentication.data.AuthRepository
 import com.tinyreel.authentication.data.Resource
 
 
@@ -461,27 +465,31 @@ fun LoginScreen(viewModel:LoginWithEmailPhoneViewModel?, navController: NavContr
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
+//    val email by viewModel.email.collectAsState()
+//    val password by viewModel.password.collectAsState()
+
     val loginFlow = viewModel?.loginFlow?.collectAsState()
 
     ConstraintLayout(
         modifier = Modifier.fillMaxSize()
     ) {
 
-        val (refHeader, refEmail, refPassword, refButtonLogin, refTextSignup, refLoader) = createRefs()
+        val (refBackground, refEmail, refPassword, refButtonLogin, refTextSignup, refLoader) = createRefs()
         val spacing = MaterialTheme.spacing
 
-//        Box(
-//            modifier = Modifier
-//                .constrainAs(refHeader) {
-//                    top.linkTo(parent.top, spacing.extraLarge)
-//                    start.linkTo(parent.start)
-//                    end.linkTo(parent.end)
-//                    width = Dimension.fillToConstraints
-//                }
-//                .wrapContentSize()
-//        ) {
-//            AuthHeader()
-//        }
+        val imagePainter = painterResource(id = R.drawable.img_background)
+        Image(
+            painter = imagePainter,
+            contentDescription = "Loaded Image",
+            modifier = Modifier
+                .constrainAs(refBackground) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    width = Dimension.fillToConstraints
+                }
+                .fillMaxSize(1f)
+        )
 
 
         TextField(
@@ -551,15 +559,16 @@ fun LoginScreen(viewModel:LoginWithEmailPhoneViewModel?, navController: NavContr
                     end.linkTo(parent.end, spacing.extraLarge)
                 }
                 .clickable {
-//                    navController.navigate(ROUTE_SIGNUP) {
-//                        popUpTo(ROUTE_LOGIN) { inclusive = true }
-//                    }
+                    navController.navigate(SIGNUP_ROUTE) {
+                        popUpTo(AUTHENTICATION_ROUTE) { inclusive = true }
+                    }
                 },
-            text = stringResource(id = R.string.Guess_account),
+            text = stringResource(id = R.string.sign_up_for_an_account),
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurface
         )
+
         loginFlow?.value?.let {
             when(it){
                 is Resource.Failure -> {
@@ -586,6 +595,7 @@ fun LoginScreen(viewModel:LoginWithEmailPhoneViewModel?, navController: NavContr
 @Preview(showBackground = true)
 @Composable
 fun AuthenticationScreenPreview() {
+
     val navController = rememberNavController()
     LoginScreen(null, navController = navController)
 }
