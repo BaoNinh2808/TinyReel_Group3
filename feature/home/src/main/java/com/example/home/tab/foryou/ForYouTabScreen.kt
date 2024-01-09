@@ -21,12 +21,12 @@ import com.example.theme.DarkPink
 @Composable
 fun ForYouTabScreen(
     navController: NavController,
-//    viewModel: ForYouViewModel = hiltViewModel()
-    viewModel: ForYouViewModel = ForYouViewModel(
-        getForYouPageFeedUseCase = GetForYouPageFeedUseCase(
-            forYouRepository = ForYouRepository()
-        )
-    )
+    viewModel: ForYouViewModel = hiltViewModel()
+//    viewModel: ForYouViewModel = ForYouViewModel(
+//        getForYouPageFeedUseCase = GetForYouPageFeedUseCase(
+//            forYouRepository = ForYouRepository()
+//        )
+//    )
 ) {
     val viewState by viewModel.viewState.collectAsState()
 
