@@ -1,11 +1,16 @@
 package com.example.composable
 
-import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.clickable
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -29,14 +34,12 @@ fun TopBar(
         },
         navigationIcon = {
             navIcon?.let {
-                Icon(
-                    painter = painterResource(id = navIcon),
+                Icon(painter = painterResource(id = navIcon),
                     contentDescription = null,
                     tint = Color.Unspecified,
                     modifier = Modifier
                         .padding(start = 8.dp)
-                        .clickable { onClickNavIcon() }
-                )
+                        .clickable { onClickNavIcon() })
             }
         },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = backgroundColor),
