@@ -11,13 +11,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.Alignment
 import androidx.navigation.NavController
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.Modifier
@@ -53,7 +54,7 @@ fun MyProfileScreen(navController: NavController) {
             title = stringResource(id = R.string.profile),
             actions = {
                 IconButton(onClick = {
-                    navController.navigate(DestinationRoute.SETTING_ROUTE)
+                    navController.navigate(DestinationRoute.MY_PROFILE_SETTING_ROUTE)
                 }) {
                     Icon(painterResource(id = R.drawable.ic_hamburger), contentDescription = null)
                 }
@@ -105,7 +106,7 @@ fun UnAuthorizedInboxScreen(onClickSignup: () -> Unit) {
 @Composable
 fun LoggedInProfileScreen(
     navController: NavController,
-//    viewModel: CreatorProfileViewModel = hiltViewModel(),
+//    viewModel: CreatorProfileViewModel,
     viewModel: CreatorProfileViewModel = CreatorProfileViewModel(
         savedStateHandle = SavedStateHandle(),
         getCreatorProfileUseCase = GetCreatorProfileUseCase(
@@ -132,7 +133,13 @@ fun LoggedInProfileScreen(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
 //                ProfileDetails(viewState?.creatorProfile)
-                ProfileDetails(kylieJenner)
+
+//                var userViewModel by remember { mutableStateOf<UserModel?>(null) }
+                val userViewModelState = CreatorProfileRepository().getCreatorDetails(1).collectAsState(
+                    initial = null
+                )
+//                ProfileDetails(kylieJenner)
+                ProfileDetails(userViewModelState?.value)
             }
         }
     }
