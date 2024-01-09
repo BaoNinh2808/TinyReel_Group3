@@ -372,3 +372,211 @@ Và tất nhiên ta phải định nghĩa các `route`.
 ![Alt text](./readme_images/routeDestination.png)
 
 Các route được định nghĩa trong file **DestinationRoute.kt** thuộc **core**.
+
+----
+
+----
+
+# buildSrc
+
+buildSrc là một folder đặc biệt trong Android. Khi chạy chương trình thì Android sẽ tìm folder này trước. Nếu có nó thì Android sẽ config các dependency của ứng dụng theo định nghĩa của folder này.
+
+Nó giải quyết vấn đề Dependency management trong project của mình. Khi tạo một project có nhiều module thì các module sẽ implements một số dependency giống nhau. Nếu mà chúng ta implementation một cách thủ công thì khi upgrade một cái thì phải tìm và upgrade tất cả các dependency còn lại, để không gây ra xung đột giữa các module.  
+--> Chúng ta cần một cách quản lý tập trung và hiệu quả hơn. Đó là buildSrc.
+
+**buildSrc** sẽ khai báo các dependency mà ứng dụng mình sử dụng cộng với version của nó. Và các module khác khi implementation trong file `build.gradle.kts` thì sẽ gọi ở trong **buildSrc**.
+
+## Tạo folder buildSrc
+
+- Tạo folder tên là `buildSrc` (chính xác tên) ở cùng cấp với các module
+- Trong folder này, tạo file `build.gradle.kts` và gõ vào đó
+
+    ```
+    plugins{
+        `kotlin-dsl`
+    }
+    ```
+- Nhấn **sync**
+
+![Alt text](./readme_images/buildSrc_1.png)
+
+Android sẽ tự sinh ra cho chúng ta thêm 2 thư mục như này.
+
+## Tạo folder src/main/java trong buildSrc
+
+- B1: Tạo folder **src**
+- B2: Tạo folder **main** trong **src**
+- B3: Tạo folder **java** trong **main**
+
+![Alt text](./readme_images/buildSrc_2.png)
+
+## Và thêm các file cần thiết để định nghĩa các dependency 
+
+- File `AppConfig.kt` để quản lý các các thông tin của app (như minSdk, targetSdk, ...)
+- File `Dependencies.kt` để định nghĩa các dependency trong ứng dụng và version của nó
+- File `DependencyHandler.kt` để tạo đối tượng **DependencyHandler** để đóng gói các Dependency và cho các module gọi tới nó - giống kiểu một class sinh ra làm nhiệm vụ là quản lý dependency.
+
+### `AppConfig.kt`
+
+![Alt text](./readme_images/AppConfig.png)
+
+## `Dependencies.kt`
+
+Dùng để định nghĩa các dependency dùng trong ứng dụng và version của nó. Nghĩa là đặt cho nó một cái tên để dễ gọi nó sau này.
+
+```
+object Versions {
+    // Version of dependencies
+
+}
+
+object Deps {
+    // Dependencies and split them follow each group
+    object AndroidX{ }
+    object Compose { }
+    object Accompanist { }
+    object Navigation { }
+    object Test { }
+    object Hilt { }
+}
+```
+
+Sẽ điền thông tin vào các object này. Và các object này sẽ được gọi ở trong `DependencyHandler.kt`
+
+- Versions: định nghĩa version của các dependency. Sau này muốn upgrade thì chỉ cần sửa version của dependency đó ở đây.
+
+- Deps: định nghĩa các dependency cùng với version tương ứng. Ở đây ta còn chia các dependency thành các nhóm tương ứng để dễ gọi.
+
+## `DependencyHandler.kt`
+
+Cài đặt interface **DependencyHandler** trong api `org.gradle.api.artifacts.dsl.DependencyHandler`. DependencyHandler cung cấp các method và mechenism để định nghĩa các Dependency trong Gradle.
+
+- Định nghĩa các phương thức implementation:
+    ![Alt text](./readme_images/DependencyHandler_1.png)
+- Định nghĩa các dependency cụ thể được implementation:
+    ```
+    fun DependencyHandler.baseDependencies() {
+        implementation(platform(Deps.Compose.composeBom))
+        implementation(Deps.Compose.composeActivity)
+        implementation(Deps.Compose.composeUi)
+        implementation(Deps.Compose.composeUiToolingPreview)
+        implementation(Deps.Compose.composeUiUtil)
+        implementation(Deps.Compose.composeFoundation)
+        implementation(Deps.Compose.composeRuntime)
+        implementation(Deps.Compose.composeMaterial3)
+        implementation(Deps.Compose.composeMaterial)
+
+        //navigation
+        implementation(Deps.Navigation.navigationCompose)
+        
+        //hilt navigation
+        implementation(Deps.Hilt.hiltNavigationCompse)
+
+        //accompanist
+        accompanistDependencies()
+    }
+
+    fun DependencyHandler.composeDependencies() {
+        implementation(Deps.AndroidX.appCompat)
+        implementation(Deps.AndroidX.coreKtx)
+        implementation(Deps.AndroidX.lifecycleRunTimeKtx)
+        implementation(Deps.AndroidX.splashScreen)
+        implementation(Deps.Hilt.hiltAndroid)
+        implementation(Deps.Hilt.hiltCompiler)
+    }
+
+    fun DependencyHandler.accompanistDependencies() {
+        implementation(Deps.Accompanist.systemuicontroller)
+        implementation(Deps.Accompanist.navigationMaterial)
+        implementation(Deps.Accompanist.navigationAnimation)
+        implementation(Deps.Accompanist.permission)
+    }
+
+    fun DependencyHandler.testDependencies() {
+        androidTestImplementation(Deps.Test.espressorCore)
+        androidTestImplementation(Deps.Test.junitExtKtx)
+    }
+
+    fun DependencyHandler.moduleDependencies() {
+        DATA
+        CORE
+        COMMON_THEME
+        COMMON_COMPOSABLE
+        FEATURE_HOME
+        FEATURE_AUTHENTICATION
+        FEATURE_MY_PROFILE
+    }
+
+- Định nghĩa các phương thức gọi đến module khác trong project:
+
+    ```
+    val DependencyHandler.DATA
+    get() = implementation(project(mapOf("path" to ":data")))
+
+    val DependencyHandler.CORE
+        get() = implementation(project(mapOf("path" to ":core")))
+
+    val DependencyHandler.COMMON_COMPOSABLE
+        get() = implementation(project(mapOf("path" to ":common:composable")))
+
+    val DependencyHandler.COMMON_THEME
+        get() = implementation(project(mapOf("path" to ":common:theme")))
+
+    val DependencyHandler.FEATURE_HOME
+        get() = implementation(project(mapOf("path" to ":feature:home")))
+
+    val DependencyHandler.FEATURE_POST
+        get() = implementation(project(mapOf("path" to ":feature:post")))
+
+    val DependencyHandler.FEATURE_AUTHENTICATION
+        get() = implementation(project(mapOf("path" to ":feature:authentication")))
+
+    val DependencyHandler.FEATURE_MY_PROFILE
+        get() = implementation(project(mapOf("path" to ":feature:profile")))
+        
+    ```
+
+# PREVIEW
+
+Để xem được preview thì cứ mỗi màn hình / mỗi hàm Composable sau khi code xong thì tạo một hàm @Preview để hiển thị
+
+Ví dụ: Tôi muốn xem màn hình Post trong PostScreen.kt
+
+```
+@Preview
+@Composable
+fun PostScreenPreview() {
+    // Create a preview using the PostScreen composable
+    // For example, you can pass a NavController instance to simulate usage
+    val navController = rememberNavController()
+    PostScreen(navController = navController)
+}
+```
+
+Tôi sẽ tạo một hàm được đánh dấu là @Preview và gọi hàm `PostScreen` mà muốn xem giao diện. Vì PostScreen cần truyền vào một navController nên mình cần tạo một `navController` để truyền vào nó. 
+
+Nói chung thì dùng Preview chỉ đơn giản là gọi hàm với các tham số truyền vào tương ứng. Giống như mình thực sự gọi nó ở trong ứng dụng của mình.
+
+# Màn hình POST (đăng bài):
+
+Layout của màn hình POST:
+
+![Alt text](./readme_images/post_screen_layout.png)
+
+Các component cụ thể:
+
+![Alt text](./readme_images/post_screen_layout_1.png)
+
+## Mô tả màn hình:
+
+**-** Dùng Scaffold để có Topbar, dùng Topbar để hiển thị nút back (Tại vì Topbar nó có hỗ trợ sẵn navIcon dùng để show icon của navigation --> dùng cho tiện)  
+
+**-** Phần content sẽ để trong 1 **column**
+
+**--CONTENT--**
+
+- `Hiển thị khung mô tả nội dung và thumbnail cho bài đăng` : Dùng một **row** có 2 **box** (mỗi **box** cho mỗi khung)
+- `Hiển thị các tag` : Dùng một **row** có 3 **row** nhỏ hơn. Trong mỗi **row** nhỏ hiển thị 1 **text** và 1 **iconButton** - đây là các tag
+- Hiển thị mục chọn quyền riêng tư
+    + `Khung chọn "Ai có thể xem bài đăng"` : Dùng một **row**, trong đó chứa 1 **Text** và 1 **DropdownComponent** (để chọn các lựa chọn)
+    + `Khung chọn "Ai có thể bình luận" `: Dùng một **row**, trong đó chứa 1 **Text** và 1 **DropdownComponent** (để chọn các lựa chọn)

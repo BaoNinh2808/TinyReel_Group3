@@ -4,10 +4,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
-import com.example.core.DestinationRoute.AUTHENTICATION_ROUTE
+import com.example.camera.cameraMediaNavGraph
+import com.example.core.DestinationRoute.CAMERA_ROUTE
 import com.example.core.DestinationRoute.HOME_SCREEN_ROUTE
+import com.example.core.DestinationRoute.MY_PROFILE_ROUTE
+import com.example.core.DestinationRoute.POST_ROUTE
 import com.example.home.homeNavGraph
-import com.tinyreel.authentication.authenticationNavGraph
+import com.example.myprofile.myProfileNavGraph
+import com.example.post.postNavGraph
 
 @Composable
 fun AppNavHost(
@@ -21,14 +25,15 @@ fun AppNavHost(
         modifier = modifier
     ) {
         homeNavGraph(navController)
+        postNavGraph(navController)
 //        commentListingNavGraph(navController)
 //        creatorProfileNavGraph(navController)
 //        inboxNavGraph(navController)
         authenticationNavGraph(navController)
 //        loginEmailPhoneNavGraph(navController)
 //        friendsNavGraph(navController)
-//        myProfileNavGraph(navController)
+        myProfileNavGraph(navController)
 //        settingNavGraph(navController)
-//        cameraMediaNavGraph(navController)
+        cameraMediaNavGraph(navController)
     }
 }

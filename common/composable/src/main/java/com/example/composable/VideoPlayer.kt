@@ -1,6 +1,5 @@
 package com.example.composable
 
-
 import android.graphics.Bitmap
 import android.net.Uri
 import android.view.ViewGroup
@@ -34,9 +33,7 @@ import com.example.theme.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-/**
- * Created by example Khadka on 3/16/2023.
- */
+
 @OptIn(ExperimentalFoundationApi::class)
 @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
 @Composable
@@ -139,7 +136,6 @@ fun VideoPlayer(
     }
 
 }
-
 
 
 

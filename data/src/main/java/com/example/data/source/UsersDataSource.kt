@@ -5,9 +5,6 @@ import com.example.data.model.UserModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-/**
- * Created by example Khadka on 3/18/2023.
- */
 object UsersDataSource {
     val kylieJenner = UserModel(
         userId = 1,
@@ -165,5 +162,4 @@ object UsersDataSource {
     }
 
 }
-
 
