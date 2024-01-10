@@ -23,10 +23,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.UriHandler
+import androidx.lifecycle.SavedStateHandle
 import coil.compose.AsyncImage
 import coil.compose.ImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
+import com.example.data.repository.creatorprofile.CreatorProfileRepository
+import com.example.domain.creatorprofile.GetCreatorProfileUseCase
+import com.example.domain.creatorprofile.GetCreatorPublicVideoUseCase
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,10 +38,33 @@ fun ProfileSettingScreen(
     navController: NavController,
 //    creatorProfileViewModel: CreatorProfileViewModel
 ) {
+    val viewModel = MyProfileViewModel(
+        savedStateHandle = SavedStateHandle(),
+        getCreatorProfileUseCase = GetCreatorProfileUseCase(CreatorProfileRepository()),
+        getCreatorPublicVideoUseCase = GetCreatorPublicVideoUseCase(CreatorProfileRepository())
+    )
+    viewModel.fetchUser(1)
+
+    val entry = remember { mutableStateOf(navController.currentBackStackEntry) }
+
+    DisposableEffect(entry.value) {
+        val callback = NavController.OnDestinationChangedListener { controller, _, _ ->
+            entry.value = controller.currentBackStackEntry
+        }
+
+        navController.addOnDestinationChangedListener(callback)
+
+        onDispose {
+            navController.removeOnDestinationChangedListener(callback)
+        }
+    }
+
+    val arguments = entry.value?.arguments
+    val receivedViewModel: CreatorProfileViewModel? = arguments?.getViewModel("creatorProfileViewModel")
+
     var newName by remember { mutableStateOf("") }
     var newBio by remember { mutableStateOf("") }
     var newAvatarUrl by remember { mutableStateOf("") }
-    var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
     var reloadImage by remember { mutableStateOf(false) }
 
     Scaffold(topBar = {
@@ -70,8 +97,9 @@ fun ProfileSettingScreen(
                     value = newName,
                     onValueChange = { newValue ->
                         newName = newValue
+                        viewModel.updateUserName(newValue)
                     },
-                    placeholder = { Text(text = "New user name...", color = Color.Gray) },
+                    placeholder = { Text(text = "${viewModel.getUserModel()?.uniqueUserName}", color = Color.Gray) },
                 )
             }
 
@@ -91,7 +119,7 @@ fun ProfileSettingScreen(
                     onValueChange = { newValue ->
                         newBio = newValue
                     },
-                    placeholder = { Text(text = "New bio...", color = Color.Gray) },
+                    placeholder = { Text(text = "${viewModel.getUserModel()?.bio}", color = Color.Gray) },
                 )
             }
 

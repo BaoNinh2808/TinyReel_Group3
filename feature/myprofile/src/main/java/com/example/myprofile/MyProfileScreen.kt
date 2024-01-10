@@ -45,9 +45,22 @@ import com.example.data.source.UsersDataSource.kylieJenner
 import com.example.domain.creatorprofile.GetCreatorProfileUseCase
 import com.example.domain.creatorprofile.GetCreatorPublicVideoUseCase
 
+val viewModel = MyProfileViewModel(
+    savedStateHandle = SavedStateHandle(),
+    getCreatorProfileUseCase = GetCreatorProfileUseCase(CreatorProfileRepository()),
+    getCreatorPublicVideoUseCase = GetCreatorPublicVideoUseCase(CreatorProfileRepository())
+)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyProfileScreen(navController: NavController) {
+fun MyProfileScreen(
+    navController: NavController
+) {
+//    val viewModel = MyProfileViewModel(
+//        savedStateHandle = SavedStateHandle(),
+//        getCreatorProfileUseCase = GetCreatorProfileUseCase(CreatorProfileRepository()),
+//        getCreatorPublicVideoUseCase = GetCreatorPublicVideoUseCase(CreatorProfileRepository())
+//    )
+    viewModel.fetchUser(1)
     Scaffold(topBar = {
         TopBar(
             navIcon = null,
@@ -71,6 +84,7 @@ fun MyProfileScreen(navController: NavController) {
 //            }
             LoggedInProfileScreen(
                 navController = navController,
+                viewModel = viewModel
             )
         }
     }
@@ -107,15 +121,16 @@ fun UnAuthorizedInboxScreen(onClickSignup: () -> Unit) {
 fun LoggedInProfileScreen(
     navController: NavController,
 //    viewModel: CreatorProfileViewModel,
-    viewModel: CreatorProfileViewModel = CreatorProfileViewModel(
-        savedStateHandle = SavedStateHandle(),
-        getCreatorProfileUseCase = GetCreatorProfileUseCase(
-            creatorProfileRepository = CreatorProfileRepository(),
-        ),
-        getCreatorPublicVideoUseCase = GetCreatorPublicVideoUseCase(
-            creatorProfileRepository = CreatorProfileRepository(),
-        ),
-    )
+//    viewModel: CreatorProfileViewModel = CreatorProfileViewModel(
+//        savedStateHandle = SavedStateHandle(),
+//        getCreatorProfileUseCase = GetCreatorProfileUseCase(
+//            creatorProfileRepository = CreatorProfileRepository(),
+//        ),
+//        getCreatorPublicVideoUseCase = GetCreatorPublicVideoUseCase(
+//            creatorProfileRepository = CreatorProfileRepository(),
+//        ),
+//    )
+    viewModel: MyProfileViewModel
 ) {
     val viewState by viewModel.viewState.collectAsState()
     val scrollState = rememberScrollState()
@@ -139,7 +154,7 @@ fun LoggedInProfileScreen(
                     initial = null
                 )
 //                ProfileDetails(kylieJenner)
-                ProfileDetails(userViewModelState?.value)
+                ProfileDetails(viewModel.getUserModel())
             }
         }
     }
