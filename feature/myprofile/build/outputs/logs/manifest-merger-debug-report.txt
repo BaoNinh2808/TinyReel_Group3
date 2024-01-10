@@ -1,0 +1,30 @@
+-- Merging decision tree log ---
+manifest
+ADDED from D:\HCMUS-Subjects\TinyReel_Group3\feature\myprofile\src\main\AndroidManifest.xml:2:1-12:12
+INJECTED from D:\HCMUS-Subjects\TinyReel_Group3\feature\myprofile\src\main\AndroidManifest.xml:2:1-12:12
+	package
+		INJECTED from D:\HCMUS-Subjects\TinyReel_Group3\feature\myprofile\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from D:\HCMUS-Subjects\TinyReel_Group3\feature\myprofile\src\main\AndroidManifest.xml:2:11-69
+application
+ADDED from D:\HCMUS-Subjects\TinyReel_Group3\feature\myprofile\src\main\AndroidManifest.xml:4:5-10:49
+	android:supportsRtl
+		ADDED from D:\HCMUS-Subjects\TinyReel_Group3\feature\myprofile\src\main\AndroidManifest.xml:9:9-35
+	android:label
+		ADDED from D:\HCMUS-Subjects\TinyReel_Group3\feature\myprofile\src\main\AndroidManifest.xml:7:9-41
+	android:roundIcon
+		ADDED from D:\HCMUS-Subjects\TinyReel_Group3\feature\myprofile\src\main\AndroidManifest.xml:8:9-54
+	android:icon
+		ADDED from D:\HCMUS-Subjects\TinyReel_Group3\feature\myprofile\src\main\AndroidManifest.xml:6:9-43
+	android:allowBackup
+		ADDED from D:\HCMUS-Subjects\TinyReel_Group3\feature\myprofile\src\main\AndroidManifest.xml:5:9-35
+	android:theme
+		ADDED from D:\HCMUS-Subjects\TinyReel_Group3\feature\myprofile\src\main\AndroidManifest.xml:10:9-46
+uses-sdk
+INJECTED from D:\HCMUS-Subjects\TinyReel_Group3\feature\myprofile\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from D:\HCMUS-Subjects\TinyReel_Group3\feature\myprofile\src\main\AndroidManifest.xml
+INJECTED from D:\HCMUS-Subjects\TinyReel_Group3\feature\myprofile\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from D:\HCMUS-Subjects\TinyReel_Group3\feature\myprofile\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from D:\HCMUS-Subjects\TinyReel_Group3\feature\myprofile\src\main\AndroidManifest.xml

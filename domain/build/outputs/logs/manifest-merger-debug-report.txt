@@ -1,16 +1,16 @@
 -- Merging decision tree log ---
 manifest
-ADDED from D:\NT\Junior\Introduction To Software Engineering\Project\TinyReel_Group3\domain\src\main\AndroidManifest.xml:2:1-4:12
-INJECTED from D:\NT\Junior\Introduction To Software Engineering\Project\TinyReel_Group3\domain\src\main\AndroidManifest.xml:2:1-4:12
+ADDED from D:\HCMUS-Subjects\TinyReel_Group3\domain\src\main\AndroidManifest.xml:2:1-4:12
+INJECTED from D:\HCMUS-Subjects\TinyReel_Group3\domain\src\main\AndroidManifest.xml:2:1-4:12
 	package
-		INJECTED from D:\NT\Junior\Introduction To Software Engineering\Project\TinyReel_Group3\domain\src\main\AndroidManifest.xml
+		INJECTED from D:\HCMUS-Subjects\TinyReel_Group3\domain\src\main\AndroidManifest.xml
 	xmlns:android
-		ADDED from D:\NT\Junior\Introduction To Software Engineering\Project\TinyReel_Group3\domain\src\main\AndroidManifest.xml:2:11-69
+		ADDED from D:\HCMUS-Subjects\TinyReel_Group3\domain\src\main\AndroidManifest.xml:2:11-69
 uses-sdk
-INJECTED from D:\NT\Junior\Introduction To Software Engineering\Project\TinyReel_Group3\domain\src\main\AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from D:\NT\Junior\Introduction To Software Engineering\Project\TinyReel_Group3\domain\src\main\AndroidManifest.xml
-INJECTED from D:\NT\Junior\Introduction To Software Engineering\Project\TinyReel_Group3\domain\src\main\AndroidManifest.xml
+INJECTED from D:\HCMUS-Subjects\TinyReel_Group3\domain\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from D:\HCMUS-Subjects\TinyReel_Group3\domain\src\main\AndroidManifest.xml
+INJECTED from D:\HCMUS-Subjects\TinyReel_Group3\domain\src\main\AndroidManifest.xml
 	android:targetSdkVersion
-		INJECTED from D:\NT\Junior\Introduction To Software Engineering\Project\TinyReel_Group3\domain\src\main\AndroidManifest.xml
+		INJECTED from D:\HCMUS-Subjects\TinyReel_Group3\domain\src\main\AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from D:\NT\Junior\Introduction To Software Engineering\Project\TinyReel_Group3\domain\src\main\AndroidManifest.xml
+		INJECTED from D:\HCMUS-Subjects\TinyReel_Group3\domain\src\main\AndroidManifest.xml
