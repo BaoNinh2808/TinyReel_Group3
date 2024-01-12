@@ -7,7 +7,9 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -24,6 +26,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.core.extension.Space
@@ -31,13 +34,17 @@ import com.example.core.utils.IntentUtils.share
 import com.example.data.model.VideoModel
 import com.example.theme.*
 import com.example.theme.R
+import com.google.firebase.FirebaseApp
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
 @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
 @Composable
-fun TikTokVerticalVideoPager(
+fun TinyReelVerticalVideoPager(
     modifier: Modifier = Modifier,
     videos: List<VideoModel>,
     initialPage: Int? = 0,
@@ -53,6 +60,11 @@ fun TikTokVerticalVideoPager(
     val pagerState = rememberPagerState(initialPage = initialPage ?: 0, pageCount = {videos.size})
     val coroutineScope = rememberCoroutineScope()
     val localDensity = LocalDensity.current
+
+    lateinit var database: DatabaseReference
+    database = Firebase.database.reference
+    database.child("TinyReel").child("forYou").child("videos").setValue(videos)
+
 
     val fling = PagerDefaults.flingBehavior(
         state = pagerState, lowVelocityAnimationSpec = tween(
@@ -176,8 +188,6 @@ fun TikTokVerticalVideoPager(
     }
 
 }
-
-
 @Composable
 fun SideItems(
     modifier: Modifier,
@@ -191,31 +201,7 @@ fun SideItems(
 
     val context = LocalContext.current
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-        AsyncImage(
-            model = item.authorDetails.profilePic,
-            contentDescription = null,
-            modifier = Modifier
-                .size(50.dp)
-                .border(
-                    BorderStroke(width = 1.dp, color = White), shape = CircleShape
-                )
-                .clip(shape = CircleShape)
-                .clickable {
-                    onClickUser.invoke(item.authorDetails.userId)
-                },
-            contentScale = ContentScale.Crop
-        )
-        Image(
-            painter = painterResource(id = R.drawable.ic_plus),
-            contentDescription = null,
-            modifier = Modifier
-                .offset(y = (-10).dp)
-                .size(20.dp)
-                .clip(CircleShape)
-                .background(color = MaterialTheme.colorScheme.primary)
-                .padding(5.5.dp),
-            colorFilter = ColorFilter.tint(Color.White)
-        )
+
 
         12.dp.Space()
 
@@ -236,7 +222,7 @@ fun SideItems(
             })
 
 
-        Icon(painter = painterResource(id = R.drawable.ic_comment),
+        Icon(painter = painterResource(id = R.drawable.message_icon__3_),
             contentDescription = null,
             tint = Color.Unspecified,
             modifier = Modifier
@@ -253,7 +239,7 @@ fun SideItems(
 
 
         Icon(
-            painter = painterResource(id = R.drawable.ic_bookmark),
+            painter = painterResource(id = R.drawable.ic_tiny_saved),
             contentDescription = null,
             tint = Color.Unspecified,
             modifier = Modifier.size(33.dp)
@@ -265,7 +251,7 @@ fun SideItems(
         14.dp.Space()
 
         Icon(
-            painter = painterResource(id = R.drawable.ic_share),
+            painter = painterResource(id = R.drawable.ic_tiny_share),
             contentDescription = null,
             tint = Color.Unspecified,
             modifier = Modifier
@@ -273,7 +259,7 @@ fun SideItems(
                 .clickable {
                     onClickShare?.let { onClickShare.invoke() } ?: run {
                         context.share(
-                            text = "https://github.com/puskal-khadka"
+                            text = "https://github.com/example-khadka"
                         )
                     }
                 }
@@ -303,21 +289,15 @@ fun LikeIconButton(
             32.dp.at(400).with(FastOutLinearInEasing)
         })
 
-    val interactionSource = remember { MutableInteractionSource() }
-
     Box(
         modifier = Modifier
             .size(maxSize)
-            .clickable(
-                interactionSource = interactionSource,
-                indication = null
-            ) {
+            .clickable(interactionSource = remember {MutableInteractionSource()}, indication = null) {
                 onLikedClicked(!isLiked)
-            },
-        contentAlignment = Alignment.Center
+            }, contentAlignment = Alignment.Center
     ) {
         Icon(
-            painter = painterResource(id = R.drawable.ic_heart),
+            painter = painterResource(id = R.drawable.ic_tiny_like),
             contentDescription = null,
             tint = if (isLiked) MaterialTheme.colorScheme.primary else Color.White,
             modifier = Modifier.size(iconSize)
@@ -328,6 +308,214 @@ fun LikeIconButton(
     16.dp.Space()
 }
 
+//@Composable
+//fun SideItems(
+//    modifier: Modifier,
+//    item: VideoModel,
+//    doubleTabState: Triple<Offset, Boolean, Float>,
+//    onclickComment: (videoId: String) -> Unit,
+//    onClickUser: (userId: Long) -> Unit,
+//    onClickShare: (() -> Unit)? = null,
+//    onClickFavourite: (isFav: Boolean) -> Unit
+//) {
+//
+//    val context = LocalContext.current
+//    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+//        AsyncImage(
+//            model = item.authorDetails.profilePic,
+//            contentDescription = null,
+//            modifier = Modifier
+//                .size(50.dp)
+//                .border(
+//                    BorderStroke(width = 1.dp, color = White), shape = CircleShape
+//                )
+//                .clip(shape = CircleShape)
+//                .clickable {
+//                    onClickUser.invoke(item.authorDetails.userId)
+//                },
+//            contentScale = ContentScale.Crop
+//        )
+//        Image(
+//            painter = painterResource(id = R.drawable.ic_plus),
+//            contentDescription = null,
+//            modifier = Modifier
+//                .offset(y = (-10).dp)
+//                .size(20.dp)
+//                .clip(CircleShape)
+//                .background(color = MaterialTheme.colorScheme.primary)
+//                .padding(5.5.dp),
+//            colorFilter = ColorFilter.tint(Color.White)
+//        )
+//
+//        12.dp.Space()
+//
+//        var isLiked by remember {
+//            mutableStateOf(item.currentViewerInteraction.isLikedByYou)
+//        }
+//
+//        LaunchedEffect(key1 = doubleTabState) {
+//            if (doubleTabState.first != Offset.Unspecified && doubleTabState.second) {
+//                isLiked = doubleTabState.second
+//            }
+//        }
+//        LikeIconButton(isLiked = isLiked,
+//            likeCount = item.videoStats.formattedLikeCount,
+//            onLikedClicked = {
+//                isLiked = it
+//                item.currentViewerInteraction.isLikedByYou = it
+//            })
+//
+//
+//        Icon(painter = painterResource(id = R.drawable.ic_comment),
+//            contentDescription = null,
+//            tint = Color.Unspecified,
+//            modifier = Modifier
+//                .size(33.dp)
+//                .clickable {
+//                    onclickComment(item.videoId)
+//                })
+//        Text(
+//            text = item.videoStats.formattedCommentCount,
+//            style = MaterialTheme.typography.labelMedium
+//        )
+//        16.dp.Space()
+//
+//
+//
+//        Icon(
+//            painter = painterResource(id = R.drawable.ic_bookmark),
+//            contentDescription = null,
+//            tint = Color.Unspecified,
+//            modifier = Modifier.size(33.dp)
+//        )
+//        Text(
+//            text = item.videoStats.formattedFavouriteCount,
+//            style = MaterialTheme.typography.labelMedium
+//        )
+//        14.dp.Space()
+//
+//        Icon(
+//            painter = painterResource(id = R.drawable.ic_share),
+//            contentDescription = null,
+//            tint = Color.Unspecified,
+//            modifier = Modifier
+//                .size(32.dp)
+//                .clickable {
+//                    onClickShare?.let { onClickShare.invoke() } ?: run {
+//                        context.share(
+//                            text = "https://github.com/puskal-khadka"
+//                        )
+//                    }
+//                }
+//        )
+//        Text(
+//            text = item.videoStats.formattedShareCount, style = MaterialTheme.typography.labelMedium
+//        )
+//        20.dp.Space()
+//
+//        RotatingAudioView(item.authorDetails.profilePic)
+//
+//    }
+//}
+//
+//@Composable
+//fun LikeIconButton(
+//    isLiked: Boolean, likeCount: String, onLikedClicked: (Boolean) -> Unit
+//) {
+//
+//    val maxSize = 38.dp
+//    val iconSize by animateDpAsState(targetValue = if (isLiked) 33.dp else 32.dp,
+//        animationSpec = keyframes {
+//            durationMillis = 400
+//            24.dp.at(50)
+//            maxSize.at(190)
+//            26.dp.at(330)
+//            32.dp.at(400).with(FastOutLinearInEasing)
+//        })
+//
+//    val interactionSource = remember { MutableInteractionSource() }
+//
+//    Box(
+//        modifier = Modifier
+//            .size(maxSize)
+//            .clickable(
+//                interactionSource = interactionSource,
+//                indication = null
+//            ) {
+//                onLikedClicked(!isLiked)
+//            },
+//        contentAlignment = Alignment.Center
+//    ) {
+//        Icon(
+//            painter = painterResource(id = R.drawable.ic_heart),
+//            contentDescription = null,
+//            tint = if (isLiked) MaterialTheme.colorScheme.primary else Color.White,
+//            modifier = Modifier.size(iconSize)
+//        )
+//    }
+//
+//    Text(text = likeCount, style = MaterialTheme.typography.labelMedium)
+//    16.dp.Space()
+//}
+
+//@OptIn(ExperimentalFoundationApi::class)
+//@Composable
+//fun FooterUi(
+//    modifier: Modifier,
+//    item: VideoModel,
+//    showUploadDate: Boolean,
+//    onClickAudio: (VideoModel) -> Unit,
+//    onClickUser: (userId: Long) -> Unit,
+//) {
+//    Column(modifier = modifier, verticalArrangement = Arrangement.Bottom) {
+//        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable {
+//            onClickUser(item.authorDetails.userId)
+//        }) {
+//            Text(
+//                text = item.authorDetails.fullName, style = MaterialTheme.typography.bodyMedium
+//            )
+//            if (showUploadDate) {
+//                Text(
+//                    text = " . ${item.createdAt} ago",
+//                    style = MaterialTheme.typography.labelLarge,
+//                    color = Color.White.copy(alpha = 0.6f)
+//                )
+//            }
+//        }
+//        5.dp.Space()
+//        Text(
+//            text = item.description,
+//            style = MaterialTheme.typography.bodySmall,
+//            modifier = Modifier.fillMaxWidth(0.85f)
+//        )
+//        10.dp.Space()
+//        val audioInfo: String = item.audioModel?.run {
+//            "Original sound - ${audioAuthor.uniqueUserName} - ${audioAuthor.fullName}"
+//        }
+//            ?: item.run { "Original sound - ${item.authorDetails.uniqueUserName} - ${item.authorDetails.fullName}" }
+//        Row(
+//            verticalAlignment = Alignment.CenterVertically,
+//            horizontalArrangement = Arrangement.spacedBy(8.dp),
+//            modifier = Modifier.clickable {
+//                onClickAudio(item)
+//            }
+//        ) {
+//            Icon(
+//                painter = painterResource(id = R.drawable.ic_music_note),
+//                contentDescription = null,
+//                tint = Color.Unspecified,
+//                modifier = Modifier.size(12.dp)
+//            )
+//            Text(
+//                text = audioInfo,
+//                style = MaterialTheme.typography.bodySmall,
+//                modifier = Modifier
+//                    .fillMaxWidth(0.6f)
+//                    .basicMarquee()
+//            )
+//        }
+//    }
+//}
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun FooterUi(
@@ -338,11 +526,48 @@ fun FooterUi(
     onClickUser: (userId: Long) -> Unit,
 ) {
     Column(modifier = modifier, verticalArrangement = Arrangement.Bottom) {
+        Row {
+            AsyncImage(
+                model = item.authorDetails.profilePic,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(50.dp)
+                    .border(
+                        BorderStroke(width = 1.dp, color = White), shape = CircleShape
+                    )
+                    .clip(shape = CircleShape)
+                    .clickable {
+                        onClickUser.invoke(item.authorDetails.userId)
+                    },
+                contentScale = ContentScale.Crop
+            )
+            12.dp.Space()
+            //space between profile pic and follow button 4dp
+            4.dp.Space()
+            androidx.compose.material3.Button(
+                onClick = {
+
+
+                },
+                modifier = Modifier,
+                shape = RoundedCornerShape(2.dp),
+                colors = ButtonDefaults.buttonColors(
+                    //backgroundColor = Red,
+                    contentColor = Color.White,
+
+                    )
+            ) {
+                Text(text = stringResource(id = R.string.follow))
+            }
+        }
+        5.dp.Space()
+
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable {
             onClickUser(item.authorDetails.userId)
         }) {
             Text(
-                text = item.authorDetails.fullName, style = MaterialTheme.typography.bodyMedium
+                text = item.authorDetails.fullName,
+                style = MaterialTheme.typography.bodyMedium
             )
             if (showUploadDate) {
                 Text(
@@ -363,12 +588,16 @@ fun FooterUi(
             "Original sound - ${audioAuthor.uniqueUserName} - ${audioAuthor.fullName}"
         }
             ?: item.run { "Original sound - ${item.authorDetails.uniqueUserName} - ${item.authorDetails.fullName}" }
+
+
+        //button follow
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier.clickable {
                 onClickAudio(item)
             }
+
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_music_note),

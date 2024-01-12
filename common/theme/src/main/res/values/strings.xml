@@ -1,15 +1,17 @@
 <resources>
-    <string name="app_name">TikTok Compose</string>
+    <string name="app_name">TinyReel</string>
 
-    <string name="home">Home</string>
+    <string name="home">Trang chủ</string>
     <string name="friends">Friends</string>
+    <string name="noti">Thông báo</string>
     <string name="inbox">Inbox</string>
-    <string name="profile">Profile</string>
+    <string name="profile">Cá nhân</string>
+    <string name="find">Tìm kiếm</string>
 
-    <string name="following">Following</string>
-    <string name="for_you">For You</string>
-    <string name="see_more">see more</string>
-    <string name="hide">hide</string>
+    <string name="following">Đang theo dõi</string>
+    <string name="for_you">Dành cho bạn</string>
+    <string name="see_more">xem thêm</string>
+    <string name="hide">ẩn</string>
 
     <string name="messages_and_notification_will">Messages and notifications will appear here </string>
     <string name="sign_up">Sign up</string>
@@ -17,12 +19,12 @@
     <!--following tab-->
     <string name="trending_creators">Trending creators</string>
     <string name="follow_and_account_to_see">Follow an account to see their latest videos here.</string>
-    <string name="follow">Follow</string>
-    <string name="add_comment">Add comment…</string>
+    <string name="follow">Theo dõi ngay</string>
+    <string name="add_comment">Add comment</string>
 
-    <string name="followers">Followers</string>
-    <string name="likes">Likes</string>
-    <string name="reply">Reply</string>
+    <string name="followers">Người theo dõi</string>
+    <string name="likes">Lượt thích</string>
+    <string name="reply">Trả lời</string>
 
     <!-- profile -->
     <string name="this_users_liked_videos">This user\'s liked videos are private</string>
@@ -38,16 +40,11 @@
     <string name="message_and_notifications_will_appear_here">Message and notifications will appear here</string>
 
     <!-- authenticaion -->
-    <string name="login">Đăng nhập</string>
-    <string name="login_welcome">Chào mừng bạn đến với TinyReel</string>
+    <string name="login_or_sign_up">Log in or sign up</string>
+    <string name="login_in_to_your_existing_account">Login in to your existing account or sign up to create a new account.</string>
     <string name="use_phone_email_username">Use phone / email / username</string>
-    <string name="continue_with_facebook">Tiếp tục với Facebook</string>
-    <string name="continue_with_google">Tiếp tục với Google</string>
-    <string name="user_name">Tên đăng nhập</string>
-    <string name="password">Mật khẩu</string>
-    <string name="forget_password">Quên mật khẩu?</string>
-    <string name="create_new_account">Tạo tài khoản mới</string>
-    <string name="Guess_account">Tài khoản khách</string>
+    <string name="continue_with_facebook">Continue with Facebook</string>
+    <string name="continue_with_google">Continue with Google</string>
     <string name="continue_with_twitter">Continue with Twitter</string>
     <string name="terms_of_service">Terms of service</string>
     <string name="privacy_policy">Privacy Policy</string>
@@ -106,6 +103,5 @@
     <string name="timer">Timer</string>
     <string name="flash">Flash</string>
     <string name="upload_photos">Upload photos</string>
-
     <string name="create_post">Create</string>
 </resources>
