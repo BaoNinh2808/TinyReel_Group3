@@ -3,7 +3,6 @@ import com.android.build.api.dsl.ComposeOptions
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("com.google.gms.google-services")
     kotlin("kapt")
 }
 
@@ -50,9 +49,6 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.navigation:navigation-runtime-ktx:2.7.6")
-    implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
-    implementation("com.google.firebase:firebase-analytics")
-//    implementation("com.google.firebase:firebase-core:16.0.1")
     implementation("com.google.firebase:firebase-auth:16.0.2")
     implementation("com.google.accompanist:accompanist-navigation-material:0.33.2-alpha")
     implementation(project(":core"))

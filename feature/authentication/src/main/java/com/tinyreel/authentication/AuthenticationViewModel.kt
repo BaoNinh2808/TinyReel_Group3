@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginWithEmailPhoneViewModel @Inject constructor(
     private val repository: AuthRepository
-) : BaseViewModel<ViewState, LoginEmailPhoneEvent>() {
+) : ViewModel() {
 //    private val _settledPage = MutableStateFlow<Int?>(null)
 //    val settledPage = _settledPage.asStateFlow()
 
@@ -27,12 +27,12 @@ class LoginWithEmailPhoneViewModel @Inject constructor(
 
 //    private val _dialCode = MutableStateFlow<Pair<String, String?>>(Pair("Np +977", null))
 //    val dialCode = _dialCode.asStateFlow()
-
-    private val _email = MutableStateFlow<String>("")
-    val email = _email.asStateFlow()
-
-    private val _password = MutableStateFlow<String>("")
-    val password = _password.asStateFlow()
+//
+//    private val _email = MutableStateFlow<String>("")
+//    val email = _email.asStateFlow()
+//
+//    private val _password = MutableStateFlow<String>("")
+//    val password = _password.asStateFlow()
 
     private val _loginFlow = MutableStateFlow<Resource<FirebaseUser>?>(null)
     val loginFlow: StateFlow<Resource<FirebaseUser>?> = _loginFlow
@@ -63,21 +63,21 @@ class LoginWithEmailPhoneViewModel @Inject constructor(
     fun logout(){
         repository.logout()
         _loginFlow.value = null
-        // _signupFlow.value = null
+        _signupFlow.value = null
     }
 
-    override fun onTriggerEvent(event: LoginEmailPhoneEvent) {
-         when (event) {
-            // is LoginEmailPhoneEvent.EventPageChange -> _settledPage.value = event.settledPage
-             is LoginEmailPhoneEvent.OnChangeEmailEntry -> _email.value = event.newValue
-
-             is LoginEmailPhoneEvent.OnChangePasswordEntry -> _password.value = event.newValue
-
-//            is LoginEmailPhoneEvent.OnChangePhoneNumber -> _phoneNumber.value =
-//                _phoneNumber.value.copy(first = event.newValue)
-
-         }
-    }
+//    override fun onTriggerEvent(event: LoginEmailPhoneEvent) {
+//         when (event) {
+//            // is LoginEmailPhoneEvent.EventPageChange -> _settledPage.value = event.settledPage
+//             is LoginEmailPhoneEvent.OnChangeEmailEntry -> _email.value = event.newValue
+//
+//             is LoginEmailPhoneEvent.OnChangePasswordEntry -> _password.value = event.newValue
+//
+////            is LoginEmailPhoneEvent.OnChangePhoneNumber -> _phoneNumber.value =
+////                _phoneNumber.value.copy(first = event.newValue)
+//
+//         }
+//    }
 }
 
 

@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    // id("com.google.gms.google-services")
+    id("com.google.gms.google-services")
     id("com.google.dagger.hilt.android")
     kotlin("kapt")
 }
@@ -62,8 +62,9 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.7.0")
     implementation(platform("androidx.compose:compose-bom:2023.08.00"))
     implementation("androidx.compose.ui:ui")
-    // implementation(platform("com.google.firebase:firebase-bom:32.7.0"))
-    // implementation("com.google.firebase:firebase-analytics")
+    implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    // implementation("com.google.firebase:firebase-core:16.0.1")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")

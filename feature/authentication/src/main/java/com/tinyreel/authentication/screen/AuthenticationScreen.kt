@@ -458,6 +458,28 @@ import com.tinyreel.authentication.data.Resource
 ////    }
 //}
 
+
+@Composable
+internal fun AuthenticationButton(modifier: Modifier, onClickButton: (LoginOption) -> Unit) {
+    Row(
+        modifier = modifier,
+    ) {
+        LoginOption.values().asList().forEach {
+            CustomIconButton(
+                buttonText = stringResource(id = it.title),
+                icon = it.icon,
+                style = TextStyle(fontSize = 12.sp),
+                modifier = Modifier.weight(1f),
+                containerColor = it.containerColor,
+                contentColor = it.contentColor,
+            ) {
+                onClickButton(it)
+            }
+            Spacer(modifier = Modifier.width(8.dp)) // Khoảng cách giữa các nút
+        }
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(viewModel:LoginWithEmailPhoneViewModel?, navController: NavController) {
@@ -474,7 +496,7 @@ fun LoginScreen(viewModel:LoginWithEmailPhoneViewModel?, navController: NavContr
         modifier = Modifier.fillMaxSize()
     ) {
 
-        val (refBackground, refEmail, refPassword, refButtonLogin, refTextSignup, refLoader) = createRefs()
+        val (refTitle, refDescribe, refBackground, refLoginOftion, refEmail, refPassword, refButtonLogin, refTextSignup, refLoader) = createRefs()
         val spacing = MaterialTheme.spacing
 
         val imagePainter = painterResource(id = R.drawable.img_background)
@@ -491,6 +513,48 @@ fun LoginScreen(viewModel:LoginWithEmailPhoneViewModel?, navController: NavContr
                 .fillMaxSize(1f)
         )
 
+        Text(
+            modifier = Modifier
+                .constrainAs(refTitle) {
+                    top.linkTo(parent.top, spacing.extraLarge)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    width = Dimension.fillToConstraints
+                },
+            text = stringResource(id = R.string.login),
+            style = TextStyle(
+                color = Color.White,
+                fontFamily = fontFamily,
+                fontSize = 36.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center
+            )
+        )
+
+        Text(
+            modifier = Modifier
+                .constrainAs(refDescribe) {
+                    top.linkTo(refTitle.bottom, spacing.medium)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    width = Dimension.fillToConstraints
+                },
+            text = stringResource(id = R.string.login_welcome),
+            color = SubTextColor,
+            textAlign = TextAlign.Center,
+            style = TextStyle(
+                fontWeight = FontWeight.Bold,
+            )
+        )
+
+        AuthenticationButton(
+            modifier = Modifier
+                .constrainAs(refLoginOftion) {
+                    top.linkTo(refDescribe.bottom, spacing.medium)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    width = Dimension.fillToConstraints
+                }){}
 
         TextField(
             value = email,
@@ -501,7 +565,7 @@ fun LoginScreen(viewModel:LoginWithEmailPhoneViewModel?, navController: NavContr
                 Text(text = stringResource(id = R.string.user_name))
             },
             modifier = Modifier.constrainAs(refEmail) {
-                top.linkTo(parent.top, spacing.extraLarge)
+                top.linkTo(refLoginOftion.bottom, spacing.extraLarge)
                 start.linkTo(parent.start, spacing.large)
                 end.linkTo(parent.end, spacing.large)
                 width = Dimension.fillToConstraints
@@ -595,7 +659,6 @@ fun LoginScreen(viewModel:LoginWithEmailPhoneViewModel?, navController: NavContr
 @Preview(showBackground = true)
 @Composable
 fun AuthenticationScreenPreview() {
-
     val navController = rememberNavController()
     LoginScreen(null, navController = navController)
 }

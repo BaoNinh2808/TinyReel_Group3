@@ -26,6 +26,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.constraintlayout.compose.Dimension
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.core.DestinationRoute
+import com.example.core.DestinationRoute.AUTHENTICATION_ROUTE
+import com.example.core.DestinationRoute.SIGNUP_ROUTE
 import com.example.theme.R
 import com.example.theme.spacing
 import com.tinyreel.authentication.LoginEmailPhoneEvent
@@ -77,7 +80,7 @@ fun SignupScreen(viewModel: LoginWithEmailPhoneViewModel?, navController: NavCon
         TextField(
             value = name,
             onValueChange = {
-                viewModel?.onTriggerEvent(LoginEmailPhoneEvent.OnChangeEmailEntry(it))
+                name = it
             },
             label = {
                 Text(text = stringResource(id = R.string.user_name))
@@ -164,9 +167,9 @@ fun SignupScreen(viewModel: LoginWithEmailPhoneViewModel?, navController: NavCon
                     end.linkTo(parent.end, spacing.extraLarge)
                 }
                 .clickable {
-//                    navController.navigate(ROUTE_LOGIN) {
-//                        popUpTo(ROUTE_SIGNUP) { inclusive = true }
-//                    }
+                    navController.navigate(AUTHENTICATION_ROUTE) {
+                        popUpTo(SIGNUP_ROUTE) { inclusive = true }
+                    }
                 },
             text = stringResource(id = R.string.Already_has_account),
             style = MaterialTheme.typography.bodyLarge,
