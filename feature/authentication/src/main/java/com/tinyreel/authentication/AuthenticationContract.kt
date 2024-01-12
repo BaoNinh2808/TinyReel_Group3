@@ -49,6 +49,8 @@ sealed class LoginEmailPhoneEvent {
      data class OnChangeEmailEntry(val newValue: String) : LoginEmailPhoneEvent()
 
      data class OnChangePasswordEntry(val newValue: String) : LoginEmailPhoneEvent()
+     data class OnChangeConfirmPasswordEntry(val newValue: String) : LoginEmailPhoneEvent()
+     data class OnChangeNameEntry(val newValue: String) : LoginEmailPhoneEvent()
 }
 
 

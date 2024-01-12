@@ -482,13 +482,13 @@ internal fun AuthenticationButton(modifier: Modifier, onClickButton: (LoginOptio
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen(viewModel:LoginWithEmailPhoneViewModel?, navController: NavController) {
+fun LoginScreen(viewModel:LoginWithEmailPhoneViewModel, navController: NavController) {
 
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+//    var email by remember { mutableStateOf("") }
+//    var password by remember { mutableStateOf("") }
 
-//    val email by viewModel.email.collectAsState()
-//    val password by viewModel.password.collectAsState()
+    val email by viewModel.email.collectAsState()
+    val password by viewModel.password.collectAsState()
 
     val loginFlow = viewModel?.loginFlow?.collectAsState()
 
@@ -496,7 +496,7 @@ fun LoginScreen(viewModel:LoginWithEmailPhoneViewModel?, navController: NavContr
         modifier = Modifier.fillMaxSize()
     ) {
 
-        val (refTitle, refDescribe, refBackground, refLoginOftion, refEmail, refPassword, refButtonLogin, refTextSignup, refLoader) = createRefs()
+        val (refTitle, refDescribe, refBackground, refLoginOftion, refEmail, refPassword, refButtonLogin, refTextSignup, refGuess, refLoader) = createRefs()
         val spacing = MaterialTheme.spacing
 
         val imagePainter = painterResource(id = R.drawable.img_background)
@@ -559,7 +559,7 @@ fun LoginScreen(viewModel:LoginWithEmailPhoneViewModel?, navController: NavContr
         TextField(
             value = email,
             onValueChange = {
-                email = it
+                viewModel.onTriggerEvent(LoginEmailPhoneEvent.OnChangeEmailEntry(it))
             },
             label = {
                 Text(text = stringResource(id = R.string.user_name))
@@ -581,7 +581,7 @@ fun LoginScreen(viewModel:LoginWithEmailPhoneViewModel?, navController: NavContr
         TextField(
             value = password,
             onValueChange = {
-                password = it
+                viewModel.onTriggerEvent(LoginEmailPhoneEvent.OnChangePasswordEntry(it))
             },
             label = {
                 Text(text = stringResource(id = R.string.password))
@@ -632,6 +632,23 @@ fun LoginScreen(viewModel:LoginWithEmailPhoneViewModel?, navController: NavContr
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurface
         )
+        Text(
+            modifier = Modifier
+                .constrainAs(refGuess) {
+                    top.linkTo(refTextSignup.bottom, spacing.medium)
+                    start.linkTo(parent.start, spacing.extraLarge)
+                    end.linkTo(parent.end, spacing.extraLarge)
+                }
+                .clickable {
+                    navController.navigate(AUTHENTICATION_ROUTE) {
+                        popUpTo(SIGNUP_ROUTE) { inclusive = true }
+                    }
+                },
+            text = stringResource(id = R.string.Already_has_account),
+            style = MaterialTheme.typography.bodyLarge,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onSurface
+        )
 
         loginFlow?.value?.let {
             when(it){
@@ -656,9 +673,9 @@ fun LoginScreen(viewModel:LoginWithEmailPhoneViewModel?, navController: NavContr
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun AuthenticationScreenPreview() {
-    val navController = rememberNavController()
-    LoginScreen(null, navController = navController)
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun AuthenticationScreenPreview() {
+//    val navController = rememberNavController()
+//    LoginScreen(null, navController = navController)
+//}
