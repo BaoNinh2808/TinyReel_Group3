@@ -69,6 +69,11 @@ fun TinyReelVerticalVideoPager(
 //    databaseReference.child("TinyReel").child("forYou").child("videos").setValue(videos)
 
 
+    lateinit var database: DatabaseReference
+    database = Firebase.database.reference
+    database.child("TinyReel").child("forYou").child("videos").setValue(videos)
+
+
     val fling = PagerDefaults.flingBehavior(
         state = pagerState, lowVelocityAnimationSpec = tween(
             easing = LinearEasing, durationMillis = 300
