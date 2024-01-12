@@ -39,13 +39,16 @@ import com.example.core.DestinationRoute.MY_PROFILE_ROUTE
 import com.example.theme.TinyReelTheme
 import com.example.tinyreel.component.BottomBar
 import com.example.tinyreel.navigation.AppNavHost
+import com.tinyreel.authentication.LoginWithEmailPhoneViewModel
 
 @OptIn(
     ExperimentalMaterial3Api::class, ExperimentalMaterialNavigationApi::class,
     ExperimentalAnimationApi::class
 )
 @Composable
-fun RootScreen() {
+fun RootScreen(
+    loginViewModel: LoginWithEmailPhoneViewModel,
+) {
     val bottomSheetNavigator = rememberBottomSheetNavigator()
     val navController = rememberNavController(bottomSheetNavigator)
     val currentBackStackEntryAsState by navController.currentBackStackEntryAsState()
@@ -88,7 +91,7 @@ fun RootScreen() {
                         .fillMaxSize()
                         .padding(it)
                 ) {
-                    AppNavHost(navController = navController)
+                    AppNavHost(navController = navController, loginViewModel = loginViewModel)
                 }
             }
         }

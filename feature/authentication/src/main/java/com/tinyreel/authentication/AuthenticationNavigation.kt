@@ -6,7 +6,6 @@ import androidx.navigation.compose.composable
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.example.core.DestinationRoute.AUTHENTICATION_ROUTE
 import com.example.core.DestinationRoute.SIGNUP_ROUTE
-//import com.tinyreel.authentication.screen.AuthenticationScreen
 import com.tinyreel.authentication.screen.LoginScreen
 import com.tinyreel.authentication.screen.SignupScreen
 
