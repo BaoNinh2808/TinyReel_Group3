@@ -4,7 +4,8 @@ import com.example.core.extension.formattedCount
 
 data class UserModel(
     val userId: Long,
-    val uniqueUserName: String,
+//    val uniqueUserName: String,
+    var uniqueUserName: String,
     val fullName: String,
     val following: Long,
     val followers: Long,
