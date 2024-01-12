@@ -9,6 +9,7 @@ import com.example.creatorprofile.screen.creatorprofile.CreatorProfileEvent
 import com.example.creatorprofile.screen.creatorprofile.ViewState
 import com.example.data.model.UserModel
 import com.example.data.model.VideoModel
+import com.example.data.source.UsersDataSource
 import com.example.domain.creatorprofile.GetCreatorProfileUseCase
 import com.example.domain.creatorprofile.GetCreatorPublicVideoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -56,8 +57,10 @@ class MyProfileViewModel
 
     fun updateUserName(newValue: String) {
         viewState.value?.creatorProfile?.let {userModel ->
-            val updatedUserModel = userModel.copy(uniqueUserName = newValue)
-            updateState(ViewState(creatorProfile = updatedUserModel))
+            UsersDataSource.updateUserName(
+                userId = userModel.userId,
+                newUserName = newValue
+            )
         }
     }
 
@@ -69,5 +72,4 @@ class MyProfileViewModel
             }
         }
     }
-
 }

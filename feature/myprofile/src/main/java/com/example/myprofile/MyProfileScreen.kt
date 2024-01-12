@@ -67,7 +67,7 @@ fun MyProfileScreen(
             title = stringResource(id = R.string.profile),
             actions = {
                 IconButton(onClick = {
-//                    navController.navigate(DestinationRoute.MY_PROFILE_SETTING_ROUTE)
+                    navController.navigate(DestinationRoute.MY_PROFILE_SETTING_ROUTE)
                 }) {
                     Icon(painterResource(id = R.drawable.ic_hamburger), contentDescription = null)
                 }
