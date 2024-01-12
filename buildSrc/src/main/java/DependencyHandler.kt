@@ -56,6 +56,13 @@ fun DependencyHandler.composeDependencies() {
     implementation(Deps.Hilt.hiltAndroid)
     kapt(Deps.Hilt.hiltCompiler)
 }
+
+fun DependencyHandler.firebase(){
+    implementation(platform(Deps.Firebase.Firebase_bom))
+    implementation(Deps.Firebase.firebase_analytics)
+    implementation(Deps.Firebase.firebase_auth)
+    implementation(Deps.Firebase.firebase_database)
+}
 fun DependencyHandler.accompanistDependencies() {
     implementation(Deps.Accompanist.systemuicontroller)
     implementation(Deps.Accompanist.navigationMaterial)

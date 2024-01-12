@@ -43,6 +43,7 @@ kapt {
 }
 
 dependencies {
+    implementation(project(":feature:creatorprofile"))
     COMMON_THEME
     COMMON_COMPOSABLE
     CORE

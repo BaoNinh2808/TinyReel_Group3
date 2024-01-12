@@ -6,6 +6,9 @@ import Versions.ComposeBom
 import Versions.ConstraintLayoutCompose
 import Versions.CoreKtx
 import Versions.EspressoCore
+import Versions.FirebaseAuth
+import Versions.FirebaseBom
+import Versions.FirebaseDatabase
 import Versions.HiltAndroidVersion
 import Versions.HiltNavigationCompose
 import Versions.JunitExtKtx
@@ -49,6 +52,9 @@ object Versions {
     const val Coil = "2.2.2"
     const val Media3 = "1.0.0-rc02"
     const val CameraXVersion = "1.3.0-alpha05"
+    const val FirebaseBom = "32.6.0"
+    const val FirebaseAuth = "16.0.2"
+    const val FirebaseDatabase = "20.3.0"
 }
 
 object Deps {
@@ -114,6 +120,13 @@ object Deps {
 
         //hilt compose
         const val hiltNavigationCompse = "androidx.hilt:hilt-navigation-compose:$HiltNavigationCompose"
+    }
+
+    object Firebase{
+        const val Firebase_bom = "com.google.firebase:firebase-bom:$FirebaseBom"
+        const val firebase_analytics = "com.google.firebase:firebase-analytics"
+        const val firebase_auth = "com.google.firebase:firebase-auth:$FirebaseAuth"
+        const val firebase_database = "com.google.firebase:firebase-database:$FirebaseDatabase"
     }
 
     object CameraX {

@@ -161,5 +161,9 @@ object UsersDataSource {
         }
     }
 
+    fun updateUserName(userId: Long, newUserName: String) {
+        val user = userList.find { it.userId == userId }
+        user?.uniqueUserName = newUserName
+    }
 }
 
