@@ -1,5 +1,6 @@
 package com.example.composable
 
+import android.content.Context
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
@@ -36,11 +37,14 @@ import com.example.theme.*
 import com.example.theme.R
 import com.google.firebase.FirebaseApp
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+
+val databaseReference = FirebaseDatabase.getInstance().getReference()
 @OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
 @androidx.annotation.OptIn(androidx.media3.common.util.UnstableApi::class)
 @Composable
@@ -60,6 +64,10 @@ fun TinyReelVerticalVideoPager(
     val pagerState = rememberPagerState(initialPage = initialPage ?: 0, pageCount = {videos.size})
     val coroutineScope = rememberCoroutineScope()
     val localDensity = LocalDensity.current
+    val context = LocalContext.current
+//    FirebaseApp.initializeApp(context)
+//    databaseReference.child("TinyReel").child("forYou").child("videos").setValue(videos)
+
 
     lateinit var database: DatabaseReference
     database = Firebase.database.reference
