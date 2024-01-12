@@ -40,27 +40,25 @@ import com.example.core.AppContract.Type.YOUTUBE
 import com.example.theme.Gray
 
 import coil.compose.rememberImagePainter
+import com.example.creatorprofile.screen.creatorprofile.ViewState
 import com.example.data.repository.creatorprofile.CreatorProfileRepository
 import com.example.data.source.UsersDataSource.kylieJenner
+import com.example.domain.creatorprofile.EditableCreatorProfileUseCase
 import com.example.domain.creatorprofile.GetCreatorProfileUseCase
 import com.example.domain.creatorprofile.GetCreatorPublicVideoUseCase
 
-val viewModel = MyProfileViewModel(
-    savedStateHandle = SavedStateHandle(),
-    getCreatorProfileUseCase = GetCreatorProfileUseCase(CreatorProfileRepository()),
-    getCreatorPublicVideoUseCase = GetCreatorPublicVideoUseCase(CreatorProfileRepository())
-)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyProfileScreen(
     navController: NavController
 ) {
-//    val viewModel = MyProfileViewModel(
-//        savedStateHandle = SavedStateHandle(),
-//        getCreatorProfileUseCase = GetCreatorProfileUseCase(CreatorProfileRepository()),
-//        getCreatorPublicVideoUseCase = GetCreatorPublicVideoUseCase(CreatorProfileRepository())
-//    )
+    val viewModel = MyProfileViewModel(
+        savedStateHandle = SavedStateHandle(),
+        getCreatorProfileUseCase = EditableCreatorProfileUseCase(CreatorProfileRepository()),
+        getCreatorPublicVideoUseCase = GetCreatorPublicVideoUseCase(CreatorProfileRepository())
+    )
     viewModel.fetchUser(1)
+
     Scaffold(topBar = {
         TopBar(
             navIcon = null,
@@ -120,20 +118,10 @@ fun UnAuthorizedInboxScreen(onClickSignup: () -> Unit) {
 @Composable
 fun LoggedInProfileScreen(
     navController: NavController,
-//    viewModel: CreatorProfileViewModel,
-//    viewModel: CreatorProfileViewModel = CreatorProfileViewModel(
-//        savedStateHandle = SavedStateHandle(),
-//        getCreatorProfileUseCase = GetCreatorProfileUseCase(
-//            creatorProfileRepository = CreatorProfileRepository(),
-//        ),
-//        getCreatorPublicVideoUseCase = GetCreatorPublicVideoUseCase(
-//            creatorProfileRepository = CreatorProfileRepository(),
-//        ),
-//    )
     viewModel: MyProfileViewModel
 ) {
-    val viewState by viewModel.viewState.collectAsState()
     val scrollState = rememberScrollState()
+    val viewState by viewModel.viewState.collectAsState()
 
     Column {
         BoxWithConstraints {
@@ -147,24 +135,17 @@ fun LoggedInProfileScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-//                ProfileDetails(viewState?.creatorProfile)
-
-//                var userViewModel by remember { mutableStateOf<UserModel?>(null) }
-                val userViewModelState = CreatorProfileRepository().getCreatorDetails(1).collectAsState(
-                    initial = null
-                )
-//                ProfileDetails(kylieJenner)
-                ProfileDetails(viewModel.getUserModel())
+                ProfileDetails(viewState)
             }
         }
     }
 }
 
 @Composable
-fun ColumnScope.ProfileDetails(creatorProfile: UserModel?) {
+fun ColumnScope.ProfileDetails(viewState: ViewState?) {
     val context = LocalContext.current
     AsyncImage(
-        model = creatorProfile?.profilePic,
+        model = viewState?.creatorProfile?.profilePic ?: R.drawable.ic_profile,
         contentDescription = null,
         modifier = Modifier
             .size(94.dp)
@@ -176,10 +157,10 @@ fun ColumnScope.ProfileDetails(creatorProfile: UserModel?) {
         horizontalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         Text(
-            text = "@${creatorProfile?.uniqueUserName}",
+            text = "@${viewState?.creatorProfile?.uniqueUserName?:""}",
             style = MaterialTheme.typography.bodyMedium
         )
-        if (creatorProfile?.isVerified == true) {
+        if (viewState?.creatorProfile?.isVerified == true) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_verified),
                 contentDescription = null,
@@ -196,7 +177,7 @@ fun ColumnScope.ProfileDetails(creatorProfile: UserModel?) {
 
 
         Text(
-            text = creatorProfile?.formattedFollowingCount ?: "-",
+            text = viewState?.creatorProfile?.formattedFollowingCount ?: "-",
             style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier.constrainAs(followingCount) {
                 top.linkTo(parent.top)
@@ -225,7 +206,7 @@ fun ColumnScope.ProfileDetails(creatorProfile: UserModel?) {
 
 
         Text(
-            text = creatorProfile?.formattedFollowersCount ?: "-",
+            text = viewState?.creatorProfile?.formattedFollowersCount ?: "-",
             style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier.constrainAs(followersCount) {
                 top.linkTo(followingCount.top)
@@ -255,7 +236,7 @@ fun ColumnScope.ProfileDetails(creatorProfile: UserModel?) {
             })
 
         Text(
-            text = creatorProfile?.formattedLikeCount ?: "-",
+            text = viewState?.creatorProfile?.formattedLikeCount ?: "-",
             style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier.constrainAs(likeCount) {
                 top.linkTo(followingCount.top)
@@ -286,7 +267,7 @@ fun ColumnScope.ProfileDetails(creatorProfile: UserModel?) {
         ) {
             Text(text = stringResource(id = R.string.follow))
         }
-        creatorProfile?.pinSocialMedia?.let {
+        viewState?.creatorProfile?.pinSocialMedia?.let {
             Box(
                 modifier = Modifier
                     .fillMaxHeight()
@@ -328,6 +309,6 @@ fun ColumnScope.ProfileDetails(creatorProfile: UserModel?) {
     }
 
     Text(
-        text = creatorProfile?.bio ?: stringResource(id = R.string.no_bio_yet),
+        text = viewState?.creatorProfile?.bio ?: stringResource(id = R.string.no_bio_yet),
     )
 }

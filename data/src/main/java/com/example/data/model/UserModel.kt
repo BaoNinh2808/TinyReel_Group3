@@ -15,13 +15,13 @@ data class UserModel(
 //    val isLikedVideoPrivate: Boolean = true,
 //    val pinSocialMedia: SocialMedia? = null
     val userId: Long = 0,
-    val uniqueUserName: String = "",
+    var uniqueUserName: String = "",
     val fullName: String = "",
     val following: Long = 0,
     val followers: Long = 0,
     val likes: Long = 0,
-    val bio: String = "",
-    val profilePic: String = "",
+    var bio: String = "",
+    var profilePic: String = "",
     val isVerified: Boolean = false,
     val isLikedVideoPrivate: Boolean = true,
     val pinSocialMedia: SocialMedia? = null

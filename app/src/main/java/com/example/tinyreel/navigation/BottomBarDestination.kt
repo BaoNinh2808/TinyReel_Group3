@@ -29,7 +29,7 @@ enum class BottomBarDestination(
     ),
 
     FRIENDS(
-        route = FRIENDS_ROUTE,
+        route = HOME_SCREEN_ROUTE,
         title = R.string.friends,
         unFilledIcon = R.drawable.ic_friends,
         filledIcon = R.drawable.ic_friends
@@ -42,7 +42,7 @@ enum class BottomBarDestination(
     ),
 
     INBOX(
-        route = INBOX_ROUTE,
+        route = MY_PROFILE_ROUTE,
         title = R.string.inbox,
         unFilledIcon = R.drawable.ic_inbox,
         filledIcon = R.drawable.ic_inbox_fill

@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.composable.TikTokVerticalVideoPager
+import com.example.composable.TinyReelVerticalVideoPager
 import com.example.core.DestinationRoute.COMMENT_BOTTOM_SHEET_ROUTE
 import com.example.core.DestinationRoute.CREATOR_PROFILE_ROUTE
 import com.example.data.repository.home.ForYouRepository
@@ -42,7 +42,7 @@ fun ForYouTabScreen(
 
         viewState?.forYouPageFeed?.let {
 
-            TikTokVerticalVideoPager(
+            TinyReelVerticalVideoPager(
                 videos = it,
                 onclickComment = { navController.navigate(COMMENT_BOTTOM_SHEET_ROUTE) },
                 onClickLike = { s: String, b: Boolean -> },

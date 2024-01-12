@@ -29,6 +29,7 @@ import coil.compose.ImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import com.example.data.repository.creatorprofile.CreatorProfileRepository
+import com.example.domain.creatorprofile.EditableCreatorProfileUseCase
 import com.example.domain.creatorprofile.GetCreatorProfileUseCase
 import com.example.domain.creatorprofile.GetCreatorPublicVideoUseCase
 
@@ -39,16 +40,20 @@ fun ProfileSettingScreen(
 ) {
     val viewModel = MyProfileViewModel(
         savedStateHandle = SavedStateHandle(),
-        getCreatorProfileUseCase = GetCreatorProfileUseCase(CreatorProfileRepository()),
+        getCreatorProfileUseCase = EditableCreatorProfileUseCase(CreatorProfileRepository()),
         getCreatorPublicVideoUseCase = GetCreatorPublicVideoUseCase(CreatorProfileRepository())
     )
     viewModel.fetchUser(1)
-    val userModel = viewModel.getUserModel()
+    val viewState by viewModel.viewState.collectAsState()
 
     var newName by remember { mutableStateOf("") }
     var newBio by remember { mutableStateOf("") }
     var newAvatarUrl by remember { mutableStateOf("") }
     var reloadImage by remember { mutableStateOf(false) }
+
+    var nameChanged = false
+    var bioChanged = false
+    var avatarChanged = false
 
     Scaffold(topBar = {
         TopBar(
@@ -80,9 +85,9 @@ fun ProfileSettingScreen(
                     value = newName,
                     onValueChange = { newValue ->
                         newName = newValue
-                        viewModel.updateUserName(newValue)
+                        nameChanged = true
                     },
-                    placeholder = { Text(text = "${userModel?.uniqueUserName}", color = Color.Gray) },
+                    placeholder = { Text(text = "${viewState?.creatorProfile?.uniqueUserName?:"New user name"}", color = Color.Gray) },
                 )
             }
 
@@ -101,8 +106,9 @@ fun ProfileSettingScreen(
                     value = newBio,
                     onValueChange = { newValue ->
                         newBio = newValue
+                        bioChanged = true
                     },
-                    placeholder = { Text(text = "${userModel?.bio}", color = Color.Gray) },
+                    placeholder = { Text(text = "${viewState?.creatorProfile?.bio?:"New bio"}", color = Color.Gray) },
                 )
             }
 
@@ -123,6 +129,7 @@ fun ProfileSettingScreen(
                     value = newAvatarUrl,
                     onValueChange = { newValue ->
                         newAvatarUrl = newValue
+                        avatarChanged = true
                     },
                     placeholder = { Text(text = "New avatar URL...", color = Color.Gray) },
                 )
@@ -147,7 +154,17 @@ fun ProfileSettingScreen(
 //            }
 
             Button(
-                onClick = { viewModel.updateUserName(newName) },
+                onClick = { ->
+                    if (nameChanged) {
+                        viewModel.updateProfile("username", newName)
+                    }
+                    if (bioChanged) {
+                        viewModel.updateProfile("bio", newBio)
+                    }
+                    if (avatarChanged) {
+                        viewModel.updateProfile("avatar", "https://images.unsplash.com/photo-1575936123452-b67c3203c357?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D")
+                    }
+                },
                 modifier = Modifier
                     .padding(16.dp)
             ) {

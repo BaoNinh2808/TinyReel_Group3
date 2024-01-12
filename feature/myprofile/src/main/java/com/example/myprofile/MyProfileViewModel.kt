@@ -10,6 +10,7 @@ import com.example.creatorprofile.screen.creatorprofile.ViewState
 import com.example.data.model.UserModel
 import com.example.data.model.VideoModel
 import com.example.data.source.UsersDataSource
+import com.example.domain.creatorprofile.EditableCreatorProfileUseCase
 import com.example.domain.creatorprofile.GetCreatorProfileUseCase
 import com.example.domain.creatorprofile.GetCreatorPublicVideoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,7 +23,7 @@ import javax.inject.Inject
 class MyProfileViewModel
 @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    public val getCreatorProfileUseCase: GetCreatorProfileUseCase,
+    public val getCreatorProfileUseCase: EditableCreatorProfileUseCase,
     private val getCreatorPublicVideoUseCase: GetCreatorPublicVideoUseCase
 ) : BaseViewModel<ViewState, CreatorProfileEvent>() {
     val userId: Long? = savedStateHandle[DestinationRoute.PassedKey.USER_ID]
@@ -55,13 +56,11 @@ class MyProfileViewModel
         return viewState.value?.creatorProfile
     }
 
-    fun updateUserName(newValue: String) {
-        viewState.value?.creatorProfile?.let {userModel ->
-            UsersDataSource.updateUserName(
-                userId = userModel.userId,
-                newUserName = newValue
-            )
-        }
+    fun updateProfile(
+        property: String,
+        newValue: Any
+    ) {
+        getCreatorProfileUseCase.updateProfile(property, newValue)
     }
 
     private fun fetchCreatorPublicVideo(id: Long) {

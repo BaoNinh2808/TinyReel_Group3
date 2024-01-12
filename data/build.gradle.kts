@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.dagger.hilt.android")
     kotlin("kapt")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -39,8 +40,10 @@ android {
 }
 
 dependencies {
+    implementation("com.google.firebase:firebase-database:20.3.0")
     CORE
     baseDependencies()
     composeDependencies()
     testDependencies()
+    firebase()
 }
