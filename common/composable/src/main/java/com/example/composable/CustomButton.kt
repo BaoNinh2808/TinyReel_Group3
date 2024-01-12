@@ -1,6 +1,5 @@
 package com.example.composable
 
-
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -14,10 +13,6 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-
-/**
- * Created by Puskal Khadka on 3/24/2023.
- */
 
 @Composable
 fun CustomButton(

@@ -25,7 +25,7 @@ class LoginWithEmailPhoneViewModel @Inject constructor(
 //        MutableStateFlow<Pair<String, String?>>(Pair("", null))  //Pair(value,errorMsg)
 //    val phoneNumber = _phoneNumber.asStateFlow()
 
-//    private val _dialCode = MutableStateFlow<Pair<String, String?>>(Pair("Np +977", null))
+    //    private val _dialCode = MutableStateFlow<Pair<String, String?>>(Pair("Np +977", null))
 //    val dialCode = _dialCode.asStateFlow()
 //
     private val _name = MutableStateFlow<String>("")
@@ -73,21 +73,20 @@ class LoginWithEmailPhoneViewModel @Inject constructor(
     }
 
     override fun onTriggerEvent(event: LoginEmailPhoneEvent) {
-         when (event) {
+        when (event) {
             // is LoginEmailPhoneEvent.EventPageChange -> _settledPage.value = event.settledPage
-             is LoginEmailPhoneEvent.OnChangeEmailEntry -> _email.value = event.newValue
+            is LoginEmailPhoneEvent.OnChangeEmailEntry -> _email.value = event.newValue
 
-             is LoginEmailPhoneEvent.OnChangePasswordEntry -> _password.value = event.newValue
+            is LoginEmailPhoneEvent.OnChangePasswordEntry -> _password.value = event.newValue
 
-             is LoginEmailPhoneEvent.OnChangeConfirmPasswordEntry -> _confirmPassword.value = event.newValue
+            is LoginEmailPhoneEvent.OnChangeConfirmPasswordEntry -> _confirmPassword.value = event.newValue
 
-             is LoginEmailPhoneEvent.OnChangeNameEntry -> _name.value = event.newValue
+            is LoginEmailPhoneEvent.OnChangeNameEntry -> _name.value = event.newValue
 
 //            is LoginEmailPhoneEvent.OnChangePhoneNumber -> _phoneNumber.value =
 //                _phoneNumber.value.copy(first = event.newValue)
 
-         }
+        }
     }
 }
-
 

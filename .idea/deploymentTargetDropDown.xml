@@ -5,12 +5,6 @@
       <entry key="AuthenticationScreenPreview">
         <State />
       </entry>
-      <entry key="SignUpScreenPreview">
-        <State />
-      </entry>
-      <entry key="app">
-        <State />
-      </entry>
       <entry key="data">
         <State />
       </entry>
@@ -20,7 +14,10 @@
       <entry key="feature.camera">
         <State />
       </entry>
-      <entry key="feature.post">
+      <entry key="feature.myprofile">
+        <State />
+      </entry>
+      <entry key="feature.myprofile.creatorprofile">
         <State />
       </entry>
       <entry key="feature.profile">
