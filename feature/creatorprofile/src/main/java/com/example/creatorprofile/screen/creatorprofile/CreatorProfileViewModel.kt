@@ -1,4 +1,4 @@
-package com.example.myprofile
+package com.example.creatorprofile.screen.creatorprofile
 
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
