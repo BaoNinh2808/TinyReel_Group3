@@ -8,16 +8,13 @@
       <entry key="data">
         <State />
       </entry>
-      <entry key="feature.authentication">
-        <State />
-      </entry>
       <entry key="feature.camera">
         <State />
       </entry>
-      <entry key="feature.myprofile">
+      <entry key="feature.myprofile.creatorprofile">
         <State />
       </entry>
-      <entry key="feature.myprofile.creatorprofile">
+      <entry key="feature.post">
         <State />
       </entry>
       <entry key="feature.profile">

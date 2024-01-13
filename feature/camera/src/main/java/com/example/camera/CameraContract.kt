@@ -2,12 +2,11 @@ package com.example.camera
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-//import com.example.data.model.TemplateModel
+import com.example.data.model.TemplateModel
 import com.example.theme.R
 
 data class ViewState(
-//    val templates: List<TemplateModel>? = null
-    val templates : List<String>? = null
+    val templates: List<TemplateModel>? = null
 )
 
 sealed class CameraMediaEvent {

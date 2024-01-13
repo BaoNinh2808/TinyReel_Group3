@@ -4,7 +4,6 @@ import android.content.Context
 import android.provider.Settings
 import java.text.DecimalFormat
 
-
 val decimalFormat = DecimalFormat("#.#")
 fun Long.formattedCount(): String {
     return if (this < 10000) {
