@@ -161,5 +161,18 @@ object UsersDataSource {
         }
     }
 
-}
+    fun setUniqueUserName(userId: Long, value: String) {
+        val user = userList.find { it.userId == userId }
+        user?.uniqueUserName = value
+    }
 
+    fun setBio(userId: Long, value: String) {
+        val user = userList.find { it.userId == userId }
+        user?.bio = value
+    }
+
+    fun setProfilePic(userId: Long, value: String) {
+        val user = userList.find { it.userId == userId }
+        user?.profilePic = value
+    }
+}

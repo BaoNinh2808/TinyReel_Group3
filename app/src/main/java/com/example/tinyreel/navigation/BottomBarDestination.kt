@@ -2,11 +2,13 @@ package com.example.tinyreel.navigation
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import com.example.core.DestinationRoute.AUTHENTICATION_ROUTE
 import com.example.core.DestinationRoute.CAMERA_ROUTE
 import com.example.core.DestinationRoute.FRIENDS_ROUTE
 import com.example.core.DestinationRoute.HOME_SCREEN_ROUTE
 import com.example.core.DestinationRoute.INBOX_ROUTE
 import com.example.core.DestinationRoute.MY_PROFILE_ROUTE
+import com.example.core.DestinationRoute.POST_ROUTE
 import com.example.theme.R
 
 /**
@@ -29,7 +31,7 @@ enum class BottomBarDestination(
     ),
 
     FRIENDS(
-        route = FRIENDS_ROUTE,
+        route = AUTHENTICATION_ROUTE,
         title = R.string.friends,
         unFilledIcon = R.drawable.ic_friends,
         filledIcon = R.drawable.ic_friends
@@ -42,7 +44,7 @@ enum class BottomBarDestination(
     ),
 
     INBOX(
-        route = INBOX_ROUTE,
+        route = POST_ROUTE,
         title = R.string.inbox,
         unFilledIcon = R.drawable.ic_inbox,
         filledIcon = R.drawable.ic_inbox_fill

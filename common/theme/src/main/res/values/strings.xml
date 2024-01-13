@@ -1,15 +1,17 @@
 <resources>
-    <string name="app_name">TikTok Compose</string>
+    <string name="app_name">TinyReel</string>
 
-    <string name="home">Home</string>
+    <string name="home">Trang chủ</string>
     <string name="friends">Friends</string>
+    <string name="noti">Thông báo</string>
     <string name="inbox">Inbox</string>
-    <string name="profile">Profile</string>
+    <string name="profile">Cá nhân</string>
+    <string name="find">Tìm kiếm</string>
 
-    <string name="following">Following</string>
-    <string name="for_you">For You</string>
-    <string name="see_more">see more</string>
-    <string name="hide">hide</string>
+    <string name="following">Đang theo dõi</string>
+    <string name="for_you">Dành cho bạn</string>
+    <string name="see_more">xem thêm</string>
+    <string name="hide">ẩn</string>
 
     <string name="messages_and_notification_will">Messages and notifications will appear here </string>
     <string name="sign_up">Sign up</string>
@@ -17,12 +19,12 @@
     <!--following tab-->
     <string name="trending_creators">Trending creators</string>
     <string name="follow_and_account_to_see">Follow an account to see their latest videos here.</string>
-    <string name="follow">Follow</string>
-    <string name="add_comment">Add comment…</string>
+    <string name="follow">Theo dõi ngay</string>
+    <string name="add_comment">Add comment</string>
 
-    <string name="followers">Followers</string>
-    <string name="likes">Likes</string>
-    <string name="reply">Reply</string>
+    <string name="followers">Người theo dõi</string>
+    <string name="likes">Lượt thích</string>
+    <string name="reply">Trả lời</string>
 
     <!-- profile -->
     <string name="this_users_liked_videos">This user\'s liked videos are private</string>
@@ -48,6 +50,7 @@
     <string name="forget_password">Quên mật khẩu?</string>
     <string name="create_new_account">Tạo tài khoản mới</string>
     <string name="Guess_account">Tài khoản khách</string>
+    <string name="Already_has_account">Đã có tài khoản</string>
     <string name="continue_with_twitter">Continue with Twitter</string>
     <string name="terms_of_service">Terms of service</string>
     <string name="privacy_policy">Privacy Policy</string>
@@ -55,7 +58,6 @@
     <string name="learn_more">Learn more</string>
     <string name="send_code">Send code</string>
     <string name="phone">Phone</string>
-    <string name="email_username">Email / Username</string>
     <string name="phone_number">Phone number</string>
     <string name="enter_email_address_or_username">Enter email address or username</string>
     <string name="next">Next</string>
@@ -106,6 +108,5 @@
     <string name="timer">Timer</string>
     <string name="flash">Flash</string>
     <string name="upload_photos">Upload photos</string>
-
     <string name="create_post">Create</string>
 </resources>

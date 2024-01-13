@@ -47,4 +47,5 @@ dependencies {
     baseDependencies()
     composeDependencies()
     testDependencies()
+    firebase()
 }

@@ -9,8 +9,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetValue
-import androidx.compose.material.SwipeableDefaults
 import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.material.SwipeableDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -23,6 +23,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.navigation.material.BottomSheetNavigator
+import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
+import com.google.accompanist.navigation.material.ModalBottomSheetLayout
+import com.google.accompanist.systemuicontroller.SystemUiController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.example.core.DestinationRoute.AUTHENTICATION_ROUTE
 import com.example.core.DestinationRoute.CAMERA_ROUTE
 import com.example.core.DestinationRoute.COMMENT_BOTTOM_SHEET_ROUTE
@@ -34,18 +39,16 @@ import com.example.core.DestinationRoute.MY_PROFILE_ROUTE
 import com.example.theme.TinyReelTheme
 import com.example.tinyreel.component.BottomBar
 import com.example.tinyreel.navigation.AppNavHost
-import com.google.accompanist.navigation.material.BottomSheetNavigator
-import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
-import com.google.accompanist.navigation.material.ModalBottomSheetLayout
-import com.google.accompanist.systemuicontroller.SystemUiController
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.tinyreel.authentication.LoginWithEmailPhoneViewModel
 
 @OptIn(
     ExperimentalMaterial3Api::class, ExperimentalMaterialNavigationApi::class,
     ExperimentalAnimationApi::class
 )
 @Composable
-fun RootScreen() {
+fun RootScreen(
+    loginViewModel: LoginWithEmailPhoneViewModel,
+) {
     val bottomSheetNavigator = rememberBottomSheetNavigator()
     val navController = rememberNavController(bottomSheetNavigator)
     val currentBackStackEntryAsState by navController.currentBackStackEntryAsState()
@@ -88,7 +91,7 @@ fun RootScreen() {
                         .fillMaxSize()
                         .padding(it)
                 ) {
-                    AppNavHost(navController = navController)
+                    AppNavHost(navController = navController, loginViewModel = loginViewModel)
                 }
             }
         }

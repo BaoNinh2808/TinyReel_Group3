@@ -37,3 +37,27 @@ enum class LoginOption(
 //        title = R.string.continue_with_twitter,
 //    ),
 }
+
+data class ViewState(
+    val isLoading: Boolean? = null,
+    val error: String? = null,
+)
+
+sealed class LoginEmailPhoneEvent {
+    // data class EventPageChange(val settledPage: Int) : LoginEmailPhoneEvent()
+    // data class OnChangePhoneNumber(val newValue: String) : LoginEmailPhoneEvent()
+    data class OnChangeEmailEntry(val newValue: String) : LoginEmailPhoneEvent()
+
+    data class OnChangePasswordEntry(val newValue: String) : LoginEmailPhoneEvent()
+    data class OnChangeConfirmPasswordEntry(val newValue: String) : LoginEmailPhoneEvent()
+    data class OnChangeNameEntry(val newValue: String) : LoginEmailPhoneEvent()
+}
+
+
+enum class LoginPages(@StringRes val title: Int) {
+    EMAIL_USERNAME(title = R.string.user_name),
+    PASSWORD(title = R.string.password)
+}
+
+val suggestedDomainList =
+    arrayListOf("@gmail.com", "@hotmail.com", "@outlook.com", "@yahoo.com", "@icloud.com")

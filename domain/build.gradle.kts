@@ -42,6 +42,7 @@ dependencies {
     baseDependencies()
     composeDependencies()
     testDependencies()
+    firebase()
     COMMON_THEME
     COMMON_COMPOSABLE
     CORE

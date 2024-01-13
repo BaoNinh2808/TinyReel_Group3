@@ -14,9 +14,6 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import com.example.tinyreel.navigation.BottomBarDestination
 
-/**
- * Created by Puskal Khadka on 11/25/2022.
- */
 
 @Composable
 fun BottomBar(
