@@ -10,9 +10,11 @@ import com.example.core.DestinationRoute.CAMERA_ROUTE
 import com.example.core.DestinationRoute.HOME_SCREEN_ROUTE
 import com.example.core.DestinationRoute.MY_PROFILE_ROUTE
 import com.example.core.DestinationRoute.POST_ROUTE
+import com.example.core.DestinationRoute.CREATOR_PROFILE_ROUTE
 import com.example.home.homeNavGraph
 import com.example.myprofile.myProfileNavGraph
 import com.example.post.postNavGraph
+import com.example.creatorprofile.creatorProfileNavGraph
 import com.tinyreel.authentication.LoginWithEmailPhoneViewModel
 import com.tinyreel.authentication.authenticationNavGraph
 import com.tinyreel.authentication.signUpNavGraph
@@ -32,7 +34,7 @@ fun AppNavHost(
         homeNavGraph(navController)
         postNavGraph(navController)
 //        commentListingNavGraph(navController)
-//        creatorProfileNavGraph(navController)
+        creatorProfileNavGraph(navController)
 //        inboxNavGraph(navController)
         authenticationNavGraph(loginViewModel, navController)
         signUpNavGraph(loginViewModel, navController)
