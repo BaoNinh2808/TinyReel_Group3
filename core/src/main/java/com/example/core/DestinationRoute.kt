@@ -18,13 +18,13 @@ object DestinationRoute {
     const val FRIENDS_ROUTE = "friends_route"
     const val CAMERA_ROUTE = "camera_route"
     const val POST_ROUTE = "post_route"
+    const val SEARCH_ROUTE = "search_route"
 
     const val AUTHENTICATION_ROUTE = "authentication_route"
     const val SIGNUP_ROUTE = "signup_route"
     const val LOGIN_OR_SIGNUP_WITH_PHONE_EMAIL_ROUTE = "login_signup_phone_email_route"
 
     const val SETTING_ROUTE="setting_route"
-
     object PassedKey {
         const val USER_ID = "user_id"
         const val VIDEO_INDEX = "video_index"

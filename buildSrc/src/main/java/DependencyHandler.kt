@@ -27,6 +27,7 @@ fun DependencyHandler.baseDependencies() {
     implementation(Deps.Compose.composeMaterial3)
     implementation(Deps.Compose.composeMaterial)
     implementation(Deps.Compose.constraintLayoutCompose)
+    implementation(Deps.Compose.composeIcons)
 
     media3Dependency()
 
@@ -132,4 +133,7 @@ val DependencyHandler.FEATURE_MY_PROFILE
     get() = implementation(project(mapOf("path" to ":feature:myprofile")))
 val DependencyHandler.FEATURE_CAMERA
     get() = implementation(project(mapOf("path" to ":feature:camera")))
+
+val DependencyHandler.FEATURE_SEARCH
+    get() = implementation(project(mapOf("path" to ":feature:search")))
 

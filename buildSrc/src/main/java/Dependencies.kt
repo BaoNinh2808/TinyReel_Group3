@@ -77,6 +77,7 @@ object Deps {
         const val composeActivity = "androidx.activity:activity-compose:$ActivityCompose"
         const val composeUiUtil = "androidx.compose.ui:ui-util"
         const val constraintLayoutCompose = "androidx.constraintlayout:constraintlayout-compose:$ConstraintLayoutCompose"
+        const val composeIcons = "androidx.compose.material:material-icons-extended"
     }
 
     object Accompanist {

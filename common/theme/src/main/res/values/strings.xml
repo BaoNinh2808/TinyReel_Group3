@@ -34,8 +34,8 @@
 
     <!-- search -->
     <string name="find_related_content">Find related content</string>
-    <string name="search">Search</string>
-
+    <string name="search">Tìm kiếm</string>
+    <string name="hot_search_query">Mọi người đang tìm</string>
     <!-- inbox -->
     <string name="message_and_notifications_will_appear_here">Message and notifications will appear here</string>
 
