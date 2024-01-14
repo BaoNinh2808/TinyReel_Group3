@@ -19,14 +19,16 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
-class MyProfileViewModel
-@Inject constructor(
-    private val savedStateHandle: SavedStateHandle,
+//@HiltViewModel
+//class MyProfileViewModel
+//@Inject constructor(
+class MyProfileViewModel (
+//    private val savedStateHandle: SavedStateHandle,
+    val userId: Long,
     public val getCreatorProfileUseCase: EditableCreatorProfileUseCase,
     private val getCreatorPublicVideoUseCase: GetCreatorPublicVideoUseCase
 ) : BaseViewModel<ViewState, CreatorProfileEvent>() {
-    val userId: Long? = savedStateHandle[DestinationRoute.PassedKey.USER_ID]
+//    var userId: Long? = savedStateHandle[DestinationRoute.PassedKey.USER_ID]
 
     private val _publicVideosList = MutableStateFlow<List<VideoModel>>(arrayListOf())
     val publicVideosList = _publicVideosList.asStateFlow()
@@ -45,6 +47,7 @@ class MyProfileViewModel
     }
 
     fun fetchUser(id: Long) {
+//        userId = id
         viewModelScope.launch {
             getCreatorProfileUseCase(id).collect {
                 updateState(ViewState(creatorProfile = it))

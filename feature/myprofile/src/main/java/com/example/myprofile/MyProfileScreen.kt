@@ -40,12 +40,14 @@ import com.example.core.AppContract.Type.YOUTUBE
 import com.example.theme.Gray
 
 import coil.compose.rememberImagePainter
+//import com.example.creatorprofile.component.VideoListingPager
 import com.example.creatorprofile.screen.creatorprofile.ViewState
 import com.example.data.repository.creatorprofile.CreatorProfileRepository
 import com.example.data.source.UsersDataSource.kylieJenner
 import com.example.domain.creatorprofile.EditableCreatorProfileUseCase
 import com.example.domain.creatorprofile.GetCreatorProfileUseCase
 import com.example.domain.creatorprofile.GetCreatorPublicVideoUseCase
+import com.example.myprofile.myprofilevideo.VideoListingPager
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,11 +55,12 @@ fun MyProfileScreen(
     navController: NavController
 ) {
     val viewModel = MyProfileViewModel(
-        savedStateHandle = SavedStateHandle(),
+//        savedStateHandle = SavedStateHandle(),
+        userId = 1,
         getCreatorProfileUseCase = EditableCreatorProfileUseCase(CreatorProfileRepository()),
         getCreatorPublicVideoUseCase = GetCreatorPublicVideoUseCase(CreatorProfileRepository())
     )
-    viewModel.fetchUser(1)
+//    viewModel.fetchUser(1)
 
     Scaffold(topBar = {
         TopBar(
@@ -123,6 +126,7 @@ fun LoggedInProfileScreen(
     val scrollState = rememberScrollState()
     val viewState by viewModel.viewState.collectAsState()
 
+    Text(viewModel.userId.toString())
     Column {
         BoxWithConstraints {
             val height = this.maxHeight
@@ -136,6 +140,14 @@ fun LoggedInProfileScreen(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 ProfileDetails(viewState)
+                VideoListingPager(
+                    scrollState = scrollState,
+                    height = height,
+                    viewModel = viewModel,
+                    onClickVideo = { video, index ->
+                        navController.navigate("${DestinationRoute.CREATOR_VIDEO_ROUTE}/${viewModel.userId}/$index")
+                    }
+                )
             }
         }
     }

@@ -39,11 +39,12 @@ fun ProfileSettingScreen(
     navController: NavController,
 ) {
     val viewModel = MyProfileViewModel(
-        savedStateHandle = SavedStateHandle(),
+//        savedStateHandle = SavedStateHandle(),
+        userId = 1,
         getCreatorProfileUseCase = EditableCreatorProfileUseCase(CreatorProfileRepository()),
         getCreatorPublicVideoUseCase = GetCreatorPublicVideoUseCase(CreatorProfileRepository())
     )
-    viewModel.fetchUser(1)
+//    viewModel.fetchUser(1)
     val viewState by viewModel.viewState.collectAsState()
 
     var newName by remember { mutableStateOf("") }

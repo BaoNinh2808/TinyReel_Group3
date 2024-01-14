@@ -1,12 +1,18 @@
-package com.example.creatorprofile.component
+package com.example.myprofile.myprofilevideo
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.ScrollState
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.*
+import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
+import androidx.compose.material3.TabRowDefaults
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -21,12 +27,12 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.example.core.base.BaseViewModel
-import com.example.creatorprofile.screen.creatorprofile.CreatorProfileViewModel
 import com.example.creatorprofile.screen.creatorprofile.ProfilePagerTabs
-import com.example.creatorprofile.screen.creatorprofile.tabs.LikeVideoTab
-import com.example.creatorprofile.screen.creatorprofile.tabs.PublicVideoTab
+//import com.example.creatorprofile.screen.creatorprofile.ProfilePagerTabs
+//import com.example.creatorprofile.screen.creatorprofile.tabs.LikeVideoTab
+//import com.example.creatorprofile.screen.creatorprofile.tabs.PublicVideoTab
 import com.example.data.model.VideoModel
+import com.example.myprofile.MyProfileViewModel
 import com.example.theme.Black
 import com.example.theme.Gray
 import com.example.theme.SeparatorColor
@@ -37,7 +43,7 @@ import kotlinx.coroutines.launch
 fun VideoListingPager(
     scrollState: ScrollState,
     height: Dp,
-    viewModel: CreatorProfileViewModel,
+    viewModel: MyProfileViewModel,
     onClickVideo: (video: VideoModel, index: Int) -> Unit
 ) {
 //    val pagerState = rememberPagerState()
