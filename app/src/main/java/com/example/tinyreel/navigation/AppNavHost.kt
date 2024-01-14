@@ -15,6 +15,7 @@ import com.example.home.homeNavGraph
 import com.example.myprofile.myProfileNavGraph
 import com.example.post.postNavGraph
 import com.example.creatorprofile.creatorProfileNavGraph
+import com.example.setting.settingNavGraph
 import com.tinyreel.authentication.LoginWithEmailPhoneViewModel
 import com.tinyreel.authentication.authenticationNavGraph
 import com.tinyreel.authentication.signUpNavGraph
@@ -41,7 +42,7 @@ fun AppNavHost(
 //        loginEmailPhoneNavGraph(navController)
 //        friendsNavGraph(navController)
         myProfileNavGraph(navController)
-//        settingNavGraph(navController)
+        settingNavGraph(navController)
         cameraMediaNavGraph(navController)
     }
 }

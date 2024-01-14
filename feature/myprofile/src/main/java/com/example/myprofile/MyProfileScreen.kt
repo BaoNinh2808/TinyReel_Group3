@@ -68,7 +68,7 @@ fun MyProfileScreen(
             title = stringResource(id = R.string.profile),
             actions = {
                 IconButton(onClick = {
-                    navController.navigate(DestinationRoute.MY_PROFILE_SETTING_ROUTE)
+                    navController.navigate(DestinationRoute.SETTING_ROUTE)
                 }) {
                     Icon(painterResource(id = R.drawable.ic_hamburger), contentDescription = null)
                 }
@@ -126,7 +126,6 @@ fun LoggedInProfileScreen(
     val scrollState = rememberScrollState()
     val viewState by viewModel.viewState.collectAsState()
 
-    Text(viewModel.userId.toString())
     Column {
         BoxWithConstraints {
             val height = this.maxHeight
@@ -139,7 +138,7 @@ fun LoggedInProfileScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-                ProfileDetails(viewState)
+                ProfileDetails(navController, viewState)
                 VideoListingPager(
                     scrollState = scrollState,
                     height = height,
@@ -154,8 +153,9 @@ fun LoggedInProfileScreen(
 }
 
 @Composable
-fun ColumnScope.ProfileDetails(viewState: ViewState?) {
+fun ColumnScope.ProfileDetails(navController: NavController, viewState: ViewState?) {
     val context = LocalContext.current
+
     AsyncImage(
         model = viewState?.creatorProfile?.profilePic ?: R.drawable.ic_profile,
         contentDescription = null,
@@ -179,7 +179,6 @@ fun ColumnScope.ProfileDetails(viewState: ViewState?) {
                 tint = Color.Unspecified
             )
         }
-
     }
     ConstraintLayout(modifier = Modifier.fillMaxWidth()) {
         val (
@@ -313,10 +312,11 @@ fun ColumnScope.ProfileDetails(viewState: ViewState?) {
                 .width(40.dp)
                 .border(
                     width = 1.dp, shape = RoundedCornerShape(2.dp), color = Gray.copy(alpha = 0.2f)
-                ),
-            contentAlignment = Alignment.Center
+                )
+                .clickable { navController.navigate(DestinationRoute.MY_PROFILE_SETTING_ROUTE) },
+            contentAlignment = Alignment.Center,
         ) {
-            Icon(painter = painterResource(id = R.drawable.ic_down_more), contentDescription = null, tint = Color.Unspecified)
+            Icon(painter = painterResource(id = R.drawable.ic_edit), contentDescription = null, tint = Color.Black)
         }
     }
 

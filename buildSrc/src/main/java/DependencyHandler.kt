@@ -133,6 +133,10 @@ val DependencyHandler.FEATURE_MY_PROFILE
 
 val DependencyHandler.FEATURE_CREATOR_PROFILE
     get() = implementation(project(mapOf("path" to ":feature:creatorprofile")))
+
+val DependencyHandler.FEATURE_SETTING
+    get() = implementation(project(mapOf("path" to ":feature:setting")))
+
 val DependencyHandler.FEATURE_CAMERA
     get() = implementation(project(mapOf("path" to ":feature:camera")))
 
