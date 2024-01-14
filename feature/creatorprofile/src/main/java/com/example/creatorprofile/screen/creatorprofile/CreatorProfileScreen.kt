@@ -19,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.composable.TopBar
@@ -29,16 +30,30 @@ import com.example.core.utils.IntentUtils.redirectToApp
 import com.example.creatorprofile.component.*
 import com.example.data.model.SocialMediaType
 import com.example.data.model.UserModel
+import com.example.data.repository.creatorprofile.CreatorProfileRepository
+import com.example.domain.creatorprofile.GetCreatorProfileUseCase
+import com.example.domain.creatorprofile.GetCreatorPublicVideoUseCase
 import com.example.theme.*
 import com.example.theme.R
+import com.example.core.DestinationRoute.PassedKey.USER_ID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreatorProfileScreen(
     onClickNavIcon: () -> Unit,
     navController: NavController,
-    viewModel: CreatorProfileViewModel = hiltViewModel()
+//    viewModel: CreatorProfileViewModel = hiltViewModel()
+//    viewModel: CreatorProfileViewModel = CreatorProfileViewModel(
+//        savedStateHandle = SavedStateHandle(),
+//        getCreatorProfileUseCase = GetCreatorProfileUseCase(CreatorProfileRepository()),
+//        getCreatorPublicVideoUseCase = GetCreatorPublicVideoUseCase(CreatorProfileRepository())
+//    )
 ) {
+    val viewModel = CreatorProfileViewModel(
+        _userId = navController.currentBackStackEntry?.arguments?.getLong(USER_ID)?:0L,
+        getCreatorProfileUseCase = GetCreatorProfileUseCase(CreatorProfileRepository()),
+        getCreatorPublicVideoUseCase = GetCreatorPublicVideoUseCase(CreatorProfileRepository())
+    )
     val viewState by viewModel.viewState.collectAsState()
     val scrollState = rememberScrollState()
 

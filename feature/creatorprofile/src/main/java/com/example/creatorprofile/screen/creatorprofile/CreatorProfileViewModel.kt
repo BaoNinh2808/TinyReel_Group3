@@ -17,11 +17,13 @@ import javax.inject.Inject
 @HiltViewModel
 class CreatorProfileViewModel
 @Inject constructor(
-    private val savedStateHandle: SavedStateHandle,
+//    private val savedStateHandle: SavedStateHandle,
+    private val _userId: Long,
     private val getCreatorProfileUseCase: GetCreatorProfileUseCase,
     private val getCreatorPublicVideoUseCase: GetCreatorPublicVideoUseCase
 ) : BaseViewModel<ViewState, CreatorProfileEvent>() {
-    val userId: Long? = savedStateHandle[USER_ID]
+//    val userId: Long? = savedStateHandle[USER_ID]
+    val userId: Long = _userId
 
     private val _publicVideosList = MutableStateFlow<List<VideoModel>>(arrayListOf())
     val publicVideosList = _publicVideosList.asStateFlow()
@@ -32,8 +34,15 @@ class CreatorProfileViewModel
     override fun onTriggerEvent(event: CreatorProfileEvent) {
     }
 
+//    init {
+//        userId?.let {
+//            fetchUser(it)
+//            fetchCreatorPublicVideo(it)
+//        }
+//    }
+
     init {
-        userId?.let {
+        _userId?.let {
             fetchUser(it)
             fetchCreatorPublicVideo(it)
         }
@@ -55,5 +64,4 @@ class CreatorProfileViewModel
             }
         }
     }
-
 }
