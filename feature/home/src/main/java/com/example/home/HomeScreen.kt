@@ -24,12 +24,19 @@ import com.example.home.tab.foryou.ForYouTabScreen
 import com.example.theme.R
 import com.example.theme.TinyReelTheme
 import com.example.theme.White
+import com.tinyreel.authentication.LoginWithEmailPhoneViewModel
 import kotlinx.coroutines.launch
 
 
+//@OptIn(ExperimentalFoundationApi::class)
+//@Composable
+//fun HomeScreen(
+//    navController: NavController
+//) {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(
+    viewModel: LoginWithEmailPhoneViewModel?,
     navController: NavController
 ) {
     val tabItems = arrayListOf(R.string.following, R.string.for_you)
@@ -100,5 +107,5 @@ fun HomeScreen(
 @Composable
 fun PreviewHomeScreen(){
     val navController = rememberNavController()
-    HomeScreen(navController = navController)
+    HomeScreen(null, navController = navController)
 }

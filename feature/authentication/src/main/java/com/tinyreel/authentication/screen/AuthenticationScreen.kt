@@ -74,7 +74,8 @@ import com.tinyreel.authentication.data.AuthRepository
 import com.tinyreel.authentication.data.Resource
 
 @Composable
-internal fun AuthenticationButton(modifier: Modifier, context: Context) {
+//internal fun AuthenticationButton(modifier: Modifier, context: Context) {
+internal fun AuthenticationButton(modifier: Modifier, onClickButton: (LoginOption) -> Unit) {
     Row(
         modifier = modifier,
     ) {
@@ -85,16 +86,18 @@ internal fun AuthenticationButton(modifier: Modifier, context: Context) {
                 style = TextStyle(fontSize = 12.sp),
                 modifier = Modifier.weight(1f),
                 containerColor = it.containerColor,
-                contentColor = it.contentColor,
-                onClickButton = {
-                    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestEmail()
-                        .requestIdToken(R.string.client_id.toString())
-                        .build()
-
-                    val googleSignInClient = GoogleSignIn.getClient(context, gso)
-                }
-            )
+                contentColor = it.contentColor
+//                onClickButton = {
+//                    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                        .requestEmail()
+//                        .requestIdToken(R.string.client_id.toString())
+//                        .build()
+//
+//                        val googleSignInClient = GoogleSignIn.getClient(context, gso)
+//                }
+            ){
+                onClickButton(it)
+            }
             Spacer(modifier = Modifier.width(8.dp)) // Khoảng cách giữa các nút
         }
     }
@@ -174,7 +177,10 @@ fun LoginScreen(viewModel:LoginWithEmailPhoneViewModel, navController: NavContro
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                     width = Dimension.fillToConstraints
-                }, context)
+//                }, context)
+                }){
+
+        }
 
         TextField(
             value = email,

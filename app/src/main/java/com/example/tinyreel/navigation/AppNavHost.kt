@@ -32,7 +32,7 @@ fun AppNavHost(
         startDestination = startDestination,
         modifier = modifier
     ) {
-        homeNavGraph(navController)
+        homeNavGraph(loginViewModel, navController)
         postNavGraph(navController)
 //        commentListingNavGraph(navController)
         creatorProfileNavGraph(navController)
