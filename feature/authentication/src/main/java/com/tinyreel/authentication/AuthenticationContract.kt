@@ -7,6 +7,8 @@ import com.example.theme.Black
 import com.example.theme.PrimaryColor
 import com.example.theme.R
 import com.example.theme.White
+import com.google.firebase.auth.AuthResult
+import com.tinyreel.authentication.data.Resource
 
 class AuthenticationContract {
 }
@@ -17,6 +19,7 @@ enum class LoginOption(
     @StringRes val title: Int,
     val containerColor: Color = Color.White,
     val contentColor: Color = Black
+
 ) {
     //    PHONE_EMAIL_USERNAME(
 //        icon = R.drawable.ic_profile,
@@ -41,7 +44,9 @@ enum class LoginOption(
 data class ViewState(
     val isLoading: Boolean? = null,
     val error: String? = null,
+    val success: AuthResult? = null
 )
+
 
 sealed class LoginEmailPhoneEvent {
     // data class EventPageChange(val settledPage: Int) : LoginEmailPhoneEvent()

@@ -61,6 +61,7 @@ android {
 }
 
 dependencies {
+    implementation("androidx.navigation:navigation-common:2.7.6")
     baseDependencies()
     composeDependencies()
     testDependencies()

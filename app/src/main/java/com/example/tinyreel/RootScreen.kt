@@ -58,7 +58,7 @@ fun RootScreen(
 
     val isShowBottomBar = when (currentDestination?.route) {
         HOME_SCREEN_ROUTE, INBOX_ROUTE, COMMENT_BOTTOM_SHEET_ROUTE,
-        FRIENDS_ROUTE, AUTHENTICATION_ROUTE, MY_PROFILE_ROUTE, null -> true
+        FRIENDS_ROUTE, MY_PROFILE_ROUTE, null -> true
         else -> false
     }
     val darkMode = when (currentDestination?.route) {

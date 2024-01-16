@@ -1,8 +1,11 @@
 package com.tinyreel.authentication
 
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.core.base.BaseViewModel
+import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseUser
 import com.tinyreel.authentication.data.AuthRepository
 import com.tinyreel.authentication.data.Resource
@@ -28,6 +31,23 @@ class LoginWithEmailPhoneViewModel @Inject constructor(
     //    private val _dialCode = MutableStateFlow<Pair<String, String?>>(Pair("Np +977", null))
 //    val dialCode = _dialCode.asStateFlow()
 //
+    private val _googleState = mutableStateOf(ViewState())
+    val googleState: State<ViewState> = _googleState
+    fun googleSignIn(credential: AuthCredential) = viewModelScope.launch {
+        repository.googleSignIn(credential).collect{result ->
+            when(result){
+                is Resource.Success ->{
+                    _googleState.value = ViewState(success = result.result)
+                }
+                is Resource.Loading -> {
+                    _googleState.value = ViewState(isLoading = true)
+                }
+                is Resource.Failure -> {
+                    _googleState.value = ViewState(error(result.exception))
+                }
+            }
+        }
+    }
     private val _name = MutableStateFlow<String>("")
     val name = _name.asStateFlow()
 

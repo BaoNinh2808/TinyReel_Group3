@@ -41,6 +41,7 @@ android {
 
 dependencies {
     implementation("com.google.firebase:firebase-database:20.3.0")
+    implementation(project(":feature:authentication"))
     baseDependencies()
     composeDependencies()
     testDependencies()

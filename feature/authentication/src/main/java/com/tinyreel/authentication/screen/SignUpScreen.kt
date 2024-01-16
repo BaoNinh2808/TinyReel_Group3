@@ -94,7 +94,7 @@ fun SignupScreen(viewModel: LoginWithEmailPhoneViewModel, navController: NavCont
                     end.linkTo(parent.end)
                     width = Dimension.fillToConstraints
                 },
-            text = stringResource(id = R.string.login),
+            text = stringResource(id = R.string.sign_up),
             style = TextStyle(
                 color = Color.White,
                 fontFamily = fontFamily,
@@ -274,7 +274,9 @@ fun SignupScreen(viewModel: LoginWithEmailPhoneViewModel, navController: NavCont
                     })
                 }
                 is Resource.Success -> {
-
+                    navController.navigate(DestinationRoute.HOME_SCREEN_ROUTE){
+                        popUpTo(DestinationRoute.HOME_SCREEN_ROUTE) {inclusive = true}
+                    }
                 }
 
             }

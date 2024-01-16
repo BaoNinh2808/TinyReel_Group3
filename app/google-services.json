@@ -1,27 +1,65 @@
 {
   "project_info": {
-    "project_number": "898233538722",
-    "firebase_url": "https://tinyreel-8d37c-default-rtdb.asia-southeast1.firebasedatabase.app",
-    "project_id": "tinyreel-8d37c",
-    "storage_bucket": "tinyreel-8d37c.appspot.com"
+    "project_number": "1002342456204",
+    "project_id": "tinyreel-46587",
+    "storage_bucket": "tinyreel-46587.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:898233538722:android:d278298775aad72c7b9ffb",
+        "mobilesdk_app_id": "1:1002342456204:android:f16cfc032cb6d9f21a94a9",
         "android_client_info": {
           "package_name": "com.example.tinyreel"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1002342456204-9qkhvvqsame9m4r5p4an0i8m45nv5ipr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyAYiuBjtBqnq2XeH7lIyORR1ms0WZVM1mM"
+          "current_key": "AIzaSyDDfHFIcfyEqC8h3egmAFKrl6-f4Kim3Tg"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1002342456204-9qkhvvqsame9m4r5p4an0i8m45nv5ipr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1002342456204:android:4433998ed6f253021a94a9",
+        "android_client_info": {
+          "package_name": "com.puskal.tiktokcompose"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1002342456204-9qkhvvqsame9m4r5p4an0i8m45nv5ipr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDfHFIcfyEqC8h3egmAFKrl6-f4Kim3Tg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1002342456204-9qkhvvqsame9m4r5p4an0i8m45nv5ipr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
