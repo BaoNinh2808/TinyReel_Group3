@@ -13,7 +13,7 @@ import com.tinyreel.authentication.screen.SignupScreen
 @OptIn(ExperimentalMaterialNavigationApi::class)
 fun NavGraphBuilder.authenticationNavGraph(viewModel: LoginWithEmailPhoneViewModel, navController: NavController) {
     composable(route = AUTHENTICATION_ROUTE) {
-        LoginScreen(viewModel, navController)
+        LoginScreen(viewModel = viewModel, navController = navController)
     }
 }
 

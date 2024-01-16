@@ -38,7 +38,6 @@ import com.example.theme.SubTextColor
 import com.example.theme.fontFamily
 import com.tinyreel.authentication.LoginOption
 
-
 @Composable
 fun AuthenticationScreen(
     navController: NavController

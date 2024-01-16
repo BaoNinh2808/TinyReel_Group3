@@ -1,9 +1,14 @@
 package com.tinyreel.authentication.data
 
+import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.tinyreel.authentication.data.utils.await
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
@@ -20,6 +25,16 @@ class AuthRepositoryImpl @Inject constructor(
         }catch (e: Exception){
             e.printStackTrace()
             Resource.Failure(e)
+        }
+    }
+
+    override suspend fun googleSignIn(credential: AuthCredential): Flow<Resource<AuthResult>> {
+        return flow {
+            emit(Resource.Loading)
+            val result = firebaseAuth.signInWithCredential(credential).await()
+            emit(Resource.Success(result))
+        }.catch{
+            emit(Resource.Failure(Exception(it.message.toString())))
         }
     }
 

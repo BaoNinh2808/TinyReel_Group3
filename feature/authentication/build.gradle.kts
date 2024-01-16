@@ -48,4 +48,5 @@ dependencies {
     composeDependencies()
     testDependencies()
     firebase()
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
 }
