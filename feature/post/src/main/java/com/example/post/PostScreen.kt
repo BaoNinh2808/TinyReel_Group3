@@ -127,11 +127,11 @@ fun DescriptionAndImage(
                 },
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(start = 12.dp, top = 20.dp)
+                    .padding(top = 20.dp)
                     .background(
                         color = Color.Transparent // Make the TextField background transparent
                     ),
-                textStyle = Typography.displaySmall,
+                textStyle = Typography.bodySmall,
                 decorationBox = { innerTextField ->
                     Box(
                         modifier = Modifier.padding(horizontal = 8.dp),

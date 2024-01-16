@@ -9,6 +9,7 @@ import com.example.core.DestinationRoute.HOME_SCREEN_ROUTE
 import com.example.core.DestinationRoute.INBOX_ROUTE
 import com.example.core.DestinationRoute.MY_PROFILE_ROUTE
 import com.example.core.DestinationRoute.POST_ROUTE
+import com.example.core.DestinationRoute.SEARCH_ROUTE
 import com.example.theme.R
 
 /**
@@ -31,7 +32,7 @@ enum class BottomBarDestination(
     ),
 
     FRIENDS(
-        route = AUTHENTICATION_ROUTE,
+        route = SEARCH_ROUTE,
         title = R.string.friends,
         unFilledIcon = R.drawable.ic_friends,
         filledIcon = R.drawable.ic_friends

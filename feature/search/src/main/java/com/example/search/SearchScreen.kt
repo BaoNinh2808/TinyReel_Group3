@@ -109,77 +109,52 @@ fun SearchScreen(navController: NavController){
                     dividerColor = WhiteLightDimBg,
                 )
             ) {
-                // create 2 list of search query: old search query and hot search query (from api)
-                // create a row for each search query
-                oldSearchQuery.forEach {
-                    // pass the first item of old search query to search bar
-                    if (it == oldSearchQuery[0]){
-                        // don't do anything
-                    }
-                    else{
-                        Row(modifier = Modifier.padding(all = 16.dp)) {
-                            Icon(
-                                modifier = Modifier.padding(end = 10.dp),
-                                imageVector = Icons.Default.History,
-                                contentDescription = "History Icon")
-                            Text(text = it)
-                        }
-                    }
-                }
-
-                //Text for represent hot search query
-
-                Text(
-                    modifier = Modifier.padding(all = 16.dp),
-                    text = stringResource(id = R.string.hot_search_query),
-                    style = Typography.displayMedium
-                )
-
-                hotSearchQuery.forEach {
-                    Row(modifier = Modifier.padding(all = 16.dp)) {
-                        Icon(
-                            modifier = Modifier.padding(end = 10.dp),
-                            imageVector = Icons.Default.Whatshot,
-                            contentDescription = "History Icon")
-                        Text(text = it)
-                    }
-                }
+                //display when search bar is active (when user click on search bar)
+                displayHistoryAndHotSearchQuery(oldSearchQuery = oldSearchQuery, hotSearchQuery = hotSearchQuery)
             }
-            // create 2 list of search query: old search query and hot search query (from api)
-            // create a row for each search query
-            oldSearchQuery.forEach {
-                // pass the first item of old search query to search bar
-                if (it == oldSearchQuery[0]){
-                    // don't do anything
-                }
-                else{
-                    Row(modifier = Modifier.padding(all = 16.dp)) {
-                        Icon(
-                            modifier = Modifier.padding(end = 10.dp),
-                            imageVector = Icons.Default.History,
-                            contentDescription = "History Icon")
-                        Text(text = it)
-                    }
-                }
+            //display when search bar is not active
+            displayHistoryAndHotSearchQuery(oldSearchQuery = oldSearchQuery, hotSearchQuery = hotSearchQuery)
+        }
+    }
+}
+@Composable
+fun displayHistoryAndHotSearchQuery(
+    oldSearchQuery: MutableList<String>,
+    hotSearchQuery: MutableList<String>
+){
+    // create 2 list of search query: old search query and hot search query (from api)
+    // create a row for each search query
+    oldSearchQuery.forEach {
+        // pass the first item of old search query to search bar
+        if (it == oldSearchQuery[0]){
+            // don't do anything
+        }
+        else{
+            Row(modifier = Modifier.padding(all = 16.dp)) {
+                Icon(
+                    modifier = Modifier.padding(end = 10.dp),
+                    imageVector = Icons.Default.History,
+                    contentDescription = "History Icon")
+                Text(text = it)
             }
+        }
+    }
 
-            //Text for represent hot search query
+    //Text for represent hot search query
 
-            Text(
-                modifier = Modifier.padding(all = 16.dp),
-                text = stringResource(id = R.string.hot_search_query),
-                style = Typography.displayMedium
-            )
+    Text(
+        modifier = Modifier.padding(all = 16.dp),
+        text = stringResource(id = R.string.hot_search_query),
+        style = Typography.displayMedium
+    )
 
-            hotSearchQuery.forEach {
-                Row(modifier = Modifier.padding(all = 16.dp)) {
-                    Icon(
-                        modifier = Modifier.padding(end = 10.dp),
-                        imageVector = Icons.Default.Whatshot,
-                        contentDescription = "History Icon")
-                    Text(text = it)
-                }
-            }
+    hotSearchQuery.forEach {
+        Row(modifier = Modifier.padding(all = 16.dp)) {
+            Icon(
+                modifier = Modifier.padding(end = 10.dp),
+                imageVector = Icons.Default.Whatshot,
+                contentDescription = "History Icon")
+            Text(text = it)
         }
     }
 }

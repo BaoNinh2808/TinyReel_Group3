@@ -24,7 +24,7 @@ fun AppNavHost(
     loginViewModel: LoginWithEmailPhoneViewModel,
     navController: NavHostController = rememberNavController(),
     modifier: Modifier = Modifier,
-    startDestination: String = SEARCH_ROUTE
+    startDestination: String = POST_ROUTE
 ) {
     NavHost(
         navController = navController,

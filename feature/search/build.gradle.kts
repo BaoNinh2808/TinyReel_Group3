@@ -44,6 +44,7 @@ dependencies {
     COMMON_THEME
     COMMON_COMPOSABLE
     CORE
+    DATA
     baseDependencies()
     composeDependencies()
     testDependencies()
