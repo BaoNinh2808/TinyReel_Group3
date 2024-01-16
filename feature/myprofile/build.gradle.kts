@@ -44,6 +44,7 @@ kapt {
 
 dependencies {
     implementation(project(":feature:creatorprofile"))
+    implementation(project(":feature:authentication"))
     COMMON_THEME
     COMMON_COMPOSABLE
     CORE
@@ -52,4 +53,5 @@ dependencies {
     baseDependencies()
     composeDependencies()
     testDependencies()
+    firebase()
 }

@@ -48,19 +48,25 @@ import com.example.domain.creatorprofile.EditableCreatorProfileUseCase
 import com.example.domain.creatorprofile.GetCreatorProfileUseCase
 import com.example.domain.creatorprofile.GetCreatorPublicVideoUseCase
 import com.example.myprofile.myprofilevideo.VideoListingPager
+import com.tinyreel.authentication.data.AuthRepositoryImpl
+import com.tinyreel.authentication.di.AppModule
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyProfileScreen(
     navController: NavController
 ) {
+    val firebaseAuth = AppModule.provideFirebaseAuth()
+    val authRepository = AppModule.providesAuthRepository(AuthRepositoryImpl(firebaseAuth))
+    val currentUser = authRepository.currentUser
+    val currentUserId = currentUser?.uid?:0
+
+
     val viewModel = MyProfileViewModel(
-//        savedStateHandle = SavedStateHandle(),
         userId = 1,
         getCreatorProfileUseCase = EditableCreatorProfileUseCase(CreatorProfileRepository()),
         getCreatorPublicVideoUseCase = GetCreatorPublicVideoUseCase(CreatorProfileRepository())
     )
-//    viewModel.fetchUser(1)
 
     Scaffold(topBar = {
         TopBar(
@@ -83,10 +89,11 @@ fun MyProfileScreen(
 //            UnAuthorizedInboxScreen {
 //                navController.navigate(DestinationRoute.AUTHENTICATION_ROUTE)
 //            }
-            LoggedInProfileScreen(
-                navController = navController,
-                viewModel = viewModel
-            )
+//            LoggedInProfileScreen(
+//                navController = navController,
+//                viewModel = viewModel
+//            )
+            Text(currentUserId.toString())
         }
     }
 }

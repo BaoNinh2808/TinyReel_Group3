@@ -11,13 +11,7 @@
       <entry key="feature.camera">
         <State />
       </entry>
-      <entry key="feature.myprofile.creatorprofile">
-        <State />
-      </entry>
       <entry key="feature.post">
-        <State />
-      </entry>
-      <entry key="feature.profile">
         <State />
       </entry>
     </value>
