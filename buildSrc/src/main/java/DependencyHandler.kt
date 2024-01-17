@@ -103,6 +103,8 @@ fun DependencyHandler.moduleDependencies() {
     FEATURE_AUTHENTICATION
     FEATURE_MY_PROFILE
     FEATURE_CAMERA
+    FEATURE_POST
+    FEATURE_COMMENT_LISTING
 }
 
 
@@ -133,3 +135,5 @@ val DependencyHandler.FEATURE_MY_PROFILE
 val DependencyHandler.FEATURE_CAMERA
     get() = implementation(project(mapOf("path" to ":feature:camera")))
 
+val DependencyHandler.FEATURE_COMMENT_LISTING
+    get() = implementation(project(mapOf("path" to ":feature:commentlisting")))

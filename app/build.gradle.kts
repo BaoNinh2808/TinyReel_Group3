@@ -61,6 +61,11 @@ android {
 }
 
 dependencies {
+//    implementation(project(":feature:commentlisting"))
+//    implementation("com.google.accompanist:accompanist-navigation-material:0.28.0")
+//    implementation("com.google.accompanist:accompanist-systemuicontroller:0.28.0")
+//    implementation("androidx.compose.material:material:1.6.0-rc01")
+//    implementation("androidx.compose.material3:material3:1.2.0-beta02")
     baseDependencies()
     composeDependencies()
     testDependencies()
@@ -72,4 +77,5 @@ dependencies {
     FEATURE_MY_PROFILE
     FEATURE_CAMERA
     FEATURE_AUTHENTICATION
+    FEATURE_COMMENT_LISTING
 }

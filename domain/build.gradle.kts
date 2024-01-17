@@ -39,6 +39,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":data"))
     baseDependencies()
     composeDependencies()
     testDependencies()

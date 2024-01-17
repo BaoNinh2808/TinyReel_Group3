@@ -52,6 +52,9 @@ data class VideoModel(
 
     data class ViewerInteraction(
         var isLikedByYou: Boolean = false,
+        var isFavoritedByYou: Boolean = false,
+        var isCommentedByYou: Boolean = false,
+        var isSharedByYou: Boolean = false,
         var isAddedToFavourite: Boolean = false
     )
 }

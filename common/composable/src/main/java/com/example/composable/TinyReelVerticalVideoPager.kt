@@ -1,6 +1,7 @@
 package com.example.composable
 
 import android.content.Context
+import android.graphics.drawable.shapes.Shape
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
@@ -26,6 +27,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -55,10 +57,10 @@ fun TinyReelVerticalVideoPager(
     showUploadDate: Boolean = false,
     onclickComment: (videoId: String) -> Unit,
     onClickLike: (videoId: String, likeStatus: Boolean) -> Unit,
-    onclickFavourite: (videoId: String) -> Unit,
+    onclickFavourite: (videoId: String,saveStatus: Boolean) -> Unit,
     onClickAudio: (VideoModel) -> Unit,
     onClickUser: (userId: Long) -> Unit,
-    onClickFavourite: (isFav: Boolean) -> Unit = {},
+//    onClickFavourite: (isFav: Boolean) -> Unit = {},
     onClickShare: (() -> Unit)? = null
 ) {
     val pagerState = rememberPagerState(initialPage = initialPage ?: 0, pageCount = {videos.size})
@@ -140,7 +142,6 @@ fun TinyReelVerticalVideoPager(
                         doubleTabState = doubleTapState,
                         onclickComment = onclickComment,
                         onClickUser = onClickUser,
-                        onClickFavourite = onClickFavourite,
                         onClickShare = onClickShare
                     )
                 }
@@ -204,7 +205,8 @@ fun SideItems(
     onclickComment: (videoId: String) -> Unit,
     onClickUser: (userId: Long) -> Unit,
     onClickShare: (() -> Unit)? = null,
-    onClickFavourite: (isFav: Boolean) -> Unit
+
+//    onClickFavourite: (isFav: Boolean) -> Unit
 ) {
 
     val context = LocalContext.current
@@ -216,69 +218,87 @@ fun SideItems(
         var isLiked by remember {
             mutableStateOf(item.currentViewerInteraction.isLikedByYou)
         }
+        var isFavorited by remember {
+            mutableStateOf(item.currentViewerInteraction.isFavoritedByYou)
+        }
+        var isCommented by remember {
+            mutableStateOf(item.currentViewerInteraction.isCommentedByYou)
+        }
+        var isShared by remember {
+            mutableStateOf(item.currentViewerInteraction.isSharedByYou)
+        }
 
         LaunchedEffect(key1 = doubleTabState) {
             if (doubleTabState.first != Offset.Unspecified && doubleTabState.second) {
                 isLiked = doubleTabState.second
+                item.currentViewerInteraction.isLikedByYou = doubleTabState.second
+                item.videoStats.like = (item.videoStats.like.toString().toInt() + 1).toLong()
+                item.videoStats.formattedLikeCount = item.videoStats.like.toString()
+                databaseReference.child("TinyReel").child("forYou").child("videos").child(item.videoId).child("videoStats").child("like").setValue(item.videoStats.like)
             }
         }
+
         LikeIconButton(isLiked = isLiked,
             likeCount = item.videoStats.formattedLikeCount,
             onLikedClicked = {
                 isLiked = it
                 item.currentViewerInteraction.isLikedByYou = it
+                if (isLiked) {
+                    item.videoStats.like = (item.videoStats.like.toString().toInt() + 1).toLong()
+                    item.videoStats.formattedLikeCount = item.videoStats.like.toString()
+                    databaseReference.child("TinyReel").child("forYou").child("videos").child(item.videoId).child("videoStats").child("like").setValue(item.videoStats.like)
+                    //
+                }
+                else{
+                    item.videoStats.like = (item.videoStats.like.toString().toInt() - 1).toLong()
+                    item.videoStats.formattedLikeCount = item.videoStats.like.toString()
+                    databaseReference.child("TinyReel").child("forYou").child("videos").child(item.videoId).child("videoStats").child("like").setValue(item.videoStats.like)
+                }
             })
 
+        CommentIconButton(isCommented = isCommented,
+            commentCount = item.videoStats.formattedCommentCount,
+            //onclickComment(item.videoId)
+            onCommentClicked = {
+                isCommented = it
+                item.currentViewerInteraction.isCommentedByYou = it
+                onclickComment(item.videoId)
 
-        Icon(painter = painterResource(id = R.drawable.message_icon__3_),
-            contentDescription = null,
-            tint = Color.Unspecified,
-            modifier = Modifier
-                .size(33.dp)
-                .clickable {
-                    onclickComment(item.videoId)
-                })
-        Text(
-            text = item.videoStats.formattedCommentCount,
-            style = MaterialTheme.typography.labelMedium
+            }
         )
-        16.dp.Space()
 
-
-
-        Icon(
-            painter = painterResource(id = R.drawable.ic_tiny_saved),
-            contentDescription = null,
-            tint = Color.Unspecified,
-            modifier = Modifier.size(33.dp)
-        )
-        Text(
-            text = item.videoStats.formattedFavouriteCount,
-            style = MaterialTheme.typography.labelMedium
-        )
-        14.dp.Space()
-
-        Icon(
-            painter = painterResource(id = R.drawable.ic_tiny_share),
-            contentDescription = null,
-            tint = Color.Unspecified,
-            modifier = Modifier
-                .size(32.dp)
-                .clickable {
-                    onClickShare?.let { onClickShare.invoke() } ?: run {
-                        context.share(
-                            text = "https://github.com/example-khadka"
-                        )
-                    }
+        SaveIconButton(isFavorited= isFavorited,
+            saveCount = item.videoStats.formattedFavouriteCount,
+            onFavoritedClicked = {
+                isFavorited = it
+                item.currentViewerInteraction.isFavoritedByYou = it
+                if (isFavorited) {
+                    item.videoStats.favourite = (item.videoStats.favourite.toString().toInt() + 1).toLong()
+                    item.videoStats.formattedFavouriteCount = item.videoStats.favourite.toString()
+                    databaseReference.child("TinyReel").child("forYou").child("videos").child(item.videoId).child("videoStats").child("save").setValue(item.videoStats.favourite)
                 }
+                else{
+                    item.videoStats.favourite = (item.videoStats.favourite.toString().toInt() - 1).toLong()
+                    item.videoStats.formattedFavouriteCount = item.videoStats.favourite.toString()
+                    databaseReference.child("TinyReel").child("forYou").child("videos").child(item.videoId).child("videoStats").child("save").setValue(item.videoStats.favourite)
+                }
+            }
         )
-        Text(
-            text = item.videoStats.formattedShareCount, style = MaterialTheme.typography.labelMedium
-        )
-        20.dp.Space()
 
+        ShareIconButton(isShared = isShared,
+            shareCount = item.videoStats.formattedShareCount,
+            onSharedClicked = {
+                isShared = it
+                item.currentViewerInteraction.isSharedByYou = it
+                onClickShare?.let { onClickShare.invoke() } ?: run {
+                    context.share(
+                        //link video trên firebase
+                        text = "https://firebasestorage.googleapis.com/v0/b/tinyreel-46587.appspot.com/o/${item.videoLink}?alt=media&token=8b9f9b9e-7b9a-4b7e-9b0a-9b9b9b9b9b9b"
+                    )
+                }
+            }
+        )
         RotatingAudioView(item.authorDetails.profilePic)
-
     }
 }
 
@@ -295,12 +315,16 @@ fun LikeIconButton(
             maxSize.at(190)
             26.dp.at(330)
             32.dp.at(400).with(FastOutLinearInEasing)
-        })
+        }
+    )
 
     Box(
         modifier = Modifier
             .size(maxSize)
-            .clickable(interactionSource = remember {MutableInteractionSource()}, indication = null) {
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null
+            ) {
                 onLikedClicked(!isLiked)
             }, contentAlignment = Alignment.Center
     ) {
@@ -315,215 +339,122 @@ fun LikeIconButton(
     Text(text = likeCount, style = MaterialTheme.typography.labelMedium)
     16.dp.Space()
 }
+@Composable
+fun SaveIconButton(
+    isFavorited: Boolean, saveCount: String, onFavoritedClicked: (Boolean) -> Unit
+) {
 
-//@Composable
-//fun SideItems(
-//    modifier: Modifier,
-//    item: VideoModel,
-//    doubleTabState: Triple<Offset, Boolean, Float>,
-//    onclickComment: (videoId: String) -> Unit,
-//    onClickUser: (userId: Long) -> Unit,
-//    onClickShare: (() -> Unit)? = null,
-//    onClickFavourite: (isFav: Boolean) -> Unit
-//) {
-//
-//    val context = LocalContext.current
-//    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-//        AsyncImage(
-//            model = item.authorDetails.profilePic,
-//            contentDescription = null,
-//            modifier = Modifier
-//                .size(50.dp)
-//                .border(
-//                    BorderStroke(width = 1.dp, color = White), shape = CircleShape
-//                )
-//                .clip(shape = CircleShape)
-//                .clickable {
-//                    onClickUser.invoke(item.authorDetails.userId)
-//                },
-//            contentScale = ContentScale.Crop
-//        )
-//        Image(
-//            painter = painterResource(id = R.drawable.ic_plus),
-//            contentDescription = null,
-//            modifier = Modifier
-//                .offset(y = (-10).dp)
-//                .size(20.dp)
-//                .clip(CircleShape)
-//                .background(color = MaterialTheme.colorScheme.primary)
-//                .padding(5.5.dp),
-//            colorFilter = ColorFilter.tint(Color.White)
-//        )
-//
-//        12.dp.Space()
-//
-//        var isLiked by remember {
-//            mutableStateOf(item.currentViewerInteraction.isLikedByYou)
-//        }
-//
-//        LaunchedEffect(key1 = doubleTabState) {
-//            if (doubleTabState.first != Offset.Unspecified && doubleTabState.second) {
-//                isLiked = doubleTabState.second
-//            }
-//        }
-//        LikeIconButton(isLiked = isLiked,
-//            likeCount = item.videoStats.formattedLikeCount,
-//            onLikedClicked = {
-//                isLiked = it
-//                item.currentViewerInteraction.isLikedByYou = it
-//            })
-//
-//
-//        Icon(painter = painterResource(id = R.drawable.ic_comment),
-//            contentDescription = null,
-//            tint = Color.Unspecified,
-//            modifier = Modifier
-//                .size(33.dp)
-//                .clickable {
-//                    onclickComment(item.videoId)
-//                })
-//        Text(
-//            text = item.videoStats.formattedCommentCount,
-//            style = MaterialTheme.typography.labelMedium
-//        )
-//        16.dp.Space()
-//
-//
-//
-//        Icon(
-//            painter = painterResource(id = R.drawable.ic_bookmark),
-//            contentDescription = null,
-//            tint = Color.Unspecified,
-//            modifier = Modifier.size(33.dp)
-//        )
-//        Text(
-//            text = item.videoStats.formattedFavouriteCount,
-//            style = MaterialTheme.typography.labelMedium
-//        )
-//        14.dp.Space()
-//
-//        Icon(
-//            painter = painterResource(id = R.drawable.ic_share),
-//            contentDescription = null,
-//            tint = Color.Unspecified,
-//            modifier = Modifier
-//                .size(32.dp)
-//                .clickable {
-//                    onClickShare?.let { onClickShare.invoke() } ?: run {
-//                        context.share(
-//                            text = "https://github.com/puskal-khadka"
-//                        )
-//                    }
-//                }
-//        )
-//        Text(
-//            text = item.videoStats.formattedShareCount, style = MaterialTheme.typography.labelMedium
-//        )
-//        20.dp.Space()
-//
-//        RotatingAudioView(item.authorDetails.profilePic)
-//
-//    }
-//}
-//
-//@Composable
-//fun LikeIconButton(
-//    isLiked: Boolean, likeCount: String, onLikedClicked: (Boolean) -> Unit
-//) {
-//
-//    val maxSize = 38.dp
-//    val iconSize by animateDpAsState(targetValue = if (isLiked) 33.dp else 32.dp,
-//        animationSpec = keyframes {
-//            durationMillis = 400
-//            24.dp.at(50)
-//            maxSize.at(190)
-//            26.dp.at(330)
-//            32.dp.at(400).with(FastOutLinearInEasing)
-//        })
-//
-//    val interactionSource = remember { MutableInteractionSource() }
-//
-//    Box(
-//        modifier = Modifier
-//            .size(maxSize)
-//            .clickable(
-//                interactionSource = interactionSource,
-//                indication = null
-//            ) {
-//                onLikedClicked(!isLiked)
-//            },
-//        contentAlignment = Alignment.Center
-//    ) {
-//        Icon(
-//            painter = painterResource(id = R.drawable.ic_heart),
-//            contentDescription = null,
-//            tint = if (isLiked) MaterialTheme.colorScheme.primary else Color.White,
-//            modifier = Modifier.size(iconSize)
-//        )
-//    }
-//
-//    Text(text = likeCount, style = MaterialTheme.typography.labelMedium)
-//    16.dp.Space()
-//}
+    val maxSize = 38.dp
+    val iconSize by animateDpAsState(targetValue = if (isFavorited) 33.dp else 32.dp,
+        animationSpec = keyframes {
+            durationMillis = 400
+            24.dp.at(50)
+            maxSize.at(190)
+            26.dp.at(330)
+            32.dp.at(400).with(FastOutLinearInEasing)
+        }
+    )
 
-//@OptIn(ExperimentalFoundationApi::class)
-//@Composable
-//fun FooterUi(
-//    modifier: Modifier,
-//    item: VideoModel,
-//    showUploadDate: Boolean,
-//    onClickAudio: (VideoModel) -> Unit,
-//    onClickUser: (userId: Long) -> Unit,
-//) {
-//    Column(modifier = modifier, verticalArrangement = Arrangement.Bottom) {
-//        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable {
-//            onClickUser(item.authorDetails.userId)
-//        }) {
-//            Text(
-//                text = item.authorDetails.fullName, style = MaterialTheme.typography.bodyMedium
-//            )
-//            if (showUploadDate) {
-//                Text(
-//                    text = " . ${item.createdAt} ago",
-//                    style = MaterialTheme.typography.labelLarge,
-//                    color = Color.White.copy(alpha = 0.6f)
-//                )
-//            }
-//        }
-//        5.dp.Space()
-//        Text(
-//            text = item.description,
-//            style = MaterialTheme.typography.bodySmall,
-//            modifier = Modifier.fillMaxWidth(0.85f)
-//        )
-//        10.dp.Space()
-//        val audioInfo: String = item.audioModel?.run {
-//            "Original sound - ${audioAuthor.uniqueUserName} - ${audioAuthor.fullName}"
-//        }
-//            ?: item.run { "Original sound - ${item.authorDetails.uniqueUserName} - ${item.authorDetails.fullName}" }
-//        Row(
-//            verticalAlignment = Alignment.CenterVertically,
-//            horizontalArrangement = Arrangement.spacedBy(8.dp),
-//            modifier = Modifier.clickable {
-//                onClickAudio(item)
-//            }
-//        ) {
-//            Icon(
-//                painter = painterResource(id = R.drawable.ic_music_note),
-//                contentDescription = null,
-//                tint = Color.Unspecified,
-//                modifier = Modifier.size(12.dp)
-//            )
-//            Text(
-//                text = audioInfo,
-//                style = MaterialTheme.typography.bodySmall,
-//                modifier = Modifier
-//                    .fillMaxWidth(0.6f)
-//                    .basicMarquee()
-//            )
-//        }
-//    }
-//}
+    Box(
+        modifier = Modifier
+            .size(maxSize)
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null
+            ) {
+                onFavoritedClicked(!isFavorited)
+            }, contentAlignment = Alignment.Center
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_tiny_saved),
+            contentDescription = null,
+            tint = if (isFavorited) Color.Yellow else Color.White,
+            modifier = Modifier.size(iconSize)
+        )
+    }
+
+    Text(text = saveCount, style = MaterialTheme.typography.labelMedium)
+    16.dp.Space()
+}
+@Composable
+fun CommentIconButton(
+    isCommented: Boolean, commentCount: String, onCommentClicked: (Boolean) -> Unit
+) {
+
+    val maxSize = 38.dp
+    val iconSize by animateDpAsState(targetValue = if (isCommented) 33.dp else 32.dp,
+        animationSpec = keyframes {
+            durationMillis = 400
+            24.dp.at(50)
+            maxSize.at(190)
+            26.dp.at(330)
+            32.dp.at(400).with(FastOutLinearInEasing)
+        }
+    )
+
+    Box(
+        modifier = Modifier
+            .size(maxSize)
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null
+            ) {
+                onCommentClicked(!isCommented)
+            }, contentAlignment = Alignment.Center
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.message_icon__3_),
+            contentDescription = null,
+            //set #0578FF if isCommented else Color.White
+            tint = if (isCommented) Color(0xFFF0578FF) else Color.White,
+            //uncomment do not change color of comment icon
+
+            modifier = Modifier.size(iconSize)
+        )
+    }
+
+    Text(text = commentCount, style = MaterialTheme.typography.labelMedium)
+    16.dp.Space()
+}
+@Composable
+fun ShareIconButton(
+    isShared: Boolean, shareCount: String, onSharedClicked: (Boolean) -> Unit
+) {
+
+    val maxSize = 38.dp
+    val iconSize by animateDpAsState(targetValue = if (isShared) 33.dp else 32.dp,
+        animationSpec = keyframes {
+            durationMillis = 400
+            24.dp.at(50)
+            maxSize.at(190)
+            26.dp.at(330)
+            32.dp.at(400).with(FastOutLinearInEasing)
+        }
+    )
+
+    Box(
+        modifier = Modifier
+            .size(maxSize)
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null
+            ) {
+                onSharedClicked(!isShared)
+            }, contentAlignment = Alignment.Center
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_tiny_share),
+            contentDescription = null,
+            tint = if (isShared) Color.Green else Color.White,
+            //uncomment do not change color of comment icon
+
+            modifier = Modifier.size(iconSize)
+        )
+    }
+
+    Text(text = shareCount, style = MaterialTheme.typography.labelMedium)
+    16.dp.Space()
+}
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun FooterUi(
@@ -534,12 +465,12 @@ fun FooterUi(
     onClickUser: (userId: Long) -> Unit,
 ) {
     Column(modifier = modifier, verticalArrangement = Arrangement.Bottom) {
-        Row {
+        Row (verticalAlignment = Alignment.CenterVertically){
             AsyncImage(
                 model = item.authorDetails.profilePic,
                 contentDescription = null,
                 modifier = Modifier
-                    .size(50.dp)
+                    .size(60.dp)
                     .border(
                         BorderStroke(width = 1.dp, color = White), shape = CircleShape
                     )
@@ -550,114 +481,120 @@ fun FooterUi(
                 contentScale = ContentScale.Crop
             )
             12.dp.Space()
-            //space between profile pic and follow button 4dp
-            4.dp.Space()
-            androidx.compose.material3.Button(
-                onClick = {
 
-
-                },
-                modifier = Modifier,
-                shape = RoundedCornerShape(2.dp),
-                colors = ButtonDefaults.buttonColors(
-                    //backgroundColor = Red,
-                    contentColor = Color.White,
-
+            Column(
+                modifier= Modifier
+                    .width(8.dp)
+            ){}
+            Column {
+                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable {
+                    onClickUser(item.authorDetails.userId)
+                }) {
+                    Text(
+                        text = item.authorDetails.fullName,
+                        style = MaterialTheme.typography.bodyMedium
                     )
-            ) {
-                Text(text = stringResource(id = R.string.follow))
-            }
-        }
-        5.dp.Space()
-
-        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.clickable {
-            onClickUser(item.authorDetails.userId)
-        }) {
-            Text(
-                text = item.authorDetails.fullName,
-                style = MaterialTheme.typography.bodyMedium
-            )
-            if (showUploadDate) {
-                Text(
-                    text = " . ${item.createdAt} ago",
-                    style = MaterialTheme.typography.labelLarge,
-                    color = Color.White.copy(alpha = 0.6f)
-                )
-            }
-        }
-        5.dp.Space()
-        Text(
-            text = item.description,
-            style = MaterialTheme.typography.bodySmall,
-            modifier = Modifier.fillMaxWidth(0.85f)
-        )
-        10.dp.Space()
-        val audioInfo: String = item.audioModel?.run {
-            "Original sound - ${audioAuthor.uniqueUserName} - ${audioAuthor.fullName}"
-        }
-            ?: item.run { "Original sound - ${item.authorDetails.uniqueUserName} - ${item.authorDetails.fullName}" }
-
-
-        //button follow
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.clickable {
-                onClickAudio(item)
-            }
-
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_music_note),
-                contentDescription = null,
-                tint = Color.Unspecified,
-                modifier = Modifier.size(12.dp)
-            )
-            Text(
-                text = audioInfo,
-                style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier
-                    .fillMaxWidth(0.6f)
-                    .basicMarquee()
-            )
-        }
-    }
-}
-
-
-@Composable
-fun RotatingAudioView(img: String) {
-    val infiniteTransition = rememberInfiniteTransition()
-    val angle by infiniteTransition.animateFloat(
-        initialValue = 0f,
-        targetValue = 360f,
-        animationSpec = infiniteRepeatable(animation = keyframes { durationMillis = 7000 })
-    )
-
-    Box(modifier = Modifier.rotate(angle)) {
-        Box(
-            modifier = Modifier
-                .background(
-                    brush = Brush.horizontalGradient(
-                        listOf(
-                            Gray20, Gray20, GrayLight, Gray20, Gray20,
+                    if (showUploadDate) {
+                        Text(
+                            text = " . ${item.createdAt} ago",
+                            style = MaterialTheme.typography.labelLarge,
+                            color = Color.White.copy(alpha = 0.6f)
                         )
-                    ), shape = CircleShape
-                )
-                .size(46.dp), contentAlignment = Alignment.Center
-        ) {
+                    }
+                }
 
-            AsyncImage(
-                model = img,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(28.dp)
-                    .clip(CircleShape),
-                contentScale = ContentScale.Crop
-            )
-
+                androidx.compose.material3.Button(
+                    onClick = { },
+                    modifier = Modifier
+                        .padding(0.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        contentColor = Color.White,
+                        containerColor = Color.Red,
+                    ),
+                ) {
+                    Text(
+                        style = MaterialTheme.typography.bodySmall,
+                        text = stringResource(id = R.string.follow)
+                    )
+                }
+            }
         }
-    }
+            5.dp.Space()
 
+
+            5.dp.Space()
+            Text(
+                text = item.description,
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.fillMaxWidth(0.85f)
+            )
+            10.dp.Space()
+            val audioInfo: String = item.audioModel?.run {
+                "Original sound - ${audioAuthor.uniqueUserName} - ${audioAuthor.fullName}"
+            }
+                ?: item.run { "Original sound - ${item.authorDetails.uniqueUserName} - ${item.authorDetails.fullName}" }
+
+
+            //button follow
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.clickable {
+                    onClickAudio(item)
+                }
+
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_music_note),
+                    contentDescription = null,
+                    tint = Color.Unspecified,
+                    modifier = Modifier.size(12.dp)
+                )
+                Text(
+                    text = audioInfo,
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier
+                        .fillMaxWidth(0.6f)
+                        .basicMarquee()
+                )
+            }
+        }
 }
 
+
+
+    @Composable
+    fun RotatingAudioView(img: String) {
+        val infiniteTransition = rememberInfiniteTransition()
+        val angle by infiniteTransition.animateFloat(
+            initialValue = 0f,
+            targetValue = 360f,
+            animationSpec = infiniteRepeatable(animation = keyframes { durationMillis = 7000 })
+        )
+
+        Box(modifier = Modifier.rotate(angle)) {
+            Box(
+                modifier = Modifier
+                    .background(
+                        brush = Brush.horizontalGradient(
+                            listOf(
+                                Gray20, Gray20, GrayLight, Gray20, Gray20,
+                            )
+                        ), shape = CircleShape
+                    )
+                    .size(46.dp), contentAlignment = Alignment.Center
+            ) {
+
+                AsyncImage(
+                    model = img,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(28.dp)
+                        .clip(CircleShape),
+                    contentScale = ContentScale.Crop
+                )
+
+            }
+        }
+    }

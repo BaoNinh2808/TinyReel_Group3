@@ -1,12 +1,15 @@
 package com.example.tinyreel
 
 import android.app.Activity
+//import android.view.WindowInsets
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
@@ -21,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.navigation.material.BottomSheetNavigator
@@ -85,7 +89,9 @@ fun RootScreen(
                     }
                     BottomBar(navController, currentDestination, isDarkTheme = darkMode)
                 }
+
             ) {
+
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
@@ -95,8 +101,6 @@ fun RootScreen(
                 }
             }
         }
-
-
     }
 }
 

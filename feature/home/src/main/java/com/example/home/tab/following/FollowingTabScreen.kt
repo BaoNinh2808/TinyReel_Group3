@@ -34,12 +34,12 @@ import com.example.theme.SubTextColor
 fun FollowingScreen(
     navController: NavController,
     parentPagerState: PagerState,
-//    viewModel: FollowingViewModel = hiltViewModel()
-    viewModel: FollowingViewModel= FollowingViewModel(
-        getContentCreatorsUseCase = GetContentCreatorsUseCase(
-            followingRepository = FollowingRepository()
-        )
-    )
+    viewModel: FollowingViewModel = hiltViewModel()
+//    viewModel: FollowingViewModel= FollowingViewModel(
+//        getContentCreatorsUseCase = GetContentCreatorsUseCase(
+//            followingRepository = FollowingRepository()
+//        )
+//    )
 ) {
     val viewState by viewModel.viewState.collectAsState()
     Column(

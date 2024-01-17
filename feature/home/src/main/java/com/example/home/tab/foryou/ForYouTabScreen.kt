@@ -42,11 +42,12 @@ fun ForYouTabScreen(
 
         viewState?.forYouPageFeed?.let {
 
+
             TinyReelVerticalVideoPager(
                 videos = it,
                 onclickComment = { navController.navigate(COMMENT_BOTTOM_SHEET_ROUTE) },
                 onClickLike = { s: String, b: Boolean -> },
-                onclickFavourite = {},
+                onclickFavourite = { s: String, b: Boolean -> },
                 onClickAudio = {},
                 onClickUser = { userId -> navController.navigate("$CREATOR_PROFILE_ROUTE/$userId") }
             )

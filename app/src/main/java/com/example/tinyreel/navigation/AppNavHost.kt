@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.camera.cameraMediaNavGraph
+import com.example.commentlisting.commentListingNavGraph
 import com.example.core.DestinationRoute.CAMERA_ROUTE
 import com.example.core.DestinationRoute.HOME_SCREEN_ROUTE
 import com.example.core.DestinationRoute.MY_PROFILE_ROUTE
@@ -31,7 +32,7 @@ fun AppNavHost(
     ) {
         homeNavGraph(navController)
         postNavGraph(navController)
-//        commentListingNavGraph(navController)
+        commentListingNavGraph(navController)
 //        creatorProfileNavGraph(navController)
 //        inboxNavGraph(navController)
         authenticationNavGraph(loginViewModel, navController)

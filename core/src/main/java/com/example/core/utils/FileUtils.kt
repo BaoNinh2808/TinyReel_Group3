@@ -37,4 +37,37 @@ object FileUtils {
         }
         return bitmap
     }
+
+    fun extractThumbnail2(videoPath: String, atTime: Int): Bitmap? {
+        var bitmap: Bitmap? = null
+        val retriever: MediaMetadataRetriever
+        try {
+            retriever = MediaMetadataRetriever()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+                retriever.setDataSource(
+                    videoPath,
+                    emptyMap<String, String>()
+                )
+            }
+            else {
+                retriever.setDataSource(videoPath)
+            }
+
+            bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+                retriever.getScaledFrameAtTime(
+                    atTime.toLong(),
+                    MediaMetadataRetriever.OPTION_CLOSEST,
+                    1280,
+                    720
+                )
+            } else {
+                retriever.getFrameAtTime(atTime.toLong())
+            }
+
+            retriever.release()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return bitmap
+    }
 }
