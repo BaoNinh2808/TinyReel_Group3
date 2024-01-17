@@ -45,6 +45,7 @@ dependencies {
     COMMON_COMPOSABLE
     CORE
     DATA
+    DOMAIN
     baseDependencies()
     composeDependencies()
     testDependencies()

@@ -10,11 +10,13 @@ import com.example.core.DestinationRoute.CAMERA_ROUTE
 import com.example.core.DestinationRoute.HOME_SCREEN_ROUTE
 import com.example.core.DestinationRoute.MY_PROFILE_ROUTE
 import com.example.core.DestinationRoute.POST_ROUTE
+import com.example.core.DestinationRoute.SEARCH_RESULT_ROUTE
 import com.example.core.DestinationRoute.SEARCH_ROUTE
 import com.example.home.homeNavGraph
 import com.example.myprofile.myProfileNavGraph
 import com.example.post.postNavGraph
 import com.example.search.searchNavGraph
+import com.example.search.searchResultNavGraph
 import com.tinyreel.authentication.LoginWithEmailPhoneViewModel
 import com.tinyreel.authentication.authenticationNavGraph
 import com.tinyreel.authentication.signUpNavGraph
@@ -24,7 +26,7 @@ fun AppNavHost(
     loginViewModel: LoginWithEmailPhoneViewModel,
     navController: NavHostController = rememberNavController(),
     modifier: Modifier = Modifier,
-    startDestination: String = POST_ROUTE
+    startDestination: String = SEARCH_RESULT_ROUTE
 ) {
     NavHost(
         navController = navController,
@@ -44,5 +46,6 @@ fun AppNavHost(
 //        settingNavGraph(navController)
         cameraMediaNavGraph(navController)
         searchNavGraph(navController)
+        searchResultNavGraph(navController, query = "aaaa")
     }
 }
