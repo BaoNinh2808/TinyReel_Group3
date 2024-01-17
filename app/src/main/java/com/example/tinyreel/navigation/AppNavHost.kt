@@ -39,7 +39,7 @@ fun AppNavHost(
         signUpNavGraph(loginViewModel, navController)
 //        loginEmailPhoneNavGraph(navController)
 //        friendsNavGraph(navController)
-        myProfileNavGraph(navController)
+        myProfileNavGraph(loginViewModel, navController)
 //        settingNavGraph(navController)
         cameraMediaNavGraph(navController)
     }

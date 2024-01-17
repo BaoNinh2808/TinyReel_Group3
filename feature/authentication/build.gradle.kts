@@ -42,6 +42,7 @@ android {
 
 dependencies {
     implementation("com.google.android.gms:play-services-auth:20.7.0")
+    implementation("androidx.compose.material:material-icons-extended:1.4.0-beta01")
     COMMON_THEME
     CORE
     COMMON_COMPOSABLE

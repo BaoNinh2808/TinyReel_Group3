@@ -28,14 +28,17 @@ import coil.compose.AsyncImage
 import coil.compose.ImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
+import com.example.core.DestinationRoute
 import com.example.data.repository.creatorprofile.CreatorProfileRepository
 import com.example.domain.creatorprofile.EditableCreatorProfileUseCase
 import com.example.domain.creatorprofile.GetCreatorProfileUseCase
 import com.example.domain.creatorprofile.GetCreatorPublicVideoUseCase
+import com.tinyreel.authentication.LoginWithEmailPhoneViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileSettingScreen(
+    loginViewModel: LoginWithEmailPhoneViewModel,
     navController: NavController,
 ) {
     val viewModel = MyProfileViewModel(
@@ -169,6 +172,19 @@ fun ProfileSettingScreen(
                     .padding(16.dp)
             ) {
                 Text("Commit changes")
+            }
+
+            Button(
+                onClick = {
+                    loginViewModel.logout()
+                    navController.navigate(DestinationRoute.AUTHENTICATION_ROUTE) {
+                        popUpTo(DestinationRoute.MY_PROFILE_SETTING_ROUTE) { inclusive = true }
+                    }
+                },
+                modifier = Modifier
+                    .padding(16.dp)
+            ) {
+                Text("Đăng xuất")
             }
         }
     }

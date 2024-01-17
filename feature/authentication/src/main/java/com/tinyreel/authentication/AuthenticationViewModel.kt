@@ -70,6 +70,7 @@ class LoginWithEmailPhoneViewModel @Inject constructor(
         repository.logout()
         _loginFlow.value = null
         _signupFlow.value = null
+        _googleFlow.value = null
     }
 
     override fun onTriggerEvent(event: LoginEmailPhoneEvent) {

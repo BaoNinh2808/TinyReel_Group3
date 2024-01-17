@@ -46,10 +46,12 @@ import com.example.data.source.UsersDataSource.kylieJenner
 import com.example.domain.creatorprofile.EditableCreatorProfileUseCase
 import com.example.domain.creatorprofile.GetCreatorProfileUseCase
 import com.example.domain.creatorprofile.GetCreatorPublicVideoUseCase
+import com.tinyreel.authentication.LoginWithEmailPhoneViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyProfileScreen(
+    loginViewModel: LoginWithEmailPhoneViewModel,
     navController: NavController
 ) {
     val viewModel = MyProfileViewModel(

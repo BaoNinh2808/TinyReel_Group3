@@ -10,15 +10,18 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -44,6 +47,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -79,6 +84,8 @@ import com.tinyreel.authentication.LoginWithEmailPhoneViewModel
 import com.tinyreel.authentication.data.AuthRepository
 import com.tinyreel.authentication.data.Resource
 import com.tinyreel.authentication.serverClientID
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -90,6 +97,8 @@ fun LoginScreen(viewModel:LoginWithEmailPhoneViewModel, navController: NavContro
     val context = LocalContext.current
 
     val googleFlow = viewModel?.googleFlow?.collectAsState()
+
+    var isPasswordVisible by remember { mutableStateOf(false) }
 
     val launcher = rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()){
         val account = GoogleSignIn.getSignedInAccountFromIntent(it.data)
@@ -196,7 +205,7 @@ fun LoginScreen(viewModel:LoginWithEmailPhoneViewModel, navController: NavContro
                 viewModel.onTriggerEvent(LoginEmailPhoneEvent.OnChangeEmailEntry(it))
             },
             label = {
-                Text(text = stringResource(id = R.string.user_name))
+                Text(text = stringResource(id = R.string.enter_email_address_or_username))
             },
             modifier = Modifier.constrainAs(refEmail) {
                 top.linkTo(refLoginOftion.bottom, spacing.extraLarge)
@@ -231,8 +240,86 @@ fun LoginScreen(viewModel:LoginWithEmailPhoneViewModel, navController: NavContro
                 autoCorrect = false,
                 keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Done
-            )
+            ),
+            trailingIcon = {
+                IconButton(
+                    onClick = {
+                        isPasswordVisible = !isPasswordVisible
+                    },
+                ) {
+                    Icon(
+                        if (isPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                        contentDescription = null
+                    )
+                }
+            },
+            visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation()
         )
+
+
+//        OutlinedTextField(
+//            value = password,
+//            onValueChange = {
+//                viewModel.onTriggerEvent(LoginEmailPhoneEvent.OnChangePasswordEntry(it))
+//            },
+//            label = {
+//                Text(text = stringResource(id = R.string.password))
+//            },
+//            visualTransformation = PasswordVisualTransformation(),
+//            modifier = Modifier.constrainAs(refPassword) {
+//                top.linkTo(refEmail.bottom, spacing.medium)
+//                start.linkTo(parent.start, spacing.large)
+//                end.linkTo(parent.end, spacing.large)
+//                width = Dimension.fillToConstraints
+//
+//            },// Ẩn mật khẩu
+//            keyboardOptions = KeyboardOptions(
+//                capitalization = KeyboardCapitalization.None,
+//                autoCorrect = false,
+//                keyboardType = KeyboardType.Password,
+//                imeAction = ImeAction.Done
+//            ),
+//            trailingIcon = {
+//                IconButton(
+//                    onClick = {
+//                        isPasswordVisible = !isPasswordVisible
+//                    },
+//                    modifier = Modifier.interactive(
+//                        indication = remember { MutableInteractionSource() },
+//                        interactionSource = remember { MutableInteractionSource() }
+//                    )
+//                ) {
+//                    Icon(
+//                        if (isPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+//                        contentDescription = null
+//                    )
+//                }
+//            },
+//            visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation()
+//        )
+
+
+//        TextField(
+//            value = password,
+//            onValueChange = {
+//                viewModel.onTriggerEvent(LoginEmailPhoneEvent.OnChangePasswordEntry(it))
+//            },
+//            label = {
+//                Text(text = stringResource(id = R.string.password))
+//            },
+//            modifier = Modifier.constrainAs(refPassword) {
+//                top.linkTo(refEmail.bottom, spacing.medium)
+//                start.linkTo(parent.start, spacing.large)
+//                end.linkTo(parent.end, spacing.large)
+//                width = Dimension.fillToConstraints
+//            },
+//            keyboardOptions = KeyboardOptions(
+//                capitalization = KeyboardCapitalization.None,
+//                autoCorrect = false,
+//                keyboardType = KeyboardType.Password,
+//                imeAction = ImeAction.Done
+//            )
+//        )
 
         Button(
             onClick = {
@@ -278,7 +365,7 @@ fun LoginScreen(viewModel:LoginWithEmailPhoneViewModel, navController: NavContro
                         popUpTo(SIGNUP_ROUTE) { inclusive = true }
                     }
                 },
-            text = stringResource(id = R.string.Already_has_account),
+            text = stringResource(id = R.string.Guess_account),
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurface
