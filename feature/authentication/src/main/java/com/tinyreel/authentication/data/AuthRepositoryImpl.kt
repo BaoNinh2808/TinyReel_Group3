@@ -28,15 +28,15 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
-//    override suspend fun googleSignIn(credential: AuthCredential): Flow<Resource<AuthResult>> {
-//        return flow {
-//            emit(Resource.Loading)
-//            val result = firebaseAuth.signInWithCredential(credential).await()
-//            emit(Resource.Success(result))
-//        }.catch{
-//            emit(Resource.Failure(Exception(it.message.toString())))
-//        }
-//    }
+    override suspend fun googleSignIn(credential: AuthCredential): Resource<FirebaseUser> {
+        return try{
+            val result = firebaseAuth.signInWithCredential(credential).await()
+            Resource.Success(result.user!!)
+        }catch (e: Exception){
+            e.printStackTrace()
+            Resource.Failure(e)
+        }
+    }
 
     override suspend fun signup(
         name: String,

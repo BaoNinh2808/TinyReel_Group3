@@ -3,6 +3,10 @@ package com.tinyreel.authentication.screen
 import android.app.Activity
 import android.content.Context
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -67,12 +71,14 @@ import com.example.core.DestinationRoute.SIGNUP_ROUTE
 import com.example.theme.spacing
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.GoogleAuthProvider
 import com.tinyreel.authentication.LoginEmailPhoneEvent
 import com.tinyreel.authentication.LoginOption
 import com.tinyreel.authentication.LoginWithEmailPhoneViewModel
 import com.tinyreel.authentication.data.AuthRepository
 import com.tinyreel.authentication.data.Resource
-
+import com.tinyreel.authentication.serverClientID
 
 
 //@Composable
@@ -464,19 +470,22 @@ import com.tinyreel.authentication.data.Resource
 //}
 
 
-@Composable
-internal fun AuthenticationButton(modifier: Modifier, onClickButton: (LoginOption) -> Unit) {
-    Row(
-        modifier = modifier,
-    ) {
-        LoginOption.values().asList().forEach {
-            CustomIconButton(
-                buttonText = stringResource(id = it.title),
-                icon = it.icon,
-                style = TextStyle(fontSize = 12.sp),
-                modifier = Modifier.weight(1f),
-                containerColor = it.containerColor,
-                contentColor = it.contentColor
+//@Composable
+//internal fun AuthenticationButton(modifier: Modifier, viewModel:LoginWithEmailPhoneViewModel) {
+//    val context = LocalContext.current
+//
+//
+//    Row(
+//        modifier = modifier,
+//    ) {
+//        LoginOption.values().asList().forEach {
+//            CustomIconButton(
+//                buttonText = stringResource(id = it.title),
+//                icon = it.icon,
+//                style = TextStyle(fontSize = 12.sp),
+//                modifier = Modifier.weight(1f),
+//                containerColor = it.containerColor,
+//                contentColor = it.contentColor,
 //                onClickButton = {
 //                    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
 //                        .requestEmail()
@@ -484,31 +493,40 @@ internal fun AuthenticationButton(modifier: Modifier, onClickButton: (LoginOptio
 //                        .build()
 //
 //                        val googleSignInClient = GoogleSignIn.getClient(context, gso)
+//                    launcher.launch(googleSignInClient.signInIntent)
 //                }
-            ){
-                onClickButton(it)
-            }
-            Spacer(modifier = Modifier.width(8.dp)) // Khoảng cách giữa các nút
-        }
-    }
-}
+//            )
+//            Spacer(modifier = Modifier.width(8.dp)) // Khoảng cách giữa các nút
+//        }
+//    }
+//}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(viewModel:LoginWithEmailPhoneViewModel, navController: NavController) {
-
-//    var email by remember { mutableStateOf("") }
-//    var password by remember { mutableStateOf("") }
-    val context = LocalContext.current
     val email by viewModel.email.collectAsState()
     val password by viewModel.password.collectAsState()
 
     val loginFlow = viewModel?.loginFlow?.collectAsState()
+    val context = LocalContext.current
+
+    val googleFlow = viewModel?.googleFlow?.collectAsState()
+
+    val launcher = rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()){
+        val account = GoogleSignIn.getSignedInAccountFromIntent(it.data)
+        try{
+            print("Haha")
+            val result = account.getResult(ApiException::class.java)
+            val credentials = GoogleAuthProvider.getCredential(result.idToken, null)
+            viewModel.googleSignIn(credentials)
+        }catch (it: ApiException){
+            print(it)
+        }
+    }
 
     ConstraintLayout(
         modifier = Modifier.fillMaxSize()
     ) {
-
         val (refTitle, refDescribe, refBackground, refLoginOftion, refEmail, refPassword, refButtonLogin, refTextSignup, refGuess, refLoader) = createRefs()
         val spacing = MaterialTheme.spacing
 
@@ -559,17 +577,39 @@ fun LoginScreen(viewModel:LoginWithEmailPhoneViewModel, navController: NavContro
                 fontWeight = FontWeight.Bold,
             )
         )
+//
+//        AuthenticationButton(
+//            modifier = Modifier
+//                .constrainAs(refLoginOftion) {
+//                    top.linkTo(refDescribe.bottom, spacing.medium)
+//                    start.linkTo(parent.start)
+//                    end.linkTo(parent.end)
+//                    width = Dimension.fillToConstraints
+//                }, viewModel)
 
-        AuthenticationButton(
+        CustomIconButton(
+            buttonText = stringResource(id = LoginOption.GOOGLE.title),
+            icon = LoginOption.GOOGLE.icon,
+            style = TextStyle(fontSize = 12.sp),
             modifier = Modifier
                 .constrainAs(refLoginOftion) {
                     top.linkTo(refDescribe.bottom, spacing.medium)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
+                    start.linkTo(parent.start, spacing.extraLarge)
+                    end.linkTo(parent.end, spacing.extraLarge)
                     width = Dimension.fillToConstraints
-                }){
+                },
+            containerColor = LoginOption.GOOGLE.containerColor,
+            contentColor = LoginOption.GOOGLE.contentColor,
+            onClickButton = {
+                val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestEmail()
+                    .requestIdToken(serverClientID)
+                    .build()
 
-        }
+                val googleSignInClient = GoogleSignIn.getClient(context, gso)
+                launcher.launch(googleSignInClient.signInIntent)
+            }
+        )
 
         TextField(
             value = email,
@@ -665,6 +705,29 @@ fun LoginScreen(viewModel:LoginWithEmailPhoneViewModel, navController: NavContro
             color = MaterialTheme.colorScheme.onSurface
         )
 
+        googleFlow?.value?.let {
+            when(it){
+                is Resource.Failure -> {
+                    val context = LocalContext.current
+                    Toast.makeText(context, it.exception.message, Toast.LENGTH_LONG).show()
+                }
+                Resource.Loading -> {
+                    CircularProgressIndicator(modifier = Modifier.constrainAs(refLoader){
+                        top.linkTo(parent.top)
+                        bottom.linkTo(parent.bottom)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    })
+                }
+                is Resource.Success -> {
+                    navController.navigate(HOME_SCREEN_ROUTE){
+                        popUpTo(HOME_SCREEN_ROUTE) {inclusive = true}
+                    }
+                }
+
+            }
+        }
+
         loginFlow?.value?.let {
             when(it){
                 is Resource.Failure -> {
@@ -689,10 +752,3 @@ fun LoginScreen(viewModel:LoginWithEmailPhoneViewModel, navController: NavContro
         }
     }
 }
-
-//@Preview(showBackground = true)
-//@Composable
-//fun AuthenticationScreenPreview() {
-//    val navController = rememberNavController()
-//    LoginScreen(null, navController = navController)
-//}

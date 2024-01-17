@@ -31,9 +31,9 @@ class LoginWithEmailPhoneViewModel @Inject constructor(
     //    private val _dialCode = MutableStateFlow<Pair<String, String?>>(Pair("Np +977", null))
 //    val dialCode = _dialCode.asStateFlow()
 //
-//    private val _googleState = mutableStateOf(ViewState())
-//    val googleState: State<ViewState> = _googleState
-//    fun googleSignIn(credential: AuthCredential) = viewModelScope.launch {
+    private val _googleFlow = MutableStateFlow<Resource<FirebaseUser>?>(null)
+    val googleFlow: StateFlow<Resource<FirebaseUser>?> = _googleFlow
+    fun googleSignIn(credential: AuthCredential) = viewModelScope.launch {
 //        repository.googleSignIn(credential).collect{result ->
 //            when(result){
 //                is Resource.Success ->{
@@ -47,7 +47,10 @@ class LoginWithEmailPhoneViewModel @Inject constructor(
 //                }
 //            }
 //        }
-//    }
+        _googleFlow.value = Resource.Loading
+        val result = repository.googleSignIn(credential)
+        _googleFlow.value = result
+    }
     private val _name = MutableStateFlow<String>("")
     val name = _name.asStateFlow()
 

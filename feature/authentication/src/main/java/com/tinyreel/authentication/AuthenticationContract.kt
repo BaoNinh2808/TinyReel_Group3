@@ -13,7 +13,7 @@ import com.tinyreel.authentication.data.Resource
 class AuthenticationContract {
 }
 
-
+const val serverClientID = "1002342456204-9qkhvvqsame9m4r5p4an0i8m45nv5ipr.apps.googleusercontent.com"
 enum class LoginOption(
     @DrawableRes var icon: Int,
     @StringRes val title: Int,
