@@ -212,7 +212,7 @@ fun SignupScreen(viewModel: LoginWithEmailPhoneViewModel, navController: NavCont
 
         Button(
             onClick = {
-                viewModel?.signup(name, email, password)
+                viewModel?.signup(name, email, password, confirmPassword)
             },
             modifier = Modifier.constrainAs(refButtonSignup) {
                 top.linkTo(refConfirmPassword.bottom, spacing.large)
@@ -223,7 +223,6 @@ fun SignupScreen(viewModel: LoginWithEmailPhoneViewModel, navController: NavCont
         ) {
             Text(text = stringResource(id = R.string.sign_up), style = MaterialTheme.typography.titleMedium)
         }
-
 
         Text(
             modifier = Modifier

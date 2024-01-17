@@ -41,8 +41,12 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun signup(
         name: String,
         email: String,
-        password: String
+        password: String,
+        confirmPassword: String,
     ): Resource<FirebaseUser> {
+        if (password != confirmPassword)
+            return Resource.Failure(Exception("Password and confirmPassword do not match"))
+
         return try{
             val result = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
             result?.user?.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(name).build())?.await()
