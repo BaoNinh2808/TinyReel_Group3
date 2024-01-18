@@ -2,7 +2,6 @@ package com.example.composable
 
 import android.graphics.Bitmap
 import android.net.Uri
-import android.util.Log
 import android.view.ViewGroup
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -55,17 +54,9 @@ fun VideoPlayer(
 
     LaunchedEffect(key1 = true) {
         withContext(Dispatchers.IO) {
-            Log.d("Thumbnail", video.videoLink)
-            try{
-            val bm = FileUtils.extractThumbnail(
-                context.assets.openFd("videos/${video.videoLink}"), 1
-            )
+            val bm = FileUtils.extractThumbnail2("htps://firebasestorage.googleapis.com/v0/b/tinyreel-46587.appspot.com/o/${video.videoLink}?alt=media&token=8b9f9b9e-7b9a-4b7e-9b0a-9b9b9b9b9b9b", 0)
             withContext(Dispatchers.Main) {
                 thumbnail = thumbnail.copy(first = bm, second = thumbnail.second)
-            }
-            }
-            catch (e:Exception){
-                Log.d("Thumbnail exception", e.toString() + video.videoLink)
             }
         }
     }
@@ -74,7 +65,7 @@ fun VideoPlayer(
             ExoPlayer.Builder(context).build().apply {
                 videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT
                 repeatMode = Player.REPEAT_MODE_ONE
-                setMediaItem(MediaItem.fromUri(Uri.parse("asset:///videos/${video.videoLink}")))
+                setMediaItem(MediaItem.fromUri(Uri.parse("https://firebasestorage.googleapis.com/v0/b/tinyreel-46587.appspot.com/o/${video.videoLink}?alt=media&token=8b9f9b9e-7b9a-4b7e-9b0a-9b9b9b9b9b9b")))
                 playWhenReady = true
                 prepare()
                 addListener(object : Player.Listener {
@@ -143,7 +134,3 @@ fun VideoPlayer(
     }
 
 }
-
-
-
-

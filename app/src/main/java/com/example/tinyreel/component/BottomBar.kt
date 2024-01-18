@@ -25,7 +25,7 @@ fun BottomBar(
         modifier = Modifier
             .height(52.dp)
             .shadow(elevation = 16.dp)
-            .padding(top = 2.dp)
+            .padding(top = 0.dp)//là
     ) {
         BottomBarDestination.values().asList().forEach {
             BottomItem(it, navController, currentDestination, isDarkTheme)

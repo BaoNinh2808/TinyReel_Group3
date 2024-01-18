@@ -141,3 +141,5 @@ val DependencyHandler.FEATURE_CAMERA
 val DependencyHandler.FEATURE_SEARCH
     get() = implementation(project(mapOf("path" to ":feature:search")))
 
+val DependencyHandler.FEATURE_COMMENT_LISTING
+    get() = implementation(project(mapOf("path" to ":feature:commentlisting")))
