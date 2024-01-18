@@ -67,13 +67,13 @@ fun TinyReelVerticalVideoPager(
     val coroutineScope = rememberCoroutineScope()
     val localDensity = LocalDensity.current
     val context = LocalContext.current
-    FirebaseApp.initializeApp(context)
-    databaseReference.child("TinyReel").child("forYou").child("videos").setValue(videos)
+//    FirebaseApp.initializeApp(context)
+//    databaseReference.child("TinyReel").child("forYou").child("videos").setValue(videos)
 
 
     lateinit var database: DatabaseReference
     database = Firebase.database.reference
-//    database.child("TinyReel").child("forYou").child("videos").setValue(videos)
+    database.child("TinyReel").child("forYou").child("videos").setValue(videos)
 
 
     val fling = PagerDefaults.flingBehavior(

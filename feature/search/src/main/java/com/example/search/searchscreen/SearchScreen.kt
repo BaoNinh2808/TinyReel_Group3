@@ -31,6 +31,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.composable.TopBar
+import com.example.core.DestinationRoute.SEARCH_RESULT_ROUTE
 import com.example.data.repository.search.SearchRepository
 import com.example.domain.search.SearchUseCase
 import com.example.theme.R
@@ -73,6 +74,7 @@ fun SearchScreen(
                 onSearch = {
 //                    oldSearchQuery.add(text)
                     viewModel.updateSearchQuery(1, text)
+                    navController.navigate(SEARCH_RESULT_ROUTE)
                     active = false
                 },
                 active = active,

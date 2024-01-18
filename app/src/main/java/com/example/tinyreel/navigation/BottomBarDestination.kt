@@ -12,10 +12,6 @@ import com.example.core.DestinationRoute.POST_ROUTE
 import com.example.core.DestinationRoute.SEARCH_ROUTE
 import com.example.theme.R
 
-/**
- * Created by Puskal Khadka on 3/14/2023.
- */
-
 enum class BottomBarDestination(
     val route: String,
     @StringRes val title: Int? = null,
@@ -45,7 +41,7 @@ enum class BottomBarDestination(
     ),
 
     INBOX(
-        route = POST_ROUTE,
+        route = SEARCH_ROUTE,
         title = R.string.inbox,
         unFilledIcon = R.drawable.ic_inbox,
         filledIcon = R.drawable.ic_inbox_fill
