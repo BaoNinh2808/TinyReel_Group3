@@ -1,103 +1,98 @@
 package com.example.data.repository.search
 
+import android.util.Log
+import com.example.data.model.UserModel
 import com.example.data.model.VideoModel
 import com.example.data.source.UsersDataSource.zoya
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class SearchResultRepository @Inject constructor() {
-    fun getQueryResult(query : String) : Flow<List<VideoModel>> {
-        val zoya_vid1 = VideoModel(
-            videoId = "zoya_vid1",
-            authorDetails = zoya,
-            videoLink = "zoya_vid1.mp4",
-            videoStats = VideoModel.VideoStats(
-                like = 94201,
-                comment = 362,
-                share = 54,
-                favourite = 626,
-                views = 904440
-            ),
-            description = "Draft video testing  #foryou #fyp #compose #tik",
-            audioModel = null, hasTag = listOf(),
-        )
-        val zoya_vid2 = VideoModel(
-            videoId = "zoya_vid2",
-            authorDetails = zoya,
-            videoLink = "zoya_vid2.mp4",
-            videoStats = VideoModel.VideoStats(
-                like = 624524,
-                comment = 2577,
-                share = 98,
-                favourite = 78,
-                views = 23904000
-            ),
-            description = "Draft video testing  #foryou #fyp #compose #tik",
-            audioModel = null, hasTag = listOf(),
-        )
+    val databaseReference = FirebaseDatabase.getInstance().getReference("TinyReel/forYou/videos")
+    companion object {
+        fun getQueryResult(searchResultRepository: SearchResultRepository, query : String) : Flow<List<VideoModel>> {
 
-        val zoya_vid3 = VideoModel(
-            videoId = "zoya_vid3",
-            authorDetails = zoya,
-            videoLink = "zoya_vid3.mp4",
-            videoStats = VideoModel.VideoStats(
-                like = 563463,
-                comment = 4297,
-                share = 2113,
-                favourite = 1431,
-                views = 40300
-            ),
-            description = "Draft video testing  #foryou #fyp #compose #tik",
-            audioModel = null, hasTag = listOf(),
-        )
-        val zoya_vid4 = VideoModel(
-            videoId = "zoya_vid4",
-            authorDetails = zoya,
-            videoLink = "zoya_vid4.mp4",
-            videoStats = VideoModel.VideoStats(
-                like = 789349,
-                comment = 2577,
-                share = 797,
-                favourite = 13,
-                views = 39000
-            ),
-            description = "Draft video testing  #foryou #fyp #compose #tik",
-            audioModel = null, hasTag = listOf(),
-        )
-        val zoya_vid5 = VideoModel(
-            videoId = "zoya_vid5",
-            authorDetails = zoya,
-            videoLink = "zoya_vid5.mp4",
-            videoStats = VideoModel.VideoStats(
-                like = 682482,
-                comment = 7938,
-                share = 9821,
-                favourite = 78,
-                views = 300000
-            ),
-            description = "Draft video testing  #foryou #fyp #compose #tik",
-            audioModel = null, hasTag = listOf(),
-        )
-        val zoya_vid6 = VideoModel(
-            videoId = "zoya_vid6",
-            authorDetails = zoya,
-            videoLink = "zoya_vid6.mp4",
-            videoStats = VideoModel.VideoStats(
-                like = 45172,
-                comment = 1987,
-                share = 987,
-                favourite = 102,
-                views = 2904100
-            ),
-            description = "Draft video testing  #foryou #fyp #compose #tik",
-            audioModel = null, hasTag = listOf(),
-        )
+            val deferredResult = CompletableDeferred<List<VideoModel>>()
+            searchResultRepository.databaseReference.orderByChild("description")
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val result = arrayListOf<VideoModel>()
+                        for (data in snapshot.children) {
+                            // Extract fields from 'data'
+                            val videoId = data.child("videoId").getValue(String::class.java) ?: ""
+                            val videoLink = data.child("videoLink").getValue(String::class.java) ?: ""
+                            val description = data.child("description").getValue(String::class.java) ?: ""
+                            val createdAt = data.child("createdAt").getValue(String::class.java) ?: ""
+                            val authorDetailsSnapshot = data.child("authorDetails")
+                            val videoStatsSnapshot = data.child("videoStats")
 
-        val result = arrayListOf<VideoModel>(zoya_vid1, zoya_vid2, zoya_vid3, zoya_vid4, zoya_vid5, zoya_vid6)
+                            Log.d("Des--", " videos: ${description}")
 
-        return flow{
-            emit(result)
+                            if (description.contains(query, ignoreCase = true)) {
+                                Log.d("TAG", "Found videos: ${description}")
+                            }else{
+                                continue
+                            }
+
+                            // Create AuthorDetails object
+                            val authorDetails = UserModel(
+                                bio = authorDetailsSnapshot.child("bio").getValue(String::class.java) ?: "",
+                                followers = authorDetailsSnapshot.child("followers").getValue(Long::class.java) ?: 0,
+                                following = authorDetailsSnapshot.child("following").getValue(Long::class.java) ?: 0,
+                                fullName = authorDetailsSnapshot.child("fullName").getValue(String::class.java) ?: "",
+                                likes = authorDetailsSnapshot.child("likes").getValue(Long::class.java) ?: 0,
+                                profilePic = authorDetailsSnapshot.child("profilePic").getValue(String::class.java) ?: "",
+                                uniqueUserName = authorDetailsSnapshot.child("uniqueUserName").getValue(String::class.java) ?: "",
+                                userId = authorDetailsSnapshot.child("userId").getValue(Long::class.java) ?: 0,
+                                isVerified = authorDetailsSnapshot.child("verified").getValue(Boolean::class.java) ?: false
+                            )
+
+                            // Create VideoStats object
+                            val videoStats = VideoModel.VideoStats(
+                                comment = videoStatsSnapshot.child("comment")
+                                    .getValue(Long::class.java) ?: 0,
+                                favourite = videoStatsSnapshot.child("favourite")
+                                    .getValue(Long::class.java) ?: 0,
+                                like = videoStatsSnapshot.child("like").getValue(Long::class.java)
+                                    ?: 0,
+                                share = videoStatsSnapshot.child("share").getValue(Long::class.java)
+                                    ?: 0,
+                                views = videoStatsSnapshot.child("views").getValue(Long::class.java)
+                                    ?: 0
+                            )
+
+                            // Construct a new VideoModel
+                            val video = VideoModel(
+                                videoId = videoId,
+                                authorDetails = authorDetails,
+                                videoLink = videoLink,
+                                videoStats = videoStats,
+                                description = description,
+                                createdAt = createdAt
+                            )
+
+                            // Add to the result list
+                            result.add(video)
+                        }
+                        // Complete the deferred with the result list
+                        deferredResult.complete(result)
+                        }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        // Failed to read value
+                        Log.w("TAG", "Failed to read value.", error.toException())
+                    }
+                }
+                )
+            return flow{
+                emit(deferredResult.await())
+            }
         }
     }
 }

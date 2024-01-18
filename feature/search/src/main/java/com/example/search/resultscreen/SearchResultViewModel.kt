@@ -1,5 +1,6 @@
 package com.example.search.resultscreen
 
+import android.util.Log
 import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.viewModelScope
 import com.example.core.base.BaseViewModel
@@ -35,7 +36,15 @@ class SearchResultViewModel @Inject constructor(
         //lấy video tương ứng với search query về
         viewModelScope.launch {
             searchResultUseCase(query).collect {
-                _resultVideoList.value = it
+                    videoList ->
+                if (videoList.isNotEmpty()) {
+                    // There are VideoModel objects in the list
+                    Log.d("TAG", "Found videos: ${videoList.size}")
+                } else {
+                    // The list is empty, no VideoModel objects found
+                    Log.d("TAG", "No videos found")
+                }
+                _resultVideoList.value = videoList
             }
         }
     }

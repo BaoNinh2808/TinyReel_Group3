@@ -35,6 +35,7 @@
     <!-- search -->
     <string name="find_related_content">Find related content</string>
     <string name="search">Tìm kiếm</string>
+    <string name="search_result">Kết quả tìm kiếm</string>
     <string name="hot_search_query">Mọi người đang tìm</string>
 
     <!-- inbox -->
