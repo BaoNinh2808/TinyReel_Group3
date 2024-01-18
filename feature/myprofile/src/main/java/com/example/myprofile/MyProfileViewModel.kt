@@ -9,12 +9,15 @@ import com.example.creatorprofile.screen.creatorprofile.CreatorProfileEvent
 import com.example.creatorprofile.screen.creatorprofile.ViewState
 import com.example.data.model.UserModel
 import com.example.data.model.VideoModel
+import com.example.data.repository.creatorprofile.CreatorProfileRepository
 import com.example.data.source.UsersDataSource
 import com.example.domain.creatorprofile.EditableCreatorProfileUseCase
 import com.example.domain.creatorprofile.GetCreatorProfileUseCase
 import com.example.domain.creatorprofile.GetCreatorPublicVideoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,7 +27,8 @@ import javax.inject.Inject
 //@Inject constructor(
 class MyProfileViewModel (
     val userId: Long,
-    public val getCreatorProfileUseCase: EditableCreatorProfileUseCase,
+//    public val getCreatorProfileUseCase: EditableCreatorProfileUseCase,
+    val getCreatorProfileUseCase: GetCreatorProfileUseCase,
     private val getCreatorPublicVideoUseCase: GetCreatorPublicVideoUseCase
 ) : BaseViewModel<ViewState, CreatorProfileEvent>() {
 
@@ -38,10 +42,14 @@ class MyProfileViewModel (
     }
 
     init {
-        userId?.let {
-            fetchUser(it)
-            fetchCreatorPublicVideo(it)
-        }
+//        userId?.let {
+//
+//        }
+    }
+
+    fun getCreatorPublicVideo(): StateFlow<List<VideoModel>> {
+        fetchCreatorPublicVideo()
+        return publicVideosList
     }
 
     private fun fetchUser(id: Long) {
@@ -52,17 +60,16 @@ class MyProfileViewModel (
         }
     }
 
-    fun updateProfile(
-        property: String,
-        newValue: Any
-    ) {
-        getCreatorProfileUseCase.updateProfile(property, newValue)
-    }
+//    fun updateProfile(
+//        property: String,
+//        newValue: Any
+//    ) {
+//        getCreatorProfileUseCase.updateProfile(property, newValue)
+//    }
 
-    private fun fetchCreatorPublicVideo(id: Long) {
+    private fun fetchCreatorPublicVideo() {
         viewModelScope.launch {
-            getCreatorPublicVideoUseCase(id).collect {
-                Log.d("d", "my video si ${it}")
+            getCreatorPublicVideoUseCase(userId).collect {
                 _publicVideosList.value = it
             }
         }

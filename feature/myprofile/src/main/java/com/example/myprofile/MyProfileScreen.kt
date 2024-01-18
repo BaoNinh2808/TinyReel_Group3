@@ -82,12 +82,22 @@ fun MyProfileScreen(
 //            loggedIn = true
 //        }
 
+//    val viewModel = MyProfileViewModel(
+//        userId = 123,
+//        getCreatorProfileUseCase = EditableCreatorProfileUseCase(CreatorProfileRepository()),
+//        getCreatorPublicVideoUseCase = GetCreatorPublicVideoUseCase(CreatorProfileRepository())
+//    )
+//    val viewState by viewModel.viewState.collectAsState()
+
     val viewModel = MyProfileViewModel(
-        userId = 123,
-        getCreatorProfileUseCase = EditableCreatorProfileUseCase(CreatorProfileRepository()),
-        getCreatorPublicVideoUseCase = GetCreatorPublicVideoUseCase(CreatorProfileRepository())
+        9L,
+        GetCreatorProfileUseCase(
+            CreatorProfileRepository()
+        ),
+        GetCreatorPublicVideoUseCase(
+            CreatorProfileRepository()
+        )
     )
-    val viewState by viewModel.viewState.collectAsState()
 
     Scaffold(topBar = {
         TopBar(
@@ -110,12 +120,12 @@ fun MyProfileScreen(
 //            UnAuthorizedInboxScreen {
 //                navController.navigate(DestinationRoute.AUTHENTICATION_ROUTE)
 //            }
-//            LoggedInProfileScreen(
-//                navController = navController,
-//                viewModel = viewModel
-//            )
-            Text(viewState?.creatorProfile?.userId.toString())
-            Text(viewState?.creatorProfile?.uniqueUserName.toString())
+            LoggedInProfileScreen(
+                navController = navController,
+                viewModel = viewModel
+            )
+//            Text(viewState?.creatorProfile?.userId.toString())
+//            Text(viewState?.creatorProfile?.uniqueUserName.toString())
         }
     }
 }
@@ -153,7 +163,8 @@ fun LoggedInProfileScreen(
     viewModel: MyProfileViewModel
 ) {
     val scrollState = rememberScrollState()
-    val viewState by viewModel.viewState.collectAsState()
+    val viewState by viewModel.getCreatorPublicVideo().collectAsState()
+    val creatorProfileDetails = viewState[0].authorDetails
 
     Column {
         BoxWithConstraints {
@@ -167,7 +178,7 @@ fun LoggedInProfileScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-                ProfileDetails(navController, viewState)
+                ProfileDetails(navController, creatorProfileDetails)
                 VideoListingPager(
                     scrollState = scrollState,
                     height = height,
@@ -182,11 +193,15 @@ fun LoggedInProfileScreen(
 }
 
 @Composable
-fun ColumnScope.ProfileDetails(navController: NavController, viewState: ViewState?) {
+fun ColumnScope.ProfileDetails(
+    navController: NavController,
+//    viewState: ViewState?
+    userModel: UserModel
+) {
     val context = LocalContext.current
 
     AsyncImage(
-        model = viewState?.creatorProfile?.profilePic ?: R.drawable.ic_profile,
+        model = userModel.profilePic ?: R.drawable.ic_profile,
         contentDescription = null,
         modifier = Modifier
             .size(94.dp)
@@ -198,10 +213,10 @@ fun ColumnScope.ProfileDetails(navController: NavController, viewState: ViewStat
         horizontalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         Text(
-            text = "@${viewState?.creatorProfile?.uniqueUserName?:""}",
+            text = "@${userModel.uniqueUserName?:""}",
             style = MaterialTheme.typography.bodyMedium
         )
-        if (viewState?.creatorProfile?.isVerified == true) {
+        if (userModel.isVerified == true) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_verified),
                 contentDescription = null,
@@ -217,7 +232,7 @@ fun ColumnScope.ProfileDetails(navController: NavController, viewState: ViewStat
 
 
         Text(
-            text = viewState?.creatorProfile?.formattedFollowingCount ?: "-",
+            text = userModel.formattedFollowingCount ?: "-",
             style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier.constrainAs(followingCount) {
                 top.linkTo(parent.top)
@@ -246,7 +261,7 @@ fun ColumnScope.ProfileDetails(navController: NavController, viewState: ViewStat
 
 
         Text(
-            text = viewState?.creatorProfile?.formattedFollowersCount ?: "-",
+            text = userModel.formattedFollowersCount ?: "-",
             style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier.constrainAs(followersCount) {
                 top.linkTo(followingCount.top)
@@ -276,7 +291,7 @@ fun ColumnScope.ProfileDetails(navController: NavController, viewState: ViewStat
             })
 
         Text(
-            text = viewState?.creatorProfile?.formattedLikeCount ?: "-",
+            text = userModel.formattedLikeCount ?: "-",
             style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier.constrainAs(likeCount) {
                 top.linkTo(followingCount.top)
@@ -307,7 +322,7 @@ fun ColumnScope.ProfileDetails(navController: NavController, viewState: ViewStat
         ) {
             Text(text = stringResource(id = R.string.follow))
         }
-        viewState?.creatorProfile?.pinSocialMedia?.let {
+        userModel.pinSocialMedia?.let {
             Box(
                 modifier = Modifier
                     .fillMaxHeight()
@@ -350,6 +365,6 @@ fun ColumnScope.ProfileDetails(navController: NavController, viewState: ViewStat
     }
 
     Text(
-        text = viewState?.creatorProfile?.bio ?: stringResource(id = R.string.no_bio_yet),
+        text = userModel.bio ?: stringResource(id = R.string.no_bio_yet),
     )
 }

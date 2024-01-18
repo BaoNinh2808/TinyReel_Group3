@@ -22,7 +22,7 @@ class CreatorProfileRepository @Inject constructor() {
         fun getQueryResult(creatorProfileRepository: CreatorProfileRepository, queryId : Long) : Flow<List<VideoModel>> {
 
             val deferredResult = CompletableDeferred<List<VideoModel>>()
-            creatorProfileRepository.databaseReference
+            creatorProfileRepository.databaseReference.orderByChild("authorDetails/userId")
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         val result = arrayListOf<VideoModel>()
@@ -47,6 +47,8 @@ class CreatorProfileRepository @Inject constructor() {
                                 userId = authorDetailsSnapshot.child("userId").getValue(Long::class.java) ?: 0,
                                 isVerified = authorDetailsSnapshot.child("verified").getValue(Boolean::class.java) ?: false
                             )
+
+                            Log.d("TAG", "${authorDetails.userId}")
 
                             if (authorDetails.userId == queryId) {
                                 Log.d("TAG", "found Video: ${authorDetails.userId}")
@@ -101,9 +103,9 @@ class CreatorProfileRepository @Inject constructor() {
         return UsersDataSource.fetchSpecificUser(id)
     }
 
-    fun fetchCreatorDetails(id: Long): Flow<UserModel?> {
-        return UsersDataSource.fetchSpecificUser_(id)
-    }
+//    fun fetchCreatorDetails(id: Long): Flow<UserModel?> {
+//        return UsersDataSource.fetchSpecificUser_(id)
+//    }
 
     fun updateUserProfile(
         id: Long,
