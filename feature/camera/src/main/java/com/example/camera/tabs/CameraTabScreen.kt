@@ -73,7 +73,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
 import com.example.camera.CameraCaptureOptions
 import com.example.camera.CameraController
@@ -262,7 +261,6 @@ fun CameraMicrophoneAccessPage(
     }
 }
 
-
 @Composable
 fun CameraPreview(
     cameraOpenType: Tabs,
@@ -277,6 +275,14 @@ fun CameraPreview(
     var defaultCameraFacing by remember { mutableStateOf(CameraSelector.DEFAULT_FRONT_CAMERA) }
     val cameraProvider = cameraProviderFuture.get()
     val preview = remember { Preview.Builder().build() }
+    val imageCapture = remember { ImageCapture.Builder().build() }
+
+    val recorder = Recorder.Builder()
+        .setQualitySelector(QualitySelector.from(Quality.HIGHEST,
+            FallbackStrategy.higherQualityOrLowerThan(Quality.SD)))
+        .build()
+    val videoCapture = VideoCapture.withOutput(recorder)
+    var recording: Recording? = null
 
     Box(modifier = Modifier.fillMaxSize()) {
         AndroidView(
@@ -288,7 +294,7 @@ fun CameraPreview(
                     }
                     try {
                         cameraProvider.unbindAll()
-                        cameraProvider.bindToLifecycle(lifecycleOwner, defaultCameraFacing, preview)
+                        cameraProvider.bindToLifecycle(lifecycleOwner, defaultCameraFacing, preview, imageCapture, videoCapture)
                     } catch (e: Exception) {
                         Log.e("camera", "camera preview exception :${e.message}")
                     }
@@ -311,19 +317,59 @@ fun CameraPreview(
                 onClickOpenFile = onClickOpenFile,
                 onClickImageCapture = {
                     captureImage(
-                        cameraProvider,
-                        lifecycleOwner,
                         context,
-                        defaultCameraFacing
+                        imageCapture
                     )
                 },
                 onClickVideoCapture = {
-                    captureVideo(
-                        cameraProvider,
-                        lifecycleOwner,
-                        context,
-                        defaultCameraFacing
-                    )
+                    val curRecording = recording
+                    if (curRecording != null) {
+                        curRecording.stop()
+                        recording = null
+                        return@FooterCameraController
+                    }
+
+                    val name = "CameraX-recording-" +
+                            SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                                .format(System.currentTimeMillis()) + ".mp4"
+                    val contentValues = ContentValues().apply {
+                        put(MediaStore.Video.Media.DISPLAY_NAME, name)
+                    }
+                    val mediaStoreOutput = MediaStoreOutputOptions.Builder(context.contentResolver,
+                        MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
+                        .setContentValues(contentValues)
+                        .build()
+
+                    recording = videoCapture.output
+                        .prepareRecording(context, mediaStoreOutput)
+                        .apply {
+                            if (ActivityCompat.checkSelfPermission(
+                                    context,
+                                    Manifest.permission.RECORD_AUDIO
+                                ) != PackageManager.PERMISSION_GRANTED
+                            ) {
+                                withAudioEnabled()
+                            }
+                        }
+                        .start(ContextCompat.getMainExecutor(context)) {
+                            when (it) {
+                                is VideoRecordEvent.Start -> {
+                                    val msg = "Recording video started!"
+                                    Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+                                }
+                                is VideoRecordEvent.Finalize -> {
+                                    if (!it.hasError()) {
+                                        val msg = "Video Capture Succeeded: " + "${it.outputResults.outputUri}"
+                                        Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+                                    }
+                                    else {
+                                        recording?.close()
+                                        recording = null
+                                        Log.d("error", it.error.toString())
+                                    }
+                                }
+                            }
+                        }
                 },
                 isEnabledLayout = true
             )
@@ -346,7 +392,7 @@ fun CameraPreview(
             LaunchedEffect(key1 = defaultCameraFacing) {
                 cameraProvider.unbindAll()
                 cameraProvider.bindToLifecycle(
-                    lifecycleOwner, defaultCameraFacing, preview
+                    lifecycleOwner, defaultCameraFacing, preview, imageCapture, videoCapture
                 )
             }
 
@@ -381,16 +427,9 @@ fun CameraPreview(
 }
 
 private fun captureImage(
-    cameraProvider: ProcessCameraProvider,
-    lifecycleOwner: LifecycleOwner,
     context: Context,
-    cameraSelector: CameraSelector
+    imageCapture: ImageCapture
 ) {
-    val imageCapture = ImageCapture.Builder().build()
-//    val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
-    cameraProvider.unbindAll()
-    cameraProvider.bindToLifecycle(lifecycleOwner, cameraSelector, imageCapture)
-
     val name = "CameraX-photo-" +
             SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
                 .format(System.currentTimeMillis()) + ".jpg"
@@ -413,70 +452,6 @@ private fun captureImage(
                 Log.e("CameraXApp", "Photo capture failed: ${exception.message}", exception)
             }
         })
-}
-
-private fun captureVideo(
-    cameraProvider: ProcessCameraProvider,
-    lifecycleOwner: LifecycleOwner,
-    context: Context,
-    cameraSelector: CameraSelector
-) {
-    val recorder = Recorder.Builder()
-        .setQualitySelector(QualitySelector.from(Quality.HIGHEST,
-            FallbackStrategy.higherQualityOrLowerThan(Quality.SD)))
-        .build()
-    val videoCapture = VideoCapture.withOutput(recorder)
-    cameraProvider.unbindAll()
-    cameraProvider.bindToLifecycle(lifecycleOwner, cameraSelector, videoCapture)
-
-    var recording: Recording? = null
-    val curRecording = recording
-    if (curRecording != null) {
-        curRecording.stop()
-        recording = null
-        return
-    }
-
-    val name = "CameraX-recording-" +
-            SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-                .format(System.currentTimeMillis()) + ".mp4"
-    val contentValues = ContentValues().apply {
-        put(MediaStore.Video.Media.DISPLAY_NAME, name)
-    }
-    val mediaStoreOutput = MediaStoreOutputOptions.Builder(context.contentResolver,
-        MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
-        .setContentValues(contentValues)
-        .build()
-
-    recording = videoCapture.output
-        .prepareRecording(context, mediaStoreOutput)
-        .apply {
-            if (ActivityCompat.checkSelfPermission(
-                    context,
-                    Manifest.permission.RECORD_AUDIO
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                withAudioEnabled()
-            }
-        }
-        .start(ContextCompat.getMainExecutor(context)) {
-            when (it) {
-                is VideoRecordEvent.Start -> {
-                    Log.d("camera", "start recording")
-                }
-                is VideoRecordEvent.Finalize -> {
-                    if (!it.hasError()) {
-                        val msg = "Video Capture Succeeded: " + "${it.outputResults.outputUri}"
-                        Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
-                    }
-                    else {
-                        recording?.close()
-                        recording = null
-                        Log.d("error", it.error.toString())
-                    }
-                }
-            }
-        }
 }
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalSnapperApi::class)
