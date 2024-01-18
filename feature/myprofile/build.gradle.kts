@@ -45,6 +45,7 @@ kapt {
 dependencies {
     implementation(project(":feature:creatorprofile"))
     implementation(project(":feature:authentication"))
+    implementation("com.google.firebase:firebase-firestore-ktx:24.10.0")
     COMMON_THEME
     COMMON_COMPOSABLE
     CORE

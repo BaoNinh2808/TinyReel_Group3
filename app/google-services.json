@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "1002342456204",
+    "firebase_url": "https://tinyreel-46587-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "tinyreel-46587",
     "storage_bucket": "tinyreel-46587.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "1002342456204-a8v2lsseakp6cjosk9m1ti6d50u5er0a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tinyreel",
+            "certificate_hash": "aee539122690538e6f6622a15e06383f4dd48ed7"
+          }
+        },
         {
           "client_id": "1002342456204-9qkhvvqsame9m4r5p4an0i8m45nv5ipr.apps.googleusercontent.com",
           "client_type": 3

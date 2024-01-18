@@ -45,4 +45,6 @@ dependencies {
     composeDependencies()
     testDependencies()
     firebase()
+
+    implementation("com.google.firebase:firebase-firestore")
 }

@@ -48,9 +48,14 @@ import com.example.domain.creatorprofile.EditableCreatorProfileUseCase
 import com.example.domain.creatorprofile.GetCreatorProfileUseCase
 import com.example.domain.creatorprofile.GetCreatorPublicVideoUseCase
 import com.example.myprofile.myprofilevideo.VideoListingPager
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
 import com.tinyreel.authentication.data.AuthRepositoryImpl
 import com.tinyreel.authentication.di.AppModule
 
+
+val db = Firebase.firestore
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyProfileScreen(
@@ -60,7 +65,16 @@ fun MyProfileScreen(
     val authRepository = AppModule.providesAuthRepository(AuthRepositoryImpl(firebaseAuth))
     val currentUser = authRepository.currentUser
     val currentUserId = currentUser?.uid?:0
+    var loggedIn = false
+    var userName: String = "not logged in"
 
+    val userInfoRef = db.collection("userInfo").whereEqualTo("uid", currentUserId.toString()).get()
+        .addOnSuccessListener { querySnapshot ->
+            loggedIn = true
+        }
+        .addOnFailureListener { exception ->
+            loggedIn = true
+        }
 
     val viewModel = MyProfileViewModel(
         userId = 1,
@@ -94,6 +108,8 @@ fun MyProfileScreen(
 //                viewModel = viewModel
 //            )
             Text(currentUserId.toString())
+            Text(loggedIn.toString())
+            Text(userName)
         }
     }
 }
