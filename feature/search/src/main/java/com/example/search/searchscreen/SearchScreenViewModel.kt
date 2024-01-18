@@ -39,6 +39,7 @@ class SearchScreenViewModel @Inject constructor(
         query : String
     ){
         searchUseCase.updateSearchQuery(userId, query)
+        fetchOldSearchQuery()
     }
 
     private fun fetchHotSearchQuery() {

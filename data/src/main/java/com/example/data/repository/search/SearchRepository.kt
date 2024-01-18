@@ -7,7 +7,7 @@ import javax.inject.Inject
 class SearchRepository @Inject constructor(){
 
     //viết tạm như thế này thôi, còn khi làm phải sửa lại thành firebase
-    private var oldSearchList = arrayListOf<String>()
+    private var oldSearchList = arrayListOf<String>( )
 
     fun updateSearchQuery(
         userId : Int,
