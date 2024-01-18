@@ -1,5 +1,10 @@
 package com.example.post
 
+import android.net.Uri
+import android.webkit.MimeTypeMap
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -31,7 +36,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -41,6 +49,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.AsyncImage
+import coil.decode.VideoFrameDecoder
+import coil.request.ImageRequest
+import coil.request.videoFrameMillis
+import com.example.composable.CustomButton
 import com.example.composable.TopBar
 import com.example.core.DestinationRoute.HOME_SCREEN_ROUTE
 import com.example.theme.R
@@ -49,6 +62,12 @@ import com.example.theme.Typography
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PostScreen(navController: NavController) {
+    var imgUri by remember { mutableStateOf<Uri?>(null)}
+    val fileLauncher =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.PickMultipleVisualMedia(),
+            onResult = {
+                imgUri = it.firstOrNull()
+            })
     var textValue by remember { mutableStateOf("") }
 
     Scaffold(
@@ -66,8 +85,12 @@ fun PostScreen(navController: NavController) {
         ) {
             DescriptionAndImage(
                 textValue = textValue,
+                imgUri,
                 onTextValueChange = { newText ->
                     textValue = newText
+                },
+                onClicked = {
+                    fileLauncher.launch(pickVisualMediaRequest)
                 }
             )
 
@@ -82,6 +105,10 @@ fun PostScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(10.dp))
 
             PrivacySetting("Ai có thể bình luận?")
+
+            Spacer(modifier = Modifier.height(160.dp))
+
+            PostButton()
         }
     }
 }
@@ -89,7 +116,9 @@ fun PostScreen(navController: NavController) {
 @Composable
 fun DescriptionAndImage(
     textValue: String,
-    onTextValueChange: (String) -> Unit // Changed the function signature
+    imgUri: Uri? = null,
+    onTextValueChange: (String) -> Unit, // Changed the function signature
+    onClicked: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -167,37 +196,78 @@ fun DescriptionAndImage(
                     color = Color.Gray,
                     shape = RoundedCornerShape(16.dp) // Set rounded corners for the border
                 )
+                .clickable { onClicked() }
         ) {
             // Image
-            val imagePainter = painterResource(id = R.drawable.ic_home)
-            Image(
-                painter = imagePainter,
-                contentDescription = "Loaded Image",
-                modifier = Modifier
-                    .size(80.dp)
-                    .align(Alignment.Center)
-            )
-
-            // Text
-            // Box for text with background color
-            Box(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .height(100.dp)
-                    .fillMaxWidth()
-                    .background(
-                        color = Color(0x35D2F3F2),
-                        shape = RoundedCornerShape(16.dp) // Set rounded corners for the Box
+            if (imgUri != null) {
+                val contentResolver = LocalContext.current.contentResolver
+                val mimeTypeMap = MimeTypeMap.getSingleton()
+                val fileType = mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(imgUri))
+                if (fileType == "jpg") {
+                    AsyncImage(
+                        model = imgUri,
+                        contentDescription = "Loaded Image",
+                        modifier = Modifier
+                            .size(200.dp)
+                            .align(Alignment.Center)
+                            .clip(shape = RoundedCornerShape(16.dp)),
+                        contentScale = ContentScale.FillBounds
                     )
-            ) {
-                Text(
-                    text = "Chọn ảnh\nnổi bật",
+                }
+                else {
+                    val model = ImageRequest.Builder(LocalContext.current)
+                        .data(imgUri)
+                        .videoFrameMillis(10000)
+                        .decoderFactory { result, options, _ ->
+                            VideoFrameDecoder(
+                                result.source,
+                                options
+                            )
+                        }
+                        .build()
+                    AsyncImage(
+                        model = model,
+                        contentDescription = "Loaded Image",
+                        modifier = Modifier
+                            .size(200.dp)
+                            .align(Alignment.Center)
+                            .clip(shape = RoundedCornerShape(16.dp)),
+                        contentScale = ContentScale.FillBounds
+                    )
+                }
+
+            }
+            else {
+                val imagePainter = painterResource(id = R.drawable.ic_home)
+                Image(
+                    painter = imagePainter,
+                    contentDescription = null,
                     modifier = Modifier
-                        .padding(8.dp)
-                        .align(Alignment.Center),
-                    style = Typography.displayMedium,
-                    textAlign = TextAlign.Center
+                        .size(80.dp)
+                        .align(Alignment.Center)
                 )
+
+                // Text
+                // Box for text with background color
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .height(100.dp)
+                        .fillMaxWidth()
+                        .background(
+                            color = Color(0x35D2F3F2),
+                            shape = RoundedCornerShape(16.dp) // Set rounded corners for the Box
+                        )
+                ) {
+                    Text(
+                        text = "Chọn ảnh\nnổi bật",
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .align(Alignment.Center),
+                        style = Typography.displayMedium,
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
         }
     }
@@ -327,6 +397,25 @@ fun DropdownComponent() {
     }
 }
 
+@Composable
+fun PostButton() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        CustomButton(
+            buttonText = stringResource(id = R.string.post),
+            shape = RoundedCornerShape(24.dp),
+            modifier = Modifier.fillMaxWidth(0.65f),
+        ) {
+
+        }
+    }
+
+}
+
 @Preview
 @Composable
 fun PostScreenPreview() {
@@ -334,4 +423,8 @@ fun PostScreenPreview() {
     // For example, you can pass a NavController instance to simulate usage
     val navController = rememberNavController()
     PostScreen(navController = navController)
+}
+
+val pickVisualMediaRequest by lazy {
+    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo)
 }

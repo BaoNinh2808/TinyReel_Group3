@@ -109,4 +109,6 @@
     <string name="flash">Flash</string>
     <string name="upload_photos">Upload photos</string>
     <string name="create_post">Create</string>
+
+    <string name="post">Post</string>
 </resources>

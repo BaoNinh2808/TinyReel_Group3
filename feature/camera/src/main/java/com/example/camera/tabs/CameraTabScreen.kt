@@ -1,12 +1,28 @@
 package com.example.camera.tabs
 
+import android.Manifest
+import android.content.ContentValues
+import android.content.Context
+import android.content.pm.PackageManager
+import android.provider.MediaStore
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageCapture
+import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.camera.video.FallbackStrategy
+import androidx.camera.video.MediaStoreOutputOptions
+import androidx.camera.video.Quality
+import androidx.camera.video.QualitySelector
+import androidx.camera.video.Recorder
+import androidx.camera.video.Recording
+import androidx.camera.video.VideoCapture
+import androidx.camera.video.VideoRecordEvent
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -55,7 +71,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
 import com.example.camera.CameraCaptureOptions
 import com.example.camera.CameraController
@@ -78,6 +96,8 @@ import dev.chrisbanes.snapper.ExperimentalSnapperApi
 import dev.chrisbanes.snapper.SnapOffsets
 import dev.chrisbanes.snapper.rememberLazyListSnapperLayoutInfo
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -110,7 +130,6 @@ fun CameraScreen(
                 onClickOpenFile = {
                     fileLauncher.launch(pickVisualMediaRequest)
                 }
-
             )
         } else {
             CameraMicrophoneAccessPage(multiplePermissionState.permissions[1].status.isGranted,
@@ -236,7 +255,8 @@ fun CameraMicrophoneAccessPage(
             cameraOpenType = cameraOpenType,
             onClickEffect = { },
             onClickOpenFile = onClickOpenFile,
-            onclickCameraCapture = { },
+            onClickImageCapture = { },
+            onClickVideoCapture = { },
             isEnabledLayout = false
         )
     }
@@ -289,10 +309,24 @@ fun CameraPreview(
                 cameraOpenType = cameraOpenType,
                 onClickEffect = { },
                 onClickOpenFile = onClickOpenFile,
-                onclickCameraCapture = { },
+                onClickImageCapture = {
+                    captureImage(
+                        cameraProvider,
+                        lifecycleOwner,
+                        context,
+                        defaultCameraFacing
+                    )
+                },
+                onClickVideoCapture = {
+                    captureVideo(
+                        cameraProvider,
+                        lifecycleOwner,
+                        context,
+                        defaultCameraFacing
+                    )
+                },
                 isEnabledLayout = true
             )
-
 
             CameraSideControllerSection(
                 modifier = Modifier
@@ -346,6 +380,104 @@ fun CameraPreview(
 
 }
 
+private fun captureImage(
+    cameraProvider: ProcessCameraProvider,
+    lifecycleOwner: LifecycleOwner,
+    context: Context,
+    cameraSelector: CameraSelector
+) {
+    val imageCapture = ImageCapture.Builder().build()
+//    val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+    cameraProvider.unbindAll()
+    cameraProvider.bindToLifecycle(lifecycleOwner, cameraSelector, imageCapture)
+
+    val name = "CameraX-photo-" +
+            SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                .format(System.currentTimeMillis()) + ".jpg"
+    val contentValues = ContentValues().apply {
+        put(MediaStore.Video.Media.DISPLAY_NAME, name)
+    }
+    val outputFileOptions = ImageCapture.OutputFileOptions.Builder(context.contentResolver,
+        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+        .build()
+
+    imageCapture.takePicture(outputFileOptions, ContextCompat.getMainExecutor(context),
+        object : ImageCapture.OnImageSavedCallback {
+            override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
+                val msg = "Photo capture succeeded: ${outputFileResults.savedUri}"
+                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+                Log.d("CameraXApp", msg)
+            }
+
+            override fun onError(exception: ImageCaptureException) {
+                Log.e("CameraXApp", "Photo capture failed: ${exception.message}", exception)
+            }
+        })
+}
+
+private fun captureVideo(
+    cameraProvider: ProcessCameraProvider,
+    lifecycleOwner: LifecycleOwner,
+    context: Context,
+    cameraSelector: CameraSelector
+) {
+    val recorder = Recorder.Builder()
+        .setQualitySelector(QualitySelector.from(Quality.HIGHEST,
+            FallbackStrategy.higherQualityOrLowerThan(Quality.SD)))
+        .build()
+    val videoCapture = VideoCapture.withOutput(recorder)
+    cameraProvider.unbindAll()
+    cameraProvider.bindToLifecycle(lifecycleOwner, cameraSelector, videoCapture)
+
+    var recording: Recording? = null
+    val curRecording = recording
+    if (curRecording != null) {
+        curRecording.stop()
+        recording = null
+        return
+    }
+
+    val name = "CameraX-recording-" +
+            SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                .format(System.currentTimeMillis()) + ".mp4"
+    val contentValues = ContentValues().apply {
+        put(MediaStore.Video.Media.DISPLAY_NAME, name)
+    }
+    val mediaStoreOutput = MediaStoreOutputOptions.Builder(context.contentResolver,
+        MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
+        .setContentValues(contentValues)
+        .build()
+
+    recording = videoCapture.output
+        .prepareRecording(context, mediaStoreOutput)
+        .apply {
+            if (ActivityCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.RECORD_AUDIO
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                withAudioEnabled()
+            }
+        }
+        .start(ContextCompat.getMainExecutor(context)) {
+            when (it) {
+                is VideoRecordEvent.Start -> {
+                    Log.d("camera", "start recording")
+                }
+                is VideoRecordEvent.Finalize -> {
+                    if (!it.hasError()) {
+                        val msg = "Video Capture Succeeded: " + "${it.outputResults.outputUri}"
+                        Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+                    }
+                    else {
+                        recording?.close()
+                        recording = null
+                        Log.d("error", it.error.toString())
+                    }
+                }
+            }
+        }
+}
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalSnapperApi::class)
 @Composable
@@ -354,7 +486,8 @@ fun FooterCameraController(
     cameraOpenType: Tabs,
     onClickEffect: () -> Unit,
     onClickOpenFile: () -> Unit,
-    onclickCameraCapture: () -> Unit,
+    onClickImageCapture: () -> Unit,
+    onClickVideoCapture: () -> Unit,
     isEnabledLayout: Boolean = false
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -370,6 +503,8 @@ fun FooterCameraController(
         }
     )
 
+    var isRecord by remember { mutableStateOf(false) }
+
     val layoutInfo = rememberLazyListSnapperLayoutInfo(
         lazyListState = lazyListState,
         endContentPadding = screenHalfWidth.minus(30.dp),
@@ -378,11 +513,11 @@ fun FooterCameraController(
     val captureOptions = remember {
         when (cameraOpenType) {
             Tabs.CAMERA -> CameraCaptureOptions.values().toMutableList().apply {
-                removeAll(listOf(CameraCaptureOptions.TEXT, CameraCaptureOptions.VIDEO))
+                removeAll(listOf(CameraCaptureOptions.TEXT, CameraCaptureOptions.VIDEO, CameraCaptureOptions.PHOTO))
             }
             Tabs.STORY -> CameraCaptureOptions.values().toMutableList().apply {
                 removeAll(
-                    listOf(CameraCaptureOptions.FIFTEEN_SECOND, CameraCaptureOptions.SIXTY_SECOND)
+                    listOf(CameraCaptureOptions.SIXTY_SECOND, CameraCaptureOptions.FIFTEEN_SECOND, CameraCaptureOptions.VIDEO)
                 )
             }
             else -> emptyList()
@@ -409,6 +544,9 @@ fun FooterCameraController(
             ) {
                 itemsIndexed(captureOptions) { index, it ->
                     val isCurrentItem = layoutInfo.currentItem?.index == index
+                    if (isCurrentItem) {
+                        isRecord = it == CameraCaptureOptions.SIXTY_SECOND || it == CameraCaptureOptions.FIFTEEN_SECOND || it == CameraCaptureOptions.VIDEO
+                    }
                     Text(
                         text = it.value,
                         style = MaterialTheme.typography.labelLarge,
@@ -461,7 +599,7 @@ fun FooterCameraController(
             CaptureButton(
                 modifier = Modifier.alpha(alphaForInteractiveView(isEnabledLayout)),
                 color = captureButtonColor,
-                onClickCapture = onclickCameraCapture
+                onClickCapture = if (isRecord) onClickVideoCapture else onClickImageCapture
             )
             Column(horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(4.dp),
