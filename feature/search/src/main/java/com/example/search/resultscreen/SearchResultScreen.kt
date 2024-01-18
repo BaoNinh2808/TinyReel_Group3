@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.composable.TopBar
@@ -26,9 +27,10 @@ import com.example.theme.R
 
 @Composable
 fun SearchResultScreen(
-    navController: NavController,
-    viewModel: SearchResultViewModel = hiltViewModel(),
-    query : String) {
+    navController: NavController, navBackStackEntry: NavBackStackEntry,
+    viewModel: SearchResultViewModel = hiltViewModel()) {
+
+    val query = navBackStackEntry.arguments?.getString("query") ?: ""
     //chỉ cần truyền 1 list các video vào trong SearchVideoGrid là hiển thị được
     val resultVideos by viewModel.getResultVideoList(query).collectAsState()
 
@@ -48,15 +50,15 @@ fun SearchResultScreen(
     }
 }
 
-@Preview
-@Composable
-fun SearchResultScreenPreview(){
-    SearchResultScreen(navController = rememberNavController(),
-        viewModel = SearchResultViewModel(
-            searchResultUseCase = SearchResultUseCase(
-                searchResultRepository = SearchResultRepository()
-            )
-        ),
-        query = "aaaa"
-    )
-}
+//@Preview
+//@Composable
+//fun SearchResultScreenPreview(){
+//    SearchResultScreen(navController = rememberNavController(),
+//        viewModel = SearchResultViewModel(
+//            searchResultUseCase = SearchResultUseCase(
+//                searchResultRepository = SearchResultRepository()
+//            )
+//        ),
+//        query = "aaaa"
+//    )
+//}

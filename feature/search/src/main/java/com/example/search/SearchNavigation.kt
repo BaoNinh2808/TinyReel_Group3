@@ -2,7 +2,9 @@ package com.example.search
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.core.DestinationRoute.SEARCH_RESULT_ROUTE
 import com.example.core.DestinationRoute.SEARCH_ROUTE
 import com.example.search.resultscreen.SearchResultScreen
@@ -14,8 +16,12 @@ fun NavGraphBuilder.searchNavGraph(navController: NavController) {
     }
 }
 
-fun NavGraphBuilder.searchResultNavGraph(navController: NavController, query : String) {
-    composable(route = SEARCH_RESULT_ROUTE) {
-        SearchResultScreen(navController, query = query)
+fun NavGraphBuilder.searchResultNavGraph(navController: NavController) {
+    composable(
+        route = "searchResult/{query}", // Ensure this matches your route definition
+        arguments = listOf(navArgument("query") { type = NavType.StringType })
+    ) { backStackEntry ->
+        // Retrieve the 'query' argument here
+        SearchResultScreen(navController, backStackEntry)
     }
 }

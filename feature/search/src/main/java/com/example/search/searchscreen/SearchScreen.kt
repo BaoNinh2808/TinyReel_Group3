@@ -74,7 +74,7 @@ fun SearchScreen(
                 onSearch = {
 //                    oldSearchQuery.add(text)
                     viewModel.updateSearchQuery(1, text)
-                    navController.navigate(SEARCH_RESULT_ROUTE)
+                    navController.navigate("searchResult/$text")
                     active = false
                 },
                 active = active,
@@ -109,17 +109,18 @@ fun SearchScreen(
                 )
             ) {
                 //display when search bar is active (when user click on search bar)
-                displayHistoryAndHotSearchQuery(oldSearchQuery = oldSearchQuery, hotSearchQuery = hotSearchQuery)
+                displayHistoryAndHotSearchQuery(oldSearchQuery = oldSearchQuery, hotSearchQuery = hotSearchQuery, navController = navController)
             }
             //display when search bar is not active
-            displayHistoryAndHotSearchQuery(oldSearchQuery = oldSearchQuery, hotSearchQuery = hotSearchQuery)
+            displayHistoryAndHotSearchQuery(oldSearchQuery = oldSearchQuery, hotSearchQuery = hotSearchQuery, navController = navController)
         }
     }
 }
 @Composable
 fun displayHistoryAndHotSearchQuery(
     oldSearchQuery: List<String>,
-    hotSearchQuery: List<String>
+    hotSearchQuery: List<String>,
+    navController: NavController
 ){
     // create 2 list of search query: old search query and hot search query (from api)
     // create a row for each search query
@@ -130,7 +131,9 @@ fun displayHistoryAndHotSearchQuery(
                 modifier = Modifier.padding(end = 10.dp),
                 imageVector = Icons.Default.History,
                 contentDescription = "History Icon")
-            Text(text = it)
+            Text(text = it, modifier = Modifier.clickable {
+                navController.navigate("searchResult/$it")
+            })
         }
     }
 
@@ -148,7 +151,9 @@ fun displayHistoryAndHotSearchQuery(
                 modifier = Modifier.padding(end = 10.dp),
                 imageVector = Icons.Default.Whatshot,
                 contentDescription = "History Icon")
-            Text(text = it)
+            Text(text = it, modifier = Modifier.clickable {
+                navController.navigate("searchResult/$it")
+            })
         }
     }
 }

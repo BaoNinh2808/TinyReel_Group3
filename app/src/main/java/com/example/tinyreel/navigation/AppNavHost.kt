@@ -43,10 +43,10 @@ fun AppNavHost(
         signUpNavGraph(loginViewModel, navController)
 //        loginEmailPhoneNavGraph(navController)
 //        friendsNavGraph(navController)
-        myProfileNavGraph(loginViewModel, navController)
+        myProfileNavGraph(navController)
 //        settingNavGraph(navController)
         cameraMediaNavGraph(navController)
         searchNavGraph(navController)
-        searchResultNavGraph(navController, query = "AAAAAVVCCC")
+        searchResultNavGraph(navController)
     }
 }

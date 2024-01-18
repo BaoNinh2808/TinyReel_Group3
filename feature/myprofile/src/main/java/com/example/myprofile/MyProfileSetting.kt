@@ -23,30 +23,24 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.UriHandler
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.SavedStateHandle
 import coil.compose.AsyncImage
 import coil.compose.ImagePainter
 import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
-import com.example.core.DestinationRoute
 import com.example.data.repository.creatorprofile.CreatorProfileRepository
 import com.example.domain.creatorprofile.EditableCreatorProfileUseCase
 import com.example.domain.creatorprofile.GetCreatorProfileUseCase
 import com.example.domain.creatorprofile.GetCreatorPublicVideoUseCase
-import com.tinyreel.authentication.LoginWithEmailPhoneViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileSettingScreen(
-    loginViewModel: LoginWithEmailPhoneViewModel,
     navController: NavController,
 ) {
-    val viewModel = MyProfileViewModel(
-        savedStateHandle = SavedStateHandle(),
-        getCreatorProfileUseCase = EditableCreatorProfileUseCase(CreatorProfileRepository()),
-        getCreatorPublicVideoUseCase = GetCreatorPublicVideoUseCase(CreatorProfileRepository())
-    )
-    viewModel.fetchUser(1)
+    val viewModel: MyProfileViewModel = hiltViewModel()
+//    viewModel.fetchUser(1)
     val viewState by viewModel.viewState.collectAsState()
 
     var newName by remember { mutableStateOf("") }
@@ -156,36 +150,23 @@ fun ProfileSettingScreen(
 //                }
 //            }
 
-            Button(
-                onClick = { ->
-                    if (nameChanged) {
-                        viewModel.updateProfile("username", newName)
-                    }
-                    if (bioChanged) {
-                        viewModel.updateProfile("bio", newBio)
-                    }
-                    if (avatarChanged) {
-                        viewModel.updateProfile("avatar", "https://images.unsplash.com/photo-1575936123452-b67c3203c357?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D")
-                    }
-                },
-                modifier = Modifier
-                    .padding(16.dp)
-            ) {
-                Text("Commit changes")
-            }
-
-            Button(
-                onClick = {
-                    loginViewModel.logout()
-                    navController.navigate(DestinationRoute.AUTHENTICATION_ROUTE) {
-                        popUpTo(DestinationRoute.MY_PROFILE_SETTING_ROUTE) { inclusive = true }
-                    }
-                },
-                modifier = Modifier
-                    .padding(16.dp)
-            ) {
-                Text("Đăng xuất")
-            }
+//            Button(
+//                onClick = { ->
+//                    if (nameChanged) {
+//                        viewModel.updateProfile("username", newName)
+//                    }
+//                    if (bioChanged) {
+//                        viewModel.updateProfile("bio", newBio)
+//                    }
+//                    if (avatarChanged) {
+//                        viewModel.updateProfile("avatar", "https://images.unsplash.com/photo-1575936123452-b67c3203c357?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D")
+//                    }
+//                },
+//                modifier = Modifier
+//                    .padding(16.dp)
+//            ) {
+//                Text("Commit changes")
+//            }
         }
     }
 }
