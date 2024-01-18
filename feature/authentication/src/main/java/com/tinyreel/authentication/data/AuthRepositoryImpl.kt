@@ -1,9 +1,14 @@
 package com.tinyreel.authentication.data
 
+import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.tinyreel.authentication.data.utils.await
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
@@ -23,11 +28,25 @@ class AuthRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun googleSignIn(credential: AuthCredential): Resource<FirebaseUser> {
+        return try{
+            val result = firebaseAuth.signInWithCredential(credential).await()
+            Resource.Success(result.user!!)
+        }catch (e: Exception){
+            e.printStackTrace()
+            Resource.Failure(e)
+        }
+    }
+
     override suspend fun signup(
         name: String,
         email: String,
-        password: String
+        password: String,
+        confirmPassword: String,
     ): Resource<FirebaseUser> {
+        if (password != confirmPassword)
+            return Resource.Failure(Exception("Password and confirmPassword do not match"))
+
         return try{
             val result = firebaseAuth.createUserWithEmailAndPassword(email, password).await()
             result?.user?.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(name).build())?.await()

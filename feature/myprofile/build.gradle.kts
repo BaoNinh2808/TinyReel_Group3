@@ -43,12 +43,13 @@ kapt {
 }
 
 dependencies {
-    implementation(project(":feature:creatorprofile"))
     COMMON_THEME
     COMMON_COMPOSABLE
     CORE
     DATA
     DOMAIN
+    FEATURE_AUTHENTICATION
+    FEATURE_CREATOR_PROFILE
     baseDependencies()
     composeDependencies()
     testDependencies()

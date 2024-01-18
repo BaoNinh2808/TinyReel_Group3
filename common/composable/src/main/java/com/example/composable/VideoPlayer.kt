@@ -2,6 +2,7 @@ package com.example.composable
 
 import android.graphics.Bitmap
 import android.net.Uri
+import android.util.Log
 import android.view.ViewGroup
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
@@ -54,11 +55,17 @@ fun VideoPlayer(
 
     LaunchedEffect(key1 = true) {
         withContext(Dispatchers.IO) {
+            Log.d("Thumbnail", video.videoLink)
+            try{
             val bm = FileUtils.extractThumbnail(
                 context.assets.openFd("videos/${video.videoLink}"), 1
             )
             withContext(Dispatchers.Main) {
                 thumbnail = thumbnail.copy(first = bm, second = thumbnail.second)
+            }
+            }
+            catch (e:Exception){
+                Log.d("Thumbnail exception", e.toString() + video.videoLink)
             }
         }
     }

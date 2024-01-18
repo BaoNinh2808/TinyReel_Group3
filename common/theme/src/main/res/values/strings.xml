@@ -14,7 +14,7 @@
     <string name="hide">ẩn</string>
 
     <string name="messages_and_notification_will">Messages and notifications will appear here </string>
-    <string name="sign_up">Sign up</string>
+    <string name="sign_up">Đăng ký</string>
     <string name="comments">comments</string>
     <!--following tab-->
     <string name="trending_creators">Trending creators</string>
@@ -36,6 +36,7 @@
     <string name="find_related_content">Find related content</string>
     <string name="search">Tìm kiếm</string>
     <string name="hot_search_query">Mọi người đang tìm</string>
+
     <!-- inbox -->
     <string name="message_and_notifications_will_appear_here">Message and notifications will appear here</string>
 
@@ -47,6 +48,7 @@
     <string name="continue_with_google">Tiếp tục với Google</string>
     <string name="user_name">Tên đăng nhập</string>
     <string name="password">Mật khẩu</string>
+    <string name="confirmPassword">Xác nhận mật khẩu</string>
     <string name="forget_password">Quên mật khẩu?</string>
     <string name="create_new_account">Tạo tài khoản mới</string>
     <string name="Guess_account">Tài khoản khách</string>
@@ -59,7 +61,7 @@
     <string name="send_code">Send code</string>
     <string name="phone">Phone</string>
     <string name="phone_number">Phone number</string>
-    <string name="enter_email_address_or_username">Enter email address or username</string>
+    <string name="enter_email_address_or_username">Nhập email</string>
     <string name="next">Next</string>
     <string name="by_continuing_you_agree">By continuing, you agree to our </string>
     <string name="and_acknowledge_that_you_have">and acknowledge that you have read our</string>
@@ -67,7 +69,7 @@
     <string name="and_confirm_that_you_have_read">and confirm that you have read TikTok\'s</string>
 
     <!-- my profile -->
-    <string name="sign_up_for_an_account">Sign up for and account</string>
+    <string name="sign_up_for_an_account">Đăng ký tài khoản</string>
 
     <!-- settings -->
     <string name="settings_and_privacy">Settings and privacy</string>

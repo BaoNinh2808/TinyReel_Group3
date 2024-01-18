@@ -8,9 +8,13 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -24,6 +28,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
@@ -49,6 +54,8 @@ fun SignupScreen(viewModel: LoginWithEmailPhoneViewModel, navController: NavCont
     val password by viewModel.password.collectAsState()
     val name by viewModel.name.collectAsState()
     val confirmPassword by viewModel.confirmPassword.collectAsState()
+    var isPasswordVisible by remember { mutableStateOf(false) }
+    var isConfirmPasswordVisible by remember { mutableStateOf(false) }
 
     val signUpFlow = viewModel?.signupFlow?.collectAsState()
     ConstraintLayout(
@@ -94,7 +101,7 @@ fun SignupScreen(viewModel: LoginWithEmailPhoneViewModel, navController: NavCont
                     end.linkTo(parent.end)
                     width = Dimension.fillToConstraints
                 },
-            text = stringResource(id = R.string.login),
+            text = stringResource(id = R.string.sign_up),
             style = TextStyle(
                 color = Color.White,
                 fontFamily = fontFamily,
@@ -178,13 +185,25 @@ fun SignupScreen(viewModel: LoginWithEmailPhoneViewModel, navController: NavCont
                 end.linkTo(parent.end, spacing.large)
                 width = Dimension.fillToConstraints
             },
-            visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.None,
                 autoCorrect = false,
                 keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Done
-            )
+            ),
+            trailingIcon = {
+                IconButton(
+                    onClick = {
+                        isPasswordVisible = !isPasswordVisible
+                    },
+                ) {
+                    Icon(
+                        if (isPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                        contentDescription = null
+                    )
+                }
+            },
+            visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation()
         )
 
         TextField(
@@ -193,7 +212,7 @@ fun SignupScreen(viewModel: LoginWithEmailPhoneViewModel, navController: NavCont
                 viewModel.onTriggerEvent(LoginEmailPhoneEvent.OnChangeConfirmPasswordEntry(it))
             },
             label = {
-                Text(text = stringResource(id = R.string.password))
+                Text(text = stringResource(id = R.string.confirmPassword))
             },
             modifier = Modifier.constrainAs(refConfirmPassword) {
                 top.linkTo(refPassword.bottom, spacing.medium)
@@ -201,18 +220,30 @@ fun SignupScreen(viewModel: LoginWithEmailPhoneViewModel, navController: NavCont
                 end.linkTo(parent.end, spacing.large)
                 width = Dimension.fillToConstraints
             },
-            visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.None,
                 autoCorrect = false,
                 keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Done
-            )
+            ),
+            trailingIcon = {
+                IconButton(
+                    onClick = {
+                        isConfirmPasswordVisible = !isConfirmPasswordVisible
+                    },
+                ) {
+                    Icon(
+                        if (isConfirmPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                        contentDescription = null
+                    )
+                }
+            },
+            visualTransformation = if (isConfirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation()
         )
 
         Button(
             onClick = {
-                viewModel?.signup(name, email, password)
+                viewModel?.signup(name, email, password, confirmPassword)
             },
             modifier = Modifier.constrainAs(refButtonSignup) {
                 top.linkTo(refConfirmPassword.bottom, spacing.large)
@@ -223,7 +254,6 @@ fun SignupScreen(viewModel: LoginWithEmailPhoneViewModel, navController: NavCont
         ) {
             Text(text = stringResource(id = R.string.sign_up), style = MaterialTheme.typography.titleMedium)
         }
-
 
         Text(
             modifier = Modifier
@@ -274,7 +304,9 @@ fun SignupScreen(viewModel: LoginWithEmailPhoneViewModel, navController: NavCont
                     })
                 }
                 is Resource.Success -> {
-
+                    navController.navigate(DestinationRoute.HOME_SCREEN_ROUTE){
+                        popUpTo(DestinationRoute.HOME_SCREEN_ROUTE) {inclusive = true}
+                    }
                 }
 
             }

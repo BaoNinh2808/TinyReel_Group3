@@ -32,7 +32,7 @@ enum class BottomBarDestination(
     ),
 
     FRIENDS(
-        route = SEARCH_ROUTE,
+        route = AUTHENTICATION_ROUTE,
         title = R.string.friends,
         unFilledIcon = R.drawable.ic_friends,
         filledIcon = R.drawable.ic_friends

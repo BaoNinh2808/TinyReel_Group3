@@ -131,6 +131,10 @@ val DependencyHandler.FEATURE_AUTHENTICATION
 
 val DependencyHandler.FEATURE_MY_PROFILE
     get() = implementation(project(mapOf("path" to ":feature:myprofile")))
+
+val DependencyHandler.FEATURE_CREATOR_PROFILE
+    get() = implementation(project(mapOf("path" to ":feature:creatorprofile")))
+
 val DependencyHandler.FEATURE_CAMERA
     get() = implementation(project(mapOf("path" to ":feature:camera")))
 
