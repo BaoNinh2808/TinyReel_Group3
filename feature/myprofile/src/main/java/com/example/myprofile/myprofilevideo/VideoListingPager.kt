@@ -27,6 +27,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.creatorprofile.screen.creatorprofile.ProfilePagerTabs
 //import com.example.creatorprofile.screen.creatorprofile.ProfilePagerTabs
 //import com.example.creatorprofile.screen.creatorprofile.tabs.LikeVideoTab
@@ -43,7 +44,7 @@ import kotlinx.coroutines.launch
 fun VideoListingPager(
     scrollState: ScrollState,
     height: Dp,
-    viewModel: MyProfileViewModel,
+    viewModel: MyProfileViewModel = hiltViewModel(),
     onClickVideo: (video: VideoModel, index: Int) -> Unit
 ) {
 //    val pagerState = rememberPagerState()

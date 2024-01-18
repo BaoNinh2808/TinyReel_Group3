@@ -23,6 +23,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.UriHandler
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.SavedStateHandle
 import coil.compose.AsyncImage
 import coil.compose.ImagePainter
@@ -38,12 +39,7 @@ import com.example.domain.creatorprofile.GetCreatorPublicVideoUseCase
 fun ProfileSettingScreen(
     navController: NavController,
 ) {
-    val viewModel = MyProfileViewModel(
-//        savedStateHandle = SavedStateHandle(),
-        userId = 1,
-        getCreatorProfileUseCase = GetCreatorProfileUseCase(CreatorProfileRepository()),
-        getCreatorPublicVideoUseCase = GetCreatorPublicVideoUseCase(CreatorProfileRepository())
-    )
+    val viewModel: MyProfileViewModel = hiltViewModel()
 //    viewModel.fetchUser(1)
     val viewState by viewModel.viewState.collectAsState()
 

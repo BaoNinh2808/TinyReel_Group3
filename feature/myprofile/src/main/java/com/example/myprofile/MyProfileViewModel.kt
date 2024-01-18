@@ -14,6 +14,7 @@ import com.example.data.source.UsersDataSource
 import com.example.domain.creatorprofile.EditableCreatorProfileUseCase
 import com.example.domain.creatorprofile.GetCreatorProfileUseCase
 import com.example.domain.creatorprofile.GetCreatorPublicVideoUseCase
+import dagger.assisted.Assisted
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,15 +23,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-//@HiltViewModel
-//class MyProfileViewModel
-//@Inject constructor(
-class MyProfileViewModel (
-    val userId: Long,
-//    public val getCreatorProfileUseCase: EditableCreatorProfileUseCase,
-    val getCreatorProfileUseCase: GetCreatorProfileUseCase,
+class MyProfileViewModel
+@Inject constructor(
+//class MyProfileViewModel (
+//    val userId: Long,
+    private val getCreatorProfileUseCase: GetCreatorProfileUseCase,
     private val getCreatorPublicVideoUseCase: GetCreatorPublicVideoUseCase
 ) : BaseViewModel<ViewState, CreatorProfileEvent>() {
+    var userId: Long = 0
 
     private val _publicVideosList = MutableStateFlow<List<VideoModel>>(arrayListOf())
     val publicVideosList = _publicVideosList.asStateFlow()
@@ -42,9 +42,10 @@ class MyProfileViewModel (
     }
 
     init {
-//        userId?.let {
-//
-//        }
+    }
+
+    fun setId(id: Long) {
+        userId = id
     }
 
     fun getCreatorPublicVideo(): StateFlow<List<VideoModel>> {

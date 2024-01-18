@@ -5,6 +5,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.creatorprofile.component.VideoGrid
 import com.example.creatorprofile.screen.creatorprofile.CreatorProfileViewModel
 import com.example.data.model.VideoModel
@@ -12,7 +13,7 @@ import com.example.myprofile.MyProfileViewModel
 
 @Composable
 fun PublicVideoTab(
-    viewModel: MyProfileViewModel,
+    viewModel: MyProfileViewModel = hiltViewModel(),
     scrollState: ScrollState,
     onClickVideo: (video: VideoModel, index: Int) -> Unit
 ) {

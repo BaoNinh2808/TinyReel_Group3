@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.core.extension.Space
 import com.example.creatorprofile.screen.creatorprofile.CreatorProfileViewModel
 import com.example.myprofile.MyProfileViewModel
@@ -22,7 +23,7 @@ import com.example.theme.R
 
 @Composable
 fun LikeVideoTab(
-    viewModel: MyProfileViewModel,
+    viewModel: MyProfileViewModel = hiltViewModel(),
 ) {
     val state by viewModel.viewState.collectAsState()
 

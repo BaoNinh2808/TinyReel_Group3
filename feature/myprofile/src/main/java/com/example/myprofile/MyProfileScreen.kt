@@ -59,7 +59,8 @@ import com.tinyreel.authentication.di.AppModule
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyProfileScreen(
-    navController: NavController
+    navController: NavController,
+    viewModel: MyProfileViewModel = hiltViewModel()
 ) {
 //    val firebaseAuth = AppModule.provideFirebaseAuth()
 //    val authRepository = AppModule.providesAuthRepository(AuthRepositoryImpl(firebaseAuth))
@@ -89,15 +90,16 @@ fun MyProfileScreen(
 //    )
 //    val viewState by viewModel.viewState.collectAsState()
 
-    val viewModel = MyProfileViewModel(
-        9L,
-        GetCreatorProfileUseCase(
-            CreatorProfileRepository()
-        ),
-        GetCreatorPublicVideoUseCase(
-            CreatorProfileRepository()
-        )
-    )
+//    val viewModel = MyProfileViewModel(
+//        9L,
+//        GetCreatorProfileUseCase(
+//            CreatorProfileRepository()
+//        ),
+//        GetCreatorPublicVideoUseCase(
+//            CreatorProfileRepository()
+//        )
+//    )
+    viewModel.setId(9L)
 
     Scaffold(topBar = {
         TopBar(
@@ -160,7 +162,7 @@ fun UnAuthorizedInboxScreen(onClickSignup: () -> Unit) {
 @Composable
 fun LoggedInProfileScreen(
     navController: NavController,
-    viewModel: MyProfileViewModel
+    viewModel: MyProfileViewModel = hiltViewModel()
 ) {
     val scrollState = rememberScrollState()
     val viewState by viewModel.getCreatorPublicVideo().collectAsState()
