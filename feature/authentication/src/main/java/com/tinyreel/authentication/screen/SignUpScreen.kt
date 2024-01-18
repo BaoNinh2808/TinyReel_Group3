@@ -19,6 +19,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -44,6 +45,7 @@ import com.example.theme.fontFamily
 import com.example.theme.spacing
 import com.tinyreel.authentication.LoginEmailPhoneEvent
 import com.tinyreel.authentication.LoginWithEmailPhoneViewModel
+import com.tinyreel.authentication.data.AuthRepository
 import com.tinyreel.authentication.data.Resource
 
 
@@ -83,6 +85,7 @@ fun SignupScreen(viewModel: LoginWithEmailPhoneViewModel, navController: NavCont
         Image(
             painter = imagePainter,
             contentDescription = "Loaded Image",
+            contentScale = ContentScale.Crop,
             modifier = Modifier
                 .constrainAs(refBackground) {
                     top.linkTo(parent.top)
@@ -318,5 +321,5 @@ fun SignupScreen(viewModel: LoginWithEmailPhoneViewModel, navController: NavCont
 //@Composable
 //fun SignUpScreenPreview() {
 //    val navController = rememberNavController()
-//    SignupScreen(null, navController = navController)
+//    SignupScreen(null , navController = navController)
 //}

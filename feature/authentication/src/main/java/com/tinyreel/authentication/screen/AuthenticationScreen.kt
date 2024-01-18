@@ -86,6 +86,7 @@ import com.tinyreel.authentication.data.Resource
 import com.tinyreel.authentication.serverClientID
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.ui.layout.ContentScale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -122,6 +123,7 @@ fun LoginScreen(viewModel:LoginWithEmailPhoneViewModel, navController: NavContro
         Image(
             painter = imagePainter,
             contentDescription = "Loaded Image",
+            contentScale = ContentScale.Crop,
             modifier = Modifier
                 .constrainAs(refBackground) {
                     top.linkTo(parent.top)
