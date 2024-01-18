@@ -1,5 +1,6 @@
 package com.example.myprofile
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.*
 import androidx.compose.material3.*
@@ -48,15 +49,7 @@ import com.example.domain.creatorprofile.EditableCreatorProfileUseCase
 import com.example.domain.creatorprofile.GetCreatorProfileUseCase
 import com.example.domain.creatorprofile.GetCreatorPublicVideoUseCase
 import com.example.myprofile.myprofilevideo.VideoListingPager
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.Firebase
-import com.google.firebase.firestore.firestore
-import com.tinyreel.authentication.data.AuthRepositoryImpl
-import com.tinyreel.authentication.di.AppModule
 
-
-//val db = Firebase.firestore
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyProfileScreen(
     navController: NavController,

@@ -23,13 +23,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class MyProfileViewModel
 @Inject constructor(
-//class MyProfileViewModel (
-//    val userId: Long,
     private val getCreatorProfileUseCase: GetCreatorProfileUseCase,
     private val getCreatorPublicVideoUseCase: GetCreatorPublicVideoUseCase
 ) : BaseViewModel<ViewState, CreatorProfileEvent>() {
+
     var userId: Long = 0
 
     private val _publicVideosList = MutableStateFlow<List<VideoModel>>(arrayListOf())

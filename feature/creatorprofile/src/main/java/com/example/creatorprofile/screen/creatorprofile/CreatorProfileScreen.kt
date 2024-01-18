@@ -42,18 +42,8 @@ import com.example.core.DestinationRoute.PassedKey.USER_ID
 fun CreatorProfileScreen(
     onClickNavIcon: () -> Unit,
     navController: NavController,
-//    viewModel: CreatorProfileViewModel = hiltViewModel()
-//    viewModel: CreatorProfileViewModel = CreatorProfileViewModel(
-//        savedStateHandle = SavedStateHandle(),
-//        getCreatorProfileUseCase = GetCreatorProfileUseCase(CreatorProfileRepository()),
-//        getCreatorPublicVideoUseCase = GetCreatorPublicVideoUseCase(CreatorProfileRepository())
-//    )
+    viewModel: CreatorProfileViewModel = hiltViewModel()
 ) {
-    val viewModel = CreatorProfileViewModel(
-        _userId = navController.currentBackStackEntry?.arguments?.getLong(USER_ID)?:0L,
-        getCreatorProfileUseCase = GetCreatorProfileUseCase(CreatorProfileRepository()),
-        getCreatorPublicVideoUseCase = GetCreatorPublicVideoUseCase(CreatorProfileRepository())
-    )
     val viewState by viewModel.viewState.collectAsState()
     val scrollState = rememberScrollState()
 

@@ -10,6 +10,7 @@ import com.example.domain.creatorprofile.GetCreatorProfileUseCase
 import com.example.domain.creatorprofile.GetCreatorPublicVideoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,13 +18,11 @@ import javax.inject.Inject
 @HiltViewModel
 class CreatorProfileViewModel
 @Inject constructor(
-//    private val savedStateHandle: SavedStateHandle,
-    private val _userId: Long,
+    private val savedStateHandle: SavedStateHandle,
     private val getCreatorProfileUseCase: GetCreatorProfileUseCase,
     private val getCreatorPublicVideoUseCase: GetCreatorPublicVideoUseCase
 ) : BaseViewModel<ViewState, CreatorProfileEvent>() {
-//    val userId: Long? = savedStateHandle[USER_ID]
-    val userId: Long = _userId
+    val userId: Long? = savedStateHandle[USER_ID]
 
     private val _publicVideosList = MutableStateFlow<List<VideoModel>>(arrayListOf())
     val publicVideosList = _publicVideosList.asStateFlow()
@@ -34,19 +33,19 @@ class CreatorProfileViewModel
     override fun onTriggerEvent(event: CreatorProfileEvent) {
     }
 
+    init {
+        userId?.let {
+//            fetchUser(it)
+            fetchCreatorPublicVideo(it)
+        }
+    }
+
 //    init {
-//        userId?.let {
+//        _userId?.let {
 //            fetchUser(it)
 //            fetchCreatorPublicVideo(it)
 //        }
 //    }
-
-    init {
-        _userId?.let {
-            fetchUser(it)
-            fetchCreatorPublicVideo(it)
-        }
-    }
 
     private fun fetchUser(id: Long) {
         viewModelScope.launch {
@@ -54,6 +53,11 @@ class CreatorProfileViewModel
                 updateState(ViewState(creatorProfile = it))
             }
         }
+    }
+
+    fun getCreatorPublicVideo(id: Long): StateFlow<List<VideoModel>> {
+        fetchCreatorPublicVideo(id)
+        return publicVideosList
     }
 
     private fun fetchCreatorPublicVideo(id: Long) {
