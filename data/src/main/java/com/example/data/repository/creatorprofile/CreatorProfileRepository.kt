@@ -18,13 +18,13 @@ import javax.inject.Inject
 class CreatorProfileRepository @Inject constructor() {
 
     val databaseReference = FirebaseDatabase.getInstance().getReference("TinyReel/forYou/videos")
-    companion object {
         fun getQueryResult(creatorProfileRepository: CreatorProfileRepository, queryId : Long) : Flow<List<VideoModel>> {
-
+            Log.d("TAG", "getQueryResult: $queryId")
             val deferredResult = CompletableDeferred<List<VideoModel>>()
-            creatorProfileRepository.databaseReference.orderByChild("authorDetails/userId")
+            creatorProfileRepository.databaseReference
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
+                        Log.d("TAG", "onDataChange: snapshot: $snapshot")
                         val result = arrayListOf<VideoModel>()
                         for (data in snapshot.children) {
                             // Extract fields from 'data'
@@ -96,7 +96,6 @@ class CreatorProfileRepository @Inject constructor() {
             return flow{
                 emit(deferredResult.await())
             }
-        }
     }
 
     fun getCreatorDetails(id: Long): Flow<UserModel?> {
