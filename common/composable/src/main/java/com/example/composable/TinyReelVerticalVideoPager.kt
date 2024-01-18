@@ -2,6 +2,7 @@ package com.example.composable
 
 import android.content.Context
 import android.graphics.drawable.shapes.Shape
+import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
@@ -38,8 +39,11 @@ import com.example.data.model.VideoModel
 import com.example.theme.*
 import com.example.theme.R
 import com.google.firebase.FirebaseApp
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.delay
@@ -71,9 +75,9 @@ fun TinyReelVerticalVideoPager(
 //    databaseReference.child("TinyReel").child("forYou").child("videos").setValue(videos)
 
 
-    lateinit var database: DatabaseReference
-    database = Firebase.database.reference
-    database.child("TinyReel").child("forYou").child("videos").setValue(videos)
+//    lateinit var database: DatabaseReference
+//    database = Firebase.database.reference
+//    database.child("TinyReel").child("forYou").child("videos").setValue(videos)
 
 
     val fling = PagerDefaults.flingBehavior(
@@ -243,16 +247,19 @@ fun SideItems(
             onLikedClicked = {
                 isLiked = it
                 item.currentViewerInteraction.isLikedByYou = it
+
                 if (isLiked) {
-                    item.videoStats.like = (item.videoStats.like.toString().toInt() + 1).toLong()
+                    item.videoStats.like = item.videoStats.like + 1
                     item.videoStats.formattedLikeCount = item.videoStats.like.toString()
-                    databaseReference.child("TinyReel").child("forYou").child("videos").child(item.videoId).child("videoStats").child("like").setValue(item.videoStats.like)
-                    //
+                    changeLike(item.videoId,item.videoStats.like, item.videoStats.formattedLikeCount)
+
+                    //databaseReference.child("TinyReel").child("forYou").child("videos").child(item.videoId).child("videoStats").child("like").setValue(1000)
                 }
                 else{
-                    item.videoStats.like = (item.videoStats.like.toString().toInt() - 1).toLong()
+                    item.videoStats.like = item.videoStats.like - 1
                     item.videoStats.formattedLikeCount = item.videoStats.like.toString()
-                    databaseReference.child("TinyReel").child("forYou").child("videos").child(item.videoId).child("videoStats").child("like").setValue(item.videoStats.like)
+                    changeLike(item.videoId,item.videoStats.like, item.videoStats.formattedLikeCount)
+//                    databaseReference.child("TinyReel").child("forYou").child("videos").child(item.videoId).child("videoStats").child("like").setValue(1000)
                 }
             })
 
@@ -275,12 +282,14 @@ fun SideItems(
                 if (isFavorited) {
                     item.videoStats.favourite = (item.videoStats.favourite.toString().toInt() + 1).toLong()
                     item.videoStats.formattedFavouriteCount = item.videoStats.favourite.toString()
-                    databaseReference.child("TinyReel").child("forYou").child("videos").child(item.videoId).child("videoStats").child("save").setValue(item.videoStats.favourite)
+                    changeFavourite(item.videoId,item.videoStats.favourite, item.videoStats.formattedFavouriteCount)
+//                    databaseReference.child("TinyReel").child("forYou").child("videos").child(item.videoId).child("videoStats").child("save").setValue(item.videoStats.favourite)
                 }
                 else{
                     item.videoStats.favourite = (item.videoStats.favourite.toString().toInt() - 1).toLong()
                     item.videoStats.formattedFavouriteCount = item.videoStats.favourite.toString()
-                    databaseReference.child("TinyReel").child("forYou").child("videos").child(item.videoId).child("videoStats").child("save").setValue(item.videoStats.favourite)
+                    changeFavourite(item.videoId,item.videoStats.favourite, item.videoStats.formattedFavouriteCount)
+//                    databaseReference.child("TinyReel").child("forYou").child("videos").child(item.videoId).child("videoStats").child("save").setValue(item.videoStats.favourite)
                 }
             }
         )
@@ -302,6 +311,45 @@ fun SideItems(
     }
 }
 
+fun changeLike( videoIdToUpdate : String, newLike : Long, newFormatLikeCount : String){
+    val databaseReference = FirebaseDatabase.getInstance().getReference("TinyReel/forYou/videos")
+    databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
+        override fun onDataChange(snapshot: DataSnapshot) {
+            for (videoSnapshot in snapshot.children) {
+                val videoId = videoSnapshot.child("videoId").getValue(String::class.java)
+                if (videoId.equals(videoIdToUpdate)) {
+                    videoSnapshot.ref.child("videoStats").child("like").setValue(newLike)
+                    videoSnapshot.ref.child("videoStats").child("formattedLikeCount").setValue(newFormatLikeCount)
+                    break // Exit the loop once the required videoId is found and updated
+                }
+            }
+        }
+
+        override fun onCancelled(databaseError: DatabaseError) {
+            // Handle possible errors
+        }
+    })
+}
+
+fun changeFavourite( videoIdToUpdate : String, newFav : Long, newFormatFavCount : String){
+    val databaseReference = FirebaseDatabase.getInstance().getReference("TinyReel/forYou/videos")
+    databaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
+        override fun onDataChange(snapshot: DataSnapshot) {
+            for (videoSnapshot in snapshot.children) {
+                val videoId = videoSnapshot.child("videoId").getValue(String::class.java)
+                if (videoId.equals(videoIdToUpdate)) {
+                    videoSnapshot.ref.child("videoStats").child("favourite").setValue(newFav)
+                    videoSnapshot.ref.child("videoStats").child("formattedFavouriteCount").setValue(newFormatFavCount)
+                    break // Exit the loop once the required videoId is found and updated
+                }
+            }
+        }
+
+        override fun onCancelled(databaseError: DatabaseError) {
+            // Handle possible errors
+        }
+    })
+}
 @Composable
 fun LikeIconButton(
     isLiked: Boolean, likeCount: String, onLikedClicked: (Boolean) -> Unit
