@@ -11,6 +11,6 @@ class GetCreatorPublicVideoUseCase @Inject constructor(
     private val creatorProfileRepository: CreatorProfileRepository
 ) {
     operator fun invoke(id: Long): Flow<List<VideoModel>> {
-        return creatorProfileRepository.getQueryResult(creatorProfileRepository, id)
+        return CreatorProfileRepository.getQueryResult(creatorProfileRepository, id)
     }
 }

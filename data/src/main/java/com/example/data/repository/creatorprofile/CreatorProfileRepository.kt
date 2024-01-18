@@ -18,7 +18,12 @@ import javax.inject.Inject
 class CreatorProfileRepository @Inject constructor() {
 
     val databaseReference = FirebaseDatabase.getInstance().getReference("TinyReel/forYou/videos")
-        fun getQueryResult(creatorProfileRepository: CreatorProfileRepository, queryId : Long) : Flow<List<VideoModel>> {
+
+    companion object {
+        fun getQueryResult(
+            creatorProfileRepository: CreatorProfileRepository,
+            queryId: Long
+        ): Flow<List<VideoModel>> {
             Log.d("TAG", "getQueryResult: $queryId")
             val deferredResult = CompletableDeferred<List<VideoModel>>()
             creatorProfileRepository.databaseReference
@@ -29,30 +34,42 @@ class CreatorProfileRepository @Inject constructor() {
                         for (data in snapshot.children) {
                             // Extract fields from 'data'
                             val videoId = data.child("videoId").getValue(String::class.java) ?: ""
-                            val videoLink = data.child("videoLink").getValue(String::class.java) ?: ""
-                            val description = data.child("description").getValue(String::class.java) ?: ""
-                            val createdAt = data.child("createdAt").getValue(String::class.java) ?: ""
+                            val videoLink =
+                                data.child("videoLink").getValue(String::class.java) ?: ""
+                            val description =
+                                data.child("description").getValue(String::class.java) ?: ""
+                            val createdAt =
+                                data.child("createdAt").getValue(String::class.java) ?: ""
                             val authorDetailsSnapshot = data.child("authorDetails")
                             val videoStatsSnapshot = data.child("videoStats")
 
                             // Create AuthorDetails object
                             val authorDetails = UserModel(
-                                bio = authorDetailsSnapshot.child("bio").getValue(String::class.java) ?: "",
-                                followers = authorDetailsSnapshot.child("followers").getValue(Long::class.java) ?: 0,
-                                following = authorDetailsSnapshot.child("following").getValue(Long::class.java) ?: 0,
-                                fullName = authorDetailsSnapshot.child("fullName").getValue(String::class.java) ?: "",
-                                likes = authorDetailsSnapshot.child("likes").getValue(Long::class.java) ?: 0,
-                                profilePic = authorDetailsSnapshot.child("profilePic").getValue(String::class.java) ?: "",
-                                uniqueUserName = authorDetailsSnapshot.child("uniqueUserName").getValue(String::class.java) ?: "",
-                                userId = authorDetailsSnapshot.child("userId").getValue(Long::class.java) ?: 0,
-                                isVerified = authorDetailsSnapshot.child("verified").getValue(Boolean::class.java) ?: false
+                                bio = authorDetailsSnapshot.child("bio")
+                                    .getValue(String::class.java) ?: "",
+                                followers = authorDetailsSnapshot.child("followers")
+                                    .getValue(Long::class.java) ?: 0,
+                                following = authorDetailsSnapshot.child("following")
+                                    .getValue(Long::class.java) ?: 0,
+                                fullName = authorDetailsSnapshot.child("fullName")
+                                    .getValue(String::class.java) ?: "",
+                                likes = authorDetailsSnapshot.child("likes")
+                                    .getValue(Long::class.java) ?: 0,
+                                profilePic = authorDetailsSnapshot.child("profilePic")
+                                    .getValue(String::class.java) ?: "",
+                                uniqueUserName = authorDetailsSnapshot.child("uniqueUserName")
+                                    .getValue(String::class.java) ?: "",
+                                userId = authorDetailsSnapshot.child("userId")
+                                    .getValue(Long::class.java) ?: 0,
+                                isVerified = authorDetailsSnapshot.child("verified")
+                                    .getValue(Boolean::class.java) ?: false
                             )
 
                             Log.d("TAG", "${authorDetails.userId}")
 
                             if (authorDetails.userId == queryId) {
                                 Log.d("TAG", "found Video: ${authorDetails.userId}")
-                            }else{
+                            } else {
                                 continue
                             }
 
@@ -93,9 +110,10 @@ class CreatorProfileRepository @Inject constructor() {
                     }
                 }
                 )
-            return flow{
+            return flow {
                 emit(deferredResult.await())
             }
+        }
     }
 
     fun getCreatorDetails(id: Long): Flow<UserModel?> {

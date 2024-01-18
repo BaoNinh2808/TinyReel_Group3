@@ -53,14 +53,6 @@ class MyProfileViewModel
         return publicVideosList
     }
 
-    private fun fetchUser(id: Long) {
-        viewModelScope.launch {
-            getCreatorProfileUseCase(id).collect {
-                updateState(ViewState(creatorProfile = it))
-            }
-        }
-    }
-
 //    fun updateProfile(
 //        property: String,
 //        newValue: Any
