@@ -13,7 +13,8 @@ class EditableCreatorProfileUseCase @Inject constructor(
 
     operator fun invoke(id: Long): Flow<UserModel?> {
         _id = id
-        return creatorProfileRepository.getCreatorDetails(id)
+//        return creatorProfileRepository.getCreatorDetails(id)
+        return creatorProfileRepository.fetchCreatorDetails(id)
     }
 
     fun updateProfile(

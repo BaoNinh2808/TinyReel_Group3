@@ -5,6 +5,12 @@ import com.example.data.model.UserModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
+import com.google.firebase.Firebase
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.firestore
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.callbackFlow
+
 object UsersDataSource {
     val kylieJenner = UserModel(
         userId = 1,
@@ -160,6 +166,24 @@ object UsersDataSource {
             emit(user)
         }
     }
+
+//    fun fetchSpecificUser_(userId: Long): Flow<UserModel?> = callbackFlow {
+//        val user = UserModel(userId = userId, uniqueUserName = "not initialized")
+//
+//        db.child(userId.toString()).get()
+//            .addOnSuccessListener { dataSnapshot ->
+//                if (dataSnapshot.exists()) {
+//                    user.uniqueUserName = dataSnapshot.child("name").getValue().toString()
+//                }
+//                trySend(user).isSuccess
+//            }
+//            .addOnFailureListener {
+//                user.uniqueUserName = "not found"
+//                trySend(user).isSuccess
+//            }
+//
+//        awaitClose {}
+//    }
 
     fun setUniqueUserName(userId: Long, value: String) {
         val user = userList.find { it.userId == userId }

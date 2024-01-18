@@ -55,32 +55,39 @@ import com.tinyreel.authentication.data.AuthRepositoryImpl
 import com.tinyreel.authentication.di.AppModule
 
 
-val db = Firebase.firestore
+//val db = Firebase.firestore
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyProfileScreen(
     navController: NavController
 ) {
-    val firebaseAuth = AppModule.provideFirebaseAuth()
-    val authRepository = AppModule.providesAuthRepository(AuthRepositoryImpl(firebaseAuth))
-    val currentUser = authRepository.currentUser
-    val currentUserId = currentUser?.uid?:0
-    var loggedIn = false
-    var userName: String = "not logged in"
+//    val firebaseAuth = AppModule.provideFirebaseAuth()
+//    val authRepository = AppModule.providesAuthRepository(AuthRepositoryImpl(firebaseAuth))
+//    val currentUser = authRepository.currentUser
+//    val currentUserId = currentUser?.uid?:0
+//    var loggedIn = false
+//    var userName: String = "not logged in"
 
-    val userInfoRef = db.collection("userInfo").whereEqualTo("uid", currentUserId.toString()).get()
-        .addOnSuccessListener { querySnapshot ->
-            loggedIn = true
-        }
-        .addOnFailureListener { exception ->
-            loggedIn = true
-        }
+//    val userInfoRef = db.collection("userInfo").whereEqualTo("uid", "123").get()
+//        .addOnSuccessListener { querySnapshot ->
+//            loggedIn = true
+//            if (!querySnapshot.isEmpty) {
+//                userName = querySnapshot.documents[0].getString("userName").toString()
+//            }
+//            else {
+//                userName = "failed to fetch"
+//            }
+//        }
+//        .addOnFailureListener { exception ->
+//            loggedIn = true
+//        }
 
     val viewModel = MyProfileViewModel(
-        userId = 1,
+        userId = 123,
         getCreatorProfileUseCase = EditableCreatorProfileUseCase(CreatorProfileRepository()),
         getCreatorPublicVideoUseCase = GetCreatorPublicVideoUseCase(CreatorProfileRepository())
     )
+    val viewState by viewModel.viewState.collectAsState()
 
     Scaffold(topBar = {
         TopBar(
@@ -107,9 +114,8 @@ fun MyProfileScreen(
 //                navController = navController,
 //                viewModel = viewModel
 //            )
-            Text(currentUserId.toString())
-            Text(loggedIn.toString())
-            Text(userName)
+            Text(viewState?.creatorProfile?.userId.toString())
+            Text(viewState?.creatorProfile?.uniqueUserName.toString())
         }
     }
 }

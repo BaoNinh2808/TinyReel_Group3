@@ -13,6 +13,10 @@ class CreatorProfileRepository @Inject constructor() {
         return UsersDataSource.fetchSpecificUser(id)
     }
 
+    fun fetchCreatorDetails(id: Long): Flow<UserModel?> {
+        return UsersDataSource.fetchSpecificUser_(id)
+    }
+
     fun updateUserProfile(
         id: Long,
         property: String,
