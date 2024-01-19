@@ -19,14 +19,13 @@ class CreatorProfileRepository @Inject constructor() {
 
     val databaseReference = FirebaseDatabase.getInstance().getReference("TinyReel/forYou/videos")
 
-    companion object {
-        fun getQueryResult(
-            creatorProfileRepository: CreatorProfileRepository,
+
+    fun getQueryResult(
             queryId: Long
         ): Flow<List<VideoModel>> {
             Log.d("TAG", "getQueryResult: $queryId")
             val deferredResult = CompletableDeferred<List<VideoModel>>()
-            creatorProfileRepository.databaseReference
+            databaseReference
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         Log.d("TAG", "onDataChange: snapshot: $snapshot")
@@ -114,7 +113,6 @@ class CreatorProfileRepository @Inject constructor() {
                 emit(deferredResult.await())
             }
         }
-    }
 
     fun getCreatorDetails(id: Long): Flow<UserModel?> {
         return UsersDataSource.fetchSpecificUser(id)

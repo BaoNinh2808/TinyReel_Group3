@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,7 +31,7 @@ class MyProfileViewModel
     private val getCreatorPublicVideoUseCase: GetCreatorPublicVideoUseCase
 ) : BaseViewModel<ViewState, CreatorProfileEvent>() {
 
-    var userId: Long = 0
+    var userId: Long = 9
 
     private val _publicVideosList = MutableStateFlow<List<VideoModel>>(arrayListOf())
     val publicVideosList = _publicVideosList.asStateFlow()
@@ -47,6 +48,7 @@ class MyProfileViewModel
     fun setId(id: Long) {
         userId = id
     }
+
 
     fun getCreatorPublicVideo(): StateFlow<List<VideoModel>> {
         fetchCreatorPublicVideo()
@@ -65,6 +67,7 @@ class MyProfileViewModel
             getCreatorPublicVideoUseCase(userId).collect {
                 _publicVideosList.value = it
             }
+
         }
     }
 }

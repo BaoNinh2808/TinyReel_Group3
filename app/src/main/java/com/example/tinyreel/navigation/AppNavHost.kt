@@ -28,7 +28,7 @@ fun AppNavHost(
     loginViewModel: LoginWithEmailPhoneViewModel,
     navController: NavHostController = rememberNavController(),
     modifier: Modifier = Modifier,
-    startDestination: String = AUTHENTICATION_ROUTE
+    startDestination: String = HOME_SCREEN_ROUTE
 ) {
     NavHost(
         navController = navController,

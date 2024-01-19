@@ -43,6 +43,7 @@ import com.example.theme.Gray
 import coil.compose.rememberImagePainter
 //import com.example.creatorprofile.component.VideoListingPager
 import com.example.creatorprofile.screen.creatorprofile.ViewState
+import com.example.data.model.VideoModel
 import com.example.data.repository.creatorprofile.CreatorProfileRepository
 import com.example.data.source.UsersDataSource.kylieJenner
 import com.example.domain.creatorprofile.EditableCreatorProfileUseCase
@@ -116,8 +117,7 @@ fun MyProfileScreen(
 //                navController.navigate(DestinationRoute.AUTHENTICATION_ROUTE)
 //            }
             LoggedInProfileScreen(
-                navController = navController,
-                viewModel = viewModel
+                navController = navController
             )
 //            Text(viewState?.creatorProfile?.userId.toString())
 //            Text(viewState?.creatorProfile?.uniqueUserName.toString())
@@ -159,7 +159,6 @@ fun LoggedInProfileScreen(
 ) {
     val scrollState = rememberScrollState()
     val viewState by viewModel.getCreatorPublicVideo().collectAsState()
-    val creatorProfileDetails = viewState[0].authorDetails
 
     Column {
         BoxWithConstraints {
@@ -173,7 +172,7 @@ fun LoggedInProfileScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-                ProfileDetails(navController, creatorProfileDetails)
+                ProfileDetails(navController, viewState)
                 VideoListingPager(
                     scrollState = scrollState,
                     height = height,
@@ -190,9 +189,13 @@ fun LoggedInProfileScreen(
 @Composable
 fun ColumnScope.ProfileDetails(
     navController: NavController,
-//    viewState: ViewState?
-    userModel: UserModel
+    viewState: List<VideoModel>
+//    userModel: UserModel
 ) {
+    var userModel = kylieJenner
+    if (viewState.size > 0) {
+        userModel = viewState[0].authorDetails
+    }
     val context = LocalContext.current
 
     AsyncImage(

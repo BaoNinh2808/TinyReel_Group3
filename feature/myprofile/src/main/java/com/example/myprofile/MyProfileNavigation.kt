@@ -7,7 +7,7 @@ import com.example.core.DestinationRoute
 
 fun NavGraphBuilder.myProfileNavGraph(navController: NavController) {
     composable(route = DestinationRoute.MY_PROFILE_ROUTE) {
-        MyProfileScreen(navController)
+        LoggedInProfileScreen(navController)
     }
 
     composable(route = DestinationRoute.MY_PROFILE_SETTING_ROUTE) {
