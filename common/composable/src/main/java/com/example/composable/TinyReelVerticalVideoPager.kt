@@ -233,9 +233,9 @@ fun SideItems(
         }
 
         LaunchedEffect(key1 = doubleTabState) {
-            if (doubleTabState.first != Offset.Unspecified && doubleTabState.second) {
-                isLiked = doubleTabState.second
-                item.currentViewerInteraction.isLikedByYou = doubleTabState.second
+            if (doubleTabState.first != Offset.Unspecified && doubleTabState.second && !isLiked) {
+                isLiked = true
+                item.currentViewerInteraction.isLikedByYou = true
                 item.videoStats.like = (item.videoStats.like.toString().toInt() + 1).toLong()
                 item.videoStats.formattedLikeCount = item.videoStats.like.toString()
                 databaseReference.child("TinyReel").child("forYou").child("videos").child(item.videoId).child("videoStats").child("like").setValue(item.videoStats.like)

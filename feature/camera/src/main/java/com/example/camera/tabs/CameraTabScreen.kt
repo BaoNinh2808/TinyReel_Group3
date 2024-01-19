@@ -348,7 +348,7 @@ fun CameraPreview(
                             if (ActivityCompat.checkSelfPermission(
                                     context,
                                     Manifest.permission.RECORD_AUDIO
-                                ) != PackageManager.PERMISSION_GRANTED
+                                ) == PackageManager.PERMISSION_GRANTED
                             ) {
                                 withAudioEnabled()
                             }
