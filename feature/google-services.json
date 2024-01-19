@@ -1,14 +1,14 @@
 {
   "project_info": {
-    "project_number": "898233538722",
-    "firebase_url": "https://tinyreel-8d37c-default-rtdb.asia-southeast1.firebasedatabase.app",
-    "project_id": "tinyreel-8d37c",
-    "storage_bucket": "tinyreel-8d37c.appspot.com"
+    "project_number": "62987572672",
+    "firebase_url": "https://tinyreel3-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "tinyreel3",
+    "storage_bucket": "tinyreel3.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:898233538722:android:d278298775aad72c7b9ffb",
+        "mobilesdk_app_id": "1:62987572672:android:811283da67b7c00653e425",
         "android_client_info": {
           "package_name": "com.example.tinyreel"
         }
@@ -16,7 +16,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAYiuBjtBqnq2XeH7lIyORR1ms0WZVM1mM"
+          "current_key": "AIzaSyA9FGlZNbbNfJuvfJYeLbsx1sJ08EpuPUw"
         }
       ],
       "services": {

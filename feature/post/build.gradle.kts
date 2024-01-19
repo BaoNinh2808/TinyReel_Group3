@@ -42,7 +42,10 @@ dependencies {
     COMMON_THEME
     COMMON_COMPOSABLE
     CORE
+    DATA
     baseDependencies()
     composeDependencies()
     testDependencies()
+    firebase()
+    implementation("com.google.firebase:firebase-storage:20.3.0")
 }

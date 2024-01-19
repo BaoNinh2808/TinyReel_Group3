@@ -2,6 +2,7 @@ package com.example.post
 
 import android.net.Uri
 import android.webkit.MimeTypeMap
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -47,6 +48,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.documentfile.provider.DocumentFile
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
@@ -56,9 +58,22 @@ import coil.request.videoFrameMillis
 import com.example.composable.CustomButton
 import com.example.composable.TopBar
 import com.example.core.DestinationRoute.HOME_SCREEN_ROUTE
+import com.example.data.model.VideoModel
+import com.example.data.source.UsersDataSource.userList
 import com.example.theme.R
 import com.example.theme.Typography
+//import com.google.firebase.database.DataSnapshot
+//import com.google.firebase.database.DatabaseError
+//import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+//import com.google.firebase.database.ValueEventListener
+//import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
+//import com.google.firebase.storage.FirebaseStorage
 
+val databaseReference = FirebaseDatabase.getInstance().getReference()
+val storageReference = Firebase.storage.reference
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PostScreen(navController: NavController) {
@@ -69,12 +84,14 @@ fun PostScreen(navController: NavController) {
                 imgUri = it.firstOrNull()
             })
     var textValue by remember { mutableStateOf("") }
+    val context = LocalContext.current
 
     Scaffold(
         topBar = {
             TopBar(
-                navIcon = R.drawable.ic_home,
-                title = stringResource(id = R.string.create_post)
+                navIcon = R.drawable.ic_cancel,
+                title = stringResource(id = R.string.create_post),
+                onClickNavIcon = { navController.navigateUp() },
             )
         }
     ) {
@@ -108,7 +125,51 @@ fun PostScreen(navController: NavController) {
 
             Spacer(modifier = Modifier.height(160.dp))
 
-            PostButton()
+            PostButton(
+                onClicked = {
+                    if (imgUri == null) {
+                        Toast.makeText(context, "Please choose an image!", Toast.LENGTH_SHORT).show()
+                        return@PostButton
+                    }
+                    val file = DocumentFile.fromSingleUri(context, imgUri!!)
+                    val fileName = file!!.name
+                    val fileNameAsId = fileName!!.substringBeforeLast(".")
+                    val randUser = userList.random()
+
+                    val fileRef = storageReference.child(fileName)
+                    val uploadTask = fileRef.putFile(imgUri!!)
+                    uploadTask
+                        .addOnSuccessListener {
+                            Toast.makeText(context, "Upload image successfully!", Toast.LENGTH_SHORT).show()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(context, "Upload image failed!", Toast.LENGTH_SHORT).show()
+                        }
+
+                    val curVideo = VideoModel(
+                        videoId = fileNameAsId,
+                        authorDetails = randUser,
+                        videoLink = fileName,
+                        videoStats = VideoModel.VideoStats(
+                            like = 0,
+                            comment = 0,
+                            share = 0,
+                            views = 0
+                        ),
+                        description = "Draft video testing  #foryou #fyp #compose #tik",
+                        audioModel = null, hasTag = listOf(),
+                    )
+                    databaseReference.child("TinyReel").child("forYou")
+                        .child("videos").push().setValue(curVideo)
+                        .addOnSuccessListener {
+                            Toast.makeText(context, "Post video successfully!", Toast.LENGTH_SHORT).show()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(context, "Post video failed!", Toast.LENGTH_SHORT).show()
+                        }
+                    imgUri = null
+                }
+            )
         }
     }
 }
@@ -238,13 +299,13 @@ fun DescriptionAndImage(
 
             }
             else {
-                val imagePainter = painterResource(id = R.drawable.ic_home)
+                val imagePainter = painterResource(id = R.drawable.ic_add)
                 Image(
                     painter = imagePainter,
                     contentDescription = null,
                     modifier = Modifier
-                        .size(80.dp)
-                        .align(Alignment.Center)
+                        .size(50.dp)
+                        .align(Alignment.Center),
                 )
 
                 // Text
@@ -398,7 +459,7 @@ fun DropdownComponent() {
 }
 
 @Composable
-fun PostButton() {
+fun PostButton(onClicked: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -410,7 +471,7 @@ fun PostButton() {
             shape = RoundedCornerShape(24.dp),
             modifier = Modifier.fillMaxWidth(0.65f),
         ) {
-
+            onClicked()
         }
     }
 
