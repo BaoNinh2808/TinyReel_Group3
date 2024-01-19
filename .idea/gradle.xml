@@ -38,6 +38,7 @@
             <option value="$PROJECT_DIR$/feature/post" />
             <option value="$PROJECT_DIR$/feature/profile" />
             <option value="$PROJECT_DIR$/feature/search" />
+            <option value="$PROJECT_DIR$/feature/setting" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

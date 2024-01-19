@@ -363,8 +363,8 @@ fun LoginScreen(viewModel:LoginWithEmailPhoneViewModel, navController: NavContro
                     end.linkTo(parent.end, spacing.extraLarge)
                 }
                 .clickable {
-                    navController.navigate(AUTHENTICATION_ROUTE) {
-                        popUpTo(SIGNUP_ROUTE) { inclusive = true }
+                    navController.navigate(HOME_SCREEN_ROUTE) {
+                        popUpTo(HOME_SCREEN_ROUTE) { inclusive = true }
                     }
                 },
             text = stringResource(id = R.string.Guess_account),

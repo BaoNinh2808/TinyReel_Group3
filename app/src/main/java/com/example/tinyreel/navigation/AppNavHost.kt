@@ -24,6 +24,7 @@ import com.tinyreel.authentication.LoginWithEmailPhoneViewModel
 import com.tinyreel.authentication.authenticationNavGraph
 import com.tinyreel.authentication.signUpNavGraph
 import com.example.creatorprofile.creatorProfileNavGraph
+import com.example.setting.settingNavGraph
 
 @Composable
 fun AppNavHost(
@@ -46,8 +47,8 @@ fun AppNavHost(
         signUpNavGraph(loginViewModel, navController)
 //        loginEmailPhoneNavGraph(navController)
 //        friendsNavGraph(navController)
-        myProfileNavGraph(navController)
-//        settingNavGraph(navController)
+        myProfileNavGraph(loginViewModel, navController)
+        settingNavGraph(loginViewModel, navController)
         cameraMediaNavGraph(navController)
         searchNavGraph(navController)
         searchResultNavGraph(navController)

@@ -283,8 +283,8 @@ fun SignupScreen(viewModel: LoginWithEmailPhoneViewModel, navController: NavCont
                     end.linkTo(parent.end, spacing.extraLarge)
                 }
                 .clickable {
-                    navController.navigate(AUTHENTICATION_ROUTE) {
-                        popUpTo(SIGNUP_ROUTE) { inclusive = true }
+                    navController.navigate(DestinationRoute.HOME_SCREEN_ROUTE) {
+                        popUpTo(DestinationRoute.HOME_SCREEN_ROUTE) { inclusive = true }
                     }
                 },
             text = stringResource(id = R.string.Guess_account),
