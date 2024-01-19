@@ -31,7 +31,8 @@ class MyProfileViewModel
     private val getCreatorPublicVideoUseCase: GetCreatorPublicVideoUseCase
 ) : BaseViewModel<ViewState, CreatorProfileEvent>() {
 
-    var userId: Long = 9
+    var userId: Long = 0
+    var authenticationId: String = ""
 
     private val _publicVideosList = MutableStateFlow<List<VideoModel>>(arrayListOf())
     val publicVideosList = _publicVideosList.asStateFlow()
@@ -49,6 +50,9 @@ class MyProfileViewModel
         userId = id
     }
 
+    fun setAid(id: String) {
+        authenticationId = id
+    }
 
     fun getCreatorPublicVideo(): StateFlow<List<VideoModel>> {
         fetchCreatorPublicVideo()
@@ -62,9 +66,18 @@ class MyProfileViewModel
 //        getCreatorProfileUseCase.updateProfile(property, newValue)
 //    }
 
+//    private fun fetchCreatorPublicVideo() {
+//        viewModelScope.launch {
+//            getCreatorPublicVideoUseCase(userId).collect {
+//                _publicVideosList.value = it
+//            }
+//
+//        }
+//    }
+
     private fun fetchCreatorPublicVideo() {
         viewModelScope.launch {
-            getCreatorPublicVideoUseCase(userId).collect {
+            getCreatorPublicVideoUseCase.fetch(authenticationId).collect {
                 _publicVideosList.value = it
             }
 

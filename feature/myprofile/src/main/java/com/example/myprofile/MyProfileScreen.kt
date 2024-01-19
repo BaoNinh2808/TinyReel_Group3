@@ -42,7 +42,6 @@ import com.example.myprofile.myprofilevideo.VideoListingPager
 import com.google.firebase.Firebase
 import com.tinyreel.authentication.data.AuthRepositoryImpl
 import com.tinyreel.authentication.di.AppModule
-import com.google.firebase.auth.FirebaseUser
 
 @Composable
 fun MyProfileScreen(
@@ -52,6 +51,7 @@ fun MyProfileScreen(
     val firebaseAuth = AppModule.provideFirebaseAuth()
     val authRepository = AppModule.providesAuthRepository(AuthRepositoryImpl(firebaseAuth))
     val currentUser = authRepository.currentUser
+    viewModel.setAid(currentUser?.uid?:"")
 
     Log.d("TAG", "avadakedavra ${currentUser}")
 

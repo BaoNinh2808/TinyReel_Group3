@@ -13,7 +13,12 @@
           "package_name": "com.example.tinyreel"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "62987572672-47rk4olfcs7rmsg9a4ptj8eig0f6psvh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyA9FGlZNbbNfJuvfJYeLbsx1sJ08EpuPUw"
@@ -21,7 +26,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "62987572672-47rk4olfcs7rmsg9a4ptj8eig0f6psvh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
