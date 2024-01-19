@@ -10,6 +10,7 @@ import com.example.domain.creatorprofile.GetCreatorProfileUseCase
 import com.example.domain.creatorprofile.GetCreatorPublicVideoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -34,10 +35,18 @@ class CreatorProfileViewModel
 
     init {
         userId?.let {
-            fetchUser(it)
+            Log.d("TAG", "CreatorProfileViewModel: id = ${userId}")
+//            fetchUser(it)
             fetchCreatorPublicVideo(it)
         }
     }
+
+//    init {
+//        _userId?.let {
+//            fetchUser(it)
+//            fetchCreatorPublicVideo(it)
+//        }
+//    }
 
     private fun fetchUser(id: Long) {
         viewModelScope.launch {
@@ -45,6 +54,11 @@ class CreatorProfileViewModel
                 updateState(ViewState(creatorProfile = it))
             }
         }
+    }
+
+    fun getCreatorPublicVideo(id: Long): StateFlow<List<VideoModel>> {
+        fetchCreatorPublicVideo(id)
+        return publicVideosList
     }
 
     private fun fetchCreatorPublicVideo(id: Long) {
@@ -55,5 +69,4 @@ class CreatorProfileViewModel
             }
         }
     }
-
 }

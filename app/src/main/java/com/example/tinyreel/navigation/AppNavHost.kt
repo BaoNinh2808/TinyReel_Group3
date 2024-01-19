@@ -14,6 +14,7 @@ import com.example.core.DestinationRoute.MY_PROFILE_ROUTE
 import com.example.core.DestinationRoute.POST_ROUTE
 import com.example.core.DestinationRoute.SEARCH_RESULT_ROUTE
 import com.example.core.DestinationRoute.SEARCH_ROUTE
+import com.example.creatorprofile.creatorProfileNavGraph
 import com.example.home.homeNavGraph
 import com.example.myprofile.myProfileNavGraph
 import com.example.post.postNavGraph
@@ -38,7 +39,7 @@ fun AppNavHost(
         homeNavGraph(navController)
         postNavGraph(navController)
         commentListingNavGraph(navController)
-//        creatorProfileNavGraph(navController)
+        creatorProfileNavGraph(navController)
 //        inboxNavGraph(navController)
         authenticationNavGraph(loginViewModel, navController)
         signUpNavGraph(loginViewModel, navController)
