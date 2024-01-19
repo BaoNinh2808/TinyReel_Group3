@@ -11,7 +11,15 @@ import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import java.text.Normalizer
+import java.util.regex.Pattern
 import javax.inject.Inject
+
+fun normalizeString(str: String): String {
+    val nfdNormalizedString = Normalizer.normalize(str, Normalizer.Form.NFD)
+    val pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+")
+    return pattern.matcher(nfdNormalizedString).replaceAll("")
+}
 
 class SearchResultRepository @Inject constructor() {
     val databaseReference = FirebaseDatabase.getInstance().getReference("TinyReel/forYou/videos")
@@ -34,9 +42,12 @@ class SearchResultRepository @Inject constructor() {
 
                             Log.d("Des--", " videos: ${description}")
 
-                            if (description.contains(query, ignoreCase = true)) {
+                            val normalizedDescription = normalizeString(description)
+                            val normalizedQuery = normalizeString(query)
+
+                            if (normalizedDescription.contains(normalizedQuery, ignoreCase = true)) {
                                 Log.d("TAG", "Found videos: ${description}")
-                            }else{
+                            } else {
                                 continue
                             }
 

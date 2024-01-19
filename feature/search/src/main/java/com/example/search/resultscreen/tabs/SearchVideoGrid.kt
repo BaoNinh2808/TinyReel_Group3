@@ -51,13 +51,16 @@ import kotlinx.coroutines.withContext
 @Composable
 fun SearchVideoGrid(
     videoList: List<VideoModel>,
-    onClickVideo: (video: VideoModel, index: Int) -> Unit){
+    onClickVideo: (video: VideoModel, index: Int) -> Unit,
+    isBackList : Boolean = false){
     val context = LocalContext.current
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         content = {
-            itemsIndexed(videoList) { index, item ->
-                context.VideoGridItem(item, index, onClickVideo = onClickVideo)
+            if (!isBackList){
+                itemsIndexed(videoList) { index, item ->
+                    context.VideoGridItem(item, index, onClickVideo = onClickVideo)
+                }
             }
         }
     )
