@@ -1,16 +1,16 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\ezion\OneDrive\Documents\code\TinyReel\feature\search\src\main\AndroidManifest.xml:2:1-4:12
-INJECTED from C:\Users\ezion\OneDrive\Documents\code\TinyReel\feature\search\src\main\AndroidManifest.xml:2:1-4:12
+ADDED from D:\OneDrive - VNU-HCMUS\HK1NAM3\introSE\Bao2\feature\search\src\main\AndroidManifest.xml:2:1-4:12
+INJECTED from D:\OneDrive - VNU-HCMUS\HK1NAM3\introSE\Bao2\feature\search\src\main\AndroidManifest.xml:2:1-4:12
 	package
-		INJECTED from C:\Users\ezion\OneDrive\Documents\code\TinyReel\feature\search\src\main\AndroidManifest.xml
+		INJECTED from D:\OneDrive - VNU-HCMUS\HK1NAM3\introSE\Bao2\feature\search\src\main\AndroidManifest.xml
 	xmlns:android
-		ADDED from C:\Users\ezion\OneDrive\Documents\code\TinyReel\feature\search\src\main\AndroidManifest.xml:2:11-69
+		ADDED from D:\OneDrive - VNU-HCMUS\HK1NAM3\introSE\Bao2\feature\search\src\main\AndroidManifest.xml:2:11-69
 uses-sdk
-INJECTED from C:\Users\ezion\OneDrive\Documents\code\TinyReel\feature\search\src\main\AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from C:\Users\ezion\OneDrive\Documents\code\TinyReel\feature\search\src\main\AndroidManifest.xml
-INJECTED from C:\Users\ezion\OneDrive\Documents\code\TinyReel\feature\search\src\main\AndroidManifest.xml
+INJECTED from D:\OneDrive - VNU-HCMUS\HK1NAM3\introSE\Bao2\feature\search\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from D:\OneDrive - VNU-HCMUS\HK1NAM3\introSE\Bao2\feature\search\src\main\AndroidManifest.xml
+INJECTED from D:\OneDrive - VNU-HCMUS\HK1NAM3\introSE\Bao2\feature\search\src\main\AndroidManifest.xml
 	android:targetSdkVersion
-		INJECTED from C:\Users\ezion\OneDrive\Documents\code\TinyReel\feature\search\src\main\AndroidManifest.xml
+		INJECTED from D:\OneDrive - VNU-HCMUS\HK1NAM3\introSE\Bao2\feature\search\src\main\AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from C:\Users\ezion\OneDrive\Documents\code\TinyReel\feature\search\src\main\AndroidManifest.xml
+		INJECTED from D:\OneDrive - VNU-HCMUS\HK1NAM3\introSE\Bao2\feature\search\src\main\AndroidManifest.xml
