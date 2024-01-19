@@ -2,6 +2,7 @@ package com.example.creatorprofile.component
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -80,11 +81,11 @@ fun Context.VideoGridItem(item: VideoModel, index: Int, onClickVideo: (VideoMode
                 onClickVideo(item, index)
             }
     ) {
-        var thumbnail: Bitmap? by remember {
-            mutableStateOf(null)
+        var thumbnail by remember {
+            mutableStateOf<Pair<Bitmap?, Boolean>>(Pair(null, true))  //bitmap, isShow
         }
         AsyncImage(
-            model = thumbnail,
+            model = thumbnail.first,
             contentDescription = null,
             modifier = Modifier
                 .fillMaxSize()
@@ -104,12 +105,10 @@ fun Context.VideoGridItem(item: VideoModel, index: Int, onClickVideo: (VideoMode
         )
         LaunchedEffect(key1 = true) {
             withContext(Dispatchers.IO) {
-                val bitmap = FileUtils.extractThumbnail(
-                    assets.openFd("videos/${item.videoLink}"), 1
-                )
+                val bm = FileUtils.extractThumbnail2("https://firebasestorage.googleapis.com/v0/b/tinyreelbackup.appspot.com/o/${item.videoLink}?alt=media&token=8b9f9b9e-7b9a-4b7e-9b0a-9b9b9b9b9b9b", 0)
+                Log.d("VideoGridItem", "bm: $bm")
                 withContext(Dispatchers.Main) {
-                    thumbnail = bitmap
-
+                    thumbnail = thumbnail.copy(first = bm, second = thumbnail.second)
                 }
             }
         }
