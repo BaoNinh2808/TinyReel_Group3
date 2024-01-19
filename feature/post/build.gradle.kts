@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.core"
+    namespace = "com.example.post"
     compileSdk = 34
 
     defaultConfig {

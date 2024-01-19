@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.core"
+    namespace = "com.example.home"
     compileSdk = 34
 
     defaultConfig {

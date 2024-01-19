@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.core"
+    namespace = "com.example.myprofile"
     compileSdk = 34
 
     defaultConfig {

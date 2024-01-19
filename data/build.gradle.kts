@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.core"
+    namespace = "com.example.data"
     compileSdk = 34
 
     defaultConfig {
