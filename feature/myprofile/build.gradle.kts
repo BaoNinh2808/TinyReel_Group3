@@ -43,6 +43,9 @@ kapt {
 }
 
 dependencies {
+    implementation("com.google.firebase:firebase-firestore-ktx:24.10.0")
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+    implementation("com.google.firebase:firebase-auth-ktx:22.3.0")
     COMMON_THEME
     COMMON_COMPOSABLE
     CORE

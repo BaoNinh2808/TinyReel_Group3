@@ -19,49 +19,41 @@ import androidx.compose.ui.Alignment
 import androidx.navigation.NavController
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.lifecycle.SavedStateHandle
 import com.example.theme.R
 import com.example.core.DestinationRoute
 import com.example.composable.TopBar
 import com.example.theme.SubTextColor
 import com.example.composable.CustomButton
-import com.example.creatorprofile.screen.creatorprofile.CreatorProfileViewModel
-import com.example.data.model.UserModel
 import com.example.core.utils.IntentUtils.redirectToApp
 import com.example.data.model.SocialMediaType
 import com.example.core.AppContract.Type.INSTAGRAM
 import com.example.core.AppContract.Type.YOUTUBE
 import com.example.theme.Gray
 
-import coil.compose.rememberImagePainter
-//import com.example.creatorprofile.component.VideoListingPager
-import com.example.creatorprofile.screen.creatorprofile.ViewState
 import com.example.data.model.VideoModel
-import com.example.data.repository.creatorprofile.CreatorProfileRepository
 import com.example.data.source.UsersDataSource.kylieJenner
-import com.example.domain.creatorprofile.EditableCreatorProfileUseCase
-import com.example.domain.creatorprofile.GetCreatorProfileUseCase
-import com.example.domain.creatorprofile.GetCreatorPublicVideoUseCase
 import com.example.myprofile.myprofilevideo.VideoListingPager
+import com.google.firebase.Firebase
+import com.tinyreel.authentication.data.AuthRepositoryImpl
+import com.tinyreel.authentication.di.AppModule
+import com.google.firebase.auth.FirebaseUser
 
 @Composable
 fun MyProfileScreen(
     navController: NavController,
     viewModel: MyProfileViewModel = hiltViewModel()
 ) {
-//    val firebaseAuth = AppModule.provideFirebaseAuth()
-//    val authRepository = AppModule.providesAuthRepository(AuthRepositoryImpl(firebaseAuth))
-//    val currentUser = authRepository.currentUser
-//    val currentUserId = currentUser?.uid?:0
-//    var loggedIn = false
-//    var userName: String = "not logged in"
+    val firebaseAuth = AppModule.provideFirebaseAuth()
+    val authRepository = AppModule.providesAuthRepository(AuthRepositoryImpl(firebaseAuth))
+    val currentUser = authRepository.currentUser
+
+    Log.d("TAG", "avadakedavra ${currentUser}")
 
 //    val userInfoRef = db.collection("userInfo").whereEqualTo("uid", "123").get()
 //        .addOnSuccessListener { querySnapshot ->
@@ -113,14 +105,16 @@ fun MyProfileScreen(
                 .padding(it)
                 .fillMaxSize()
         ) {
-//            UnAuthorizedInboxScreen {
-//                navController.navigate(DestinationRoute.AUTHENTICATION_ROUTE)
-//            }
-            LoggedInProfileScreen(
-                navController = navController
-            )
-//            Text(viewState?.creatorProfile?.userId.toString())
-//            Text(viewState?.creatorProfile?.uniqueUserName.toString())
+            if (currentUser == null) {
+                UnAuthorizedInboxScreen {
+                    navController.navigate(DestinationRoute.AUTHENTICATION_ROUTE)
+                }
+            }
+            else {
+                LoggedInProfileScreen(
+                    navController = navController
+                )
+            }
         }
     }
 }
@@ -145,7 +139,8 @@ fun UnAuthorizedInboxScreen(onClickSignup: () -> Unit) {
         )
         CustomButton(
             buttonText = stringResource(id = R.string.sign_up),
-            modifier = Modifier.fillMaxWidth(0.66f)
+            modifier = Modifier
+                .fillMaxWidth(0.66f)
         ) {
             onClickSignup()
         }
