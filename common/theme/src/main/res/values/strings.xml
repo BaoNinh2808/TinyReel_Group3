@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">TinyReel</string>
-    <string name="cur_storage">tinyreel-8d37c</string>
+
     <string name="home">Trang chủ</string>
-    <string name="friends">Friends</string>
+    <string name="friends">Thông báo</string>
     <string name="noti">Thông báo</string>
-    <string name="inbox">Inbox</string>
+    <string name="inbox">Tìm kiếm</string>
     <string name="profile">Cá nhân</string>
     <string name="find">Tìm kiếm</string>
 
@@ -13,14 +13,14 @@
     <string name="see_more">xem thêm</string>
     <string name="hide">ẩn</string>
 
-    <string name="messages_and_notification_will">Messages and notifications will appear here </string>
+    <string name="messages_and_notification_will">Thông báo sẽ xuất hiện ở đây </string>
     <string name="sign_up">Đăng ký</string>
-    <string name="comments">comments</string>
-    <!--following tab-->
-    <string name="trending_creators">Trending creators</string>
-    <string name="follow_and_account_to_see">Follow an account to see their latest videos here.</string>
+    <string name="comments">Bình luận</string>
+        <!--following tab-->
+    <string name="trending_creators">Nhà sáng tạo nổi bật</string>
+    <string name="follow_and_account_to_see">Theo dõi 1 người để thấy video mới nhất của họ tại đây.</string>
     <string name="follow">Theo dõi</string>
-    <string name="add_comment">Add comment</string>
+    <string name="add_comment">Thêm bình luận</string>
 
     <string name="followers">Người theo dõi</string>
     <string name="likes">Lượt thích</string>

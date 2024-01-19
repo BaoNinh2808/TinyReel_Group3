@@ -111,7 +111,7 @@ fun Context.VideoGridItem(item: VideoModel, index: Int, onClickVideo: (VideoMode
                 )
                 LaunchedEffect(key1 = true) {
                     withContext(Dispatchers.IO) {
-                        val bm = FileUtils.extractThumbnail2("https://firebasestorage.googleapis.com/v0/b/tinyreel-8d37c.appspot.com/o/${item.videoLink}?alt=media&token=8b9f9b9e-7b9a-4b7e-9b0a-9b9b9b9b9b9b", 0)
+                        val bm = FileUtils.extractThumbnail2("https://firebasestorage.googleapis.com/v0/b/tinyreelbackup.appspot.com/o/${item.videoLink}?alt=media&token=8b9f9b9e-7b9a-4b7e-9b0a-9b9b9b9b9b9b", 0)
                         withContext(Dispatchers.Main) {
                             thumbnail = thumbnail.copy(first = bm, second = thumbnail.second)
                         }
