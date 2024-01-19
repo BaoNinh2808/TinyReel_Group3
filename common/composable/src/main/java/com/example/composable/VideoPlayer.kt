@@ -52,20 +52,34 @@ fun VideoPlayer(
     }
     var isFirstFrameLoad = remember { false }
 
-    LaunchedEffect(key1 = true) {
-        withContext(Dispatchers.IO) {
-            val bm = FileUtils.extractThumbnail2("https://firebasestorage.googleapis.com/v0/b/tinyreelbackup.appspot.com/o/${video.videoLink}?alt=media&token=8b9f9b9e-7b9a-4b7e-9b0a-9b9b9b9b9b9b", 0)
-            withContext(Dispatchers.Main) {
-                thumbnail = thumbnail.copy(first = bm, second = thumbnail.second)
+//    LaunchedEffect(key1 = true) {
+//        withContext(Dispatchers.IO) {
+////            val bm = FileUtils.extractThumbnail2("https://firebasestorage.googleapis.com/v0/b/tinyreel2.appspot.com/o/${video.videoLink}?alt=media&token=8b9f9b9e-7b9a-4b7e-9b0a-9b9b9b9b9b9b", 0)
+//            val bm = FileUtils.extractThumbnail(
+//                context.assets.openFd("${video.videoLink}"), 1
+//            )
+//            withContext(Dispatchers.Main) {
+//                thumbnail = thumbnail.copy(first = bm, second = thumbnail.second)
+//            }
+//        }
+//     }
+        LaunchedEffect(key1 = true) {
+            withContext(Dispatchers.IO) {
+                val bm = FileUtils.extractThumbnail(
+                    context.assets.openFd("videos/${video.videoLink}"), 1
+                )
+                withContext(Dispatchers.Main) {
+                    thumbnail = thumbnail.copy(first = bm, second = thumbnail.second)
+                }
             }
         }
-    }
     if (pagerState.settledPage == pageIndex) {
         val exoPlayer = remember(context) {
             ExoPlayer.Builder(context).build().apply {
                 videoScalingMode = C.VIDEO_SCALING_MODE_SCALE_TO_FIT
                 repeatMode = Player.REPEAT_MODE_ONE
-                setMediaItem(MediaItem.fromUri(Uri.parse("https://firebasestorage.googleapis.com/v0/b/tinyreelbackup.appspot.com/o/${video.videoLink}?alt=media&token=8b9f9b9e-7b9a-4b7e-9b0a-9b9b9b9b9b9b")))
+//                setMediaItem(MediaItem.fromUri(Uri.parse("https://firebasestorage.googleapis.com/v0/b/tinyreelbackup.appspot.com/o/${video.videoLink}?alt=media&token=8b9f9b9e-7b9a-4b7e-9b0a-9b9b9b9b9b9b")))
+                setMediaItem(MediaItem.fromUri(Uri.parse("asset:///videos/${video.videoLink}")))
                 playWhenReady = true
                 prepare()
                 addListener(object : Player.Listener {

@@ -16,7 +16,7 @@
     <string name="messages_and_notification_will">Thông báo sẽ xuất hiện ở đây </string>
     <string name="sign_up">Đăng ký</string>
     <string name="comments">Bình luận</string>
-        <!--following tab-->
+    <!--following tab-->
     <string name="trending_creators">Nhà sáng tạo nổi bật</string>
     <string name="follow_and_account_to_see">Theo dõi 1 người để thấy video mới nhất của họ tại đây.</string>
     <string name="follow">Theo dõi</string>
@@ -33,7 +33,7 @@
     <string name="no_bio_yet">No bio yet</string>
 
     <!-- search -->
-    <string name="find_related_content">Find related content</string>
+    <string name="find_related_content">Tìm nội dung liên quan</string>
     <string name="search">Tìm kiếm</string>
     <string name="search_result">Kết quả tìm kiếm</string>
     <string name="hot_search_query">Mọi người đang tìm</string>
@@ -55,8 +55,8 @@
     <string name="Guess_account">Tài khoản khách</string>
     <string name="Already_has_account">Đã có tài khoản</string>
     <string name="continue_with_twitter">Continue with Twitter</string>
-    <string name="terms_of_service">Terms of service</string>
-    <string name="privacy_policy">Privacy Policy</string>
+    <string name="terms_of_service">Điều khoản sử dụng</string>
+    <string name="privacy_policy">Chính sách bảo mật</string>
     <string name="phone_number_info">Your phone number will be used to improve your TikTok experience, including connecting you with people you may know, personalizing your ads experience, and more. If you sign up with SMS, SMS fee may apply.</string>
     <string name="learn_more">Learn more</string>
     <string name="send_code">Send code</string>
@@ -73,18 +73,18 @@
     <string name="sign_up_for_an_account">Đăng ký tài khoản</string>
 
     <!-- settings -->
-    <string name="settings_and_privacy">Settings and privacy</string>
-    <string name="account">Account</string>
-    <string name="my_account">My account</string>
+    <string name="settings_and_privacy">Cài đặt và quyền riêng tư</string>
+    <string name="account">Tài khoản</string>
+    <string name="my_account">Tài khoản của tôi</string>
     <string name="live">LIVE</string>
     <string name="playback">Playback</string>
-    <string name="language">Language</string>
-    <string name="free_up_space">Free up space</string>
-    <string name="data_saver">Data saver</string>
+    <string name="language">Ngôn ngữ</string>
+    <string name="free_up_space">Giải phóng bộ nhớ</string>
+    <string name="data_saver">Tiết kiệm dữ liệu</string>
     <string name="wallpaper">Wallpaper</string>
-    <string name="report_a_problem">Report a problem</string>
-    <string name="support">Support</string>
-    <string name="terms_and_policies">Terms and policies</string>
+    <string name="report_a_problem">Báo cáo</string>
+    <string name="support">Hỗ trợ</string>
+    <string name="terms_and_policies">Điều khoản và chính sách</string>
 
     <!-- camera media -->
     <string name="allow_tiktok_to_access_your">Allow TikTok to access  your camera and microphone</string>
@@ -114,5 +114,4 @@
     <string name="create_post">Create</string>
 
     <string name="post">Post</string>
-    <string name="current_storage">ssss</string>
 </resources>

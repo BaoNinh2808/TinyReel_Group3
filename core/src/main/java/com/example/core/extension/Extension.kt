@@ -18,7 +18,7 @@ fun Long.formattedCount(): String {
     }
 }
 
-fun randomUploadDate(): String = "${(1..24).random()}h"
+fun randomUploadDate(): String = "${(1..24).random()} giờ"
 
 
 fun Pair<String, String>.getFormattedInternationalNumber() = "${this.first}-${this.second}".trim()

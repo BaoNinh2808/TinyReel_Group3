@@ -544,7 +544,7 @@ fun FooterUi(
                     )
                     if (showUploadDate) {
                         Text(
-                            text = " . ${item.createdAt} ago",
+                            text = " . ${item.createdAt} trước",
                             style = MaterialTheme.typography.labelLarge,
                             color = Color.White.copy(alpha = 0.6f)
                         )
