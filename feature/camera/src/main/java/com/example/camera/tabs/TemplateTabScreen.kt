@@ -1,6 +1,5 @@
 package com.example.camera.tabs
 
-//import com.example.data.model.TemplateModel
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -44,13 +43,10 @@ import com.example.core.extension.LargeSpace
 import com.example.core.extension.MediumSpace
 import com.example.core.extension.SmallSpace
 import com.example.core.extension.Space
+import com.example.data.model.TemplateModel
 import com.example.theme.R
 import com.example.theme.SubTextColor
 import kotlin.math.absoluteValue
-
-/**
- * Created by Puskal Khadka on 4/2/2023.
- */
 
 @Composable
 fun TemplateScreen(
@@ -97,7 +93,7 @@ fun TemplateScreen(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ColumnScope.TemplatePager(templates: List<String>) {
+fun ColumnScope.TemplatePager(templates: List<TemplateModel>) {
     val pagerState = rememberPagerState(pageCount = { templates.size })
 
     val currentItem by remember {
@@ -106,10 +102,10 @@ fun ColumnScope.TemplatePager(templates: List<String>) {
         }
     }
 
-    Text(text = templates[currentItem], style = MaterialTheme.typography.displayMedium)
+    Text(text = templates[currentItem].name, style = MaterialTheme.typography.displayMedium)
     6.dp.Space()
     Text(
-        text = templates[currentItem],
+        text = templates[currentItem].hint,
         style = MaterialTheme.typography.labelLarge,
         color = SubTextColor
     )
@@ -137,7 +133,7 @@ fun ColumnScope.TemplatePager(templates: List<String>) {
 fun SingleTemplateCard(
     page: Int,
     pagerState: PagerState,
-    item: /*TemplateModel*/String,
+    item: TemplateModel,
 ) {
     val pageOffset =
         ((pagerState.currentPage - page) + (pagerState.currentPageOffsetFraction)).absoluteValue
@@ -161,7 +157,7 @@ fun SingleTemplateCard(
         )
         {
             AsyncImage(
-                model = "https://upload.wikimedia.org/wikipedia/en/e/ed/Nyan_cat_250px_frame.PNG",
+                model = item.parseMediaLink(),
                 contentDescription = null,
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop

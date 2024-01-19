@@ -1,5 +1,11 @@
 package com.example.post
 
+import android.net.Uri
+import android.webkit.MimeTypeMap
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -31,7 +37,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -39,23 +48,50 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.documentfile.provider.DocumentFile
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.AsyncImage
+import coil.decode.VideoFrameDecoder
+import coil.request.ImageRequest
+import coil.request.videoFrameMillis
+import com.example.composable.CustomButton
 import com.example.composable.TopBar
 import com.example.core.DestinationRoute.HOME_SCREEN_ROUTE
+import com.example.data.model.VideoModel
+import com.example.data.source.UsersDataSource.userList
 import com.example.theme.R
 import com.example.theme.Typography
+//import com.google.firebase.database.DataSnapshot
+//import com.google.firebase.database.DatabaseError
+//import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+//import com.google.firebase.database.ValueEventListener
+//import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
+//import com.google.firebase.storage.FirebaseStorage
 
+val databaseReference = FirebaseDatabase.getInstance().getReference()
+val storageReference = Firebase.storage.reference
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PostScreen(navController: NavController) {
+    var imgUri by remember { mutableStateOf<Uri?>(null)}
+    val fileLauncher =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.PickMultipleVisualMedia(),
+            onResult = {
+                imgUri = it.firstOrNull()
+            })
     var textValue by remember { mutableStateOf("") }
+    val context = LocalContext.current
 
     Scaffold(
         topBar = {
             TopBar(
-                navIcon = R.drawable.ic_home,
-                title = stringResource(id = R.string.create_post)
+                navIcon = R.drawable.ic_cancel,
+                title = stringResource(id = R.string.create_post),
+                onClickNavIcon = { navController.navigateUp() },
             )
         }
     ) {
@@ -66,8 +102,12 @@ fun PostScreen(navController: NavController) {
         ) {
             DescriptionAndImage(
                 textValue = textValue,
+                imgUri,
                 onTextValueChange = { newText ->
                     textValue = newText
+                },
+                onClicked = {
+                    fileLauncher.launch(pickVisualMediaRequest)
                 }
             )
 
@@ -82,6 +122,54 @@ fun PostScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(10.dp))
 
             PrivacySetting("Ai có thể bình luận?")
+
+            Spacer(modifier = Modifier.height(160.dp))
+
+            PostButton(
+                onClicked = {
+                    if (imgUri == null) {
+                        Toast.makeText(context, "Please choose an image!", Toast.LENGTH_SHORT).show()
+                        return@PostButton
+                    }
+                    val file = DocumentFile.fromSingleUri(context, imgUri!!)
+                    val fileName = file!!.name
+                    val fileNameAsId = fileName!!.substringBeforeLast(".")
+                    val randUser = userList.random()
+
+                    val fileRef = storageReference.child(fileName)
+                    val uploadTask = fileRef.putFile(imgUri!!)
+                    uploadTask
+                        .addOnSuccessListener {
+                            Toast.makeText(context, "Upload image successfully!", Toast.LENGTH_SHORT).show()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(context, "Upload image failed!", Toast.LENGTH_SHORT).show()
+                        }
+
+                    val curVideo = VideoModel(
+                        videoId = fileNameAsId,
+                        authorDetails = randUser,
+                        videoLink = fileName,
+                        videoStats = VideoModel.VideoStats(
+                            like = 0,
+                            comment = 0,
+                            share = 0,
+                            views = 0
+                        ),
+                        description = "Draft video testing  #foryou #fyp #compose #tik",
+                        audioModel = null, hasTag = listOf(),
+                    )
+                    databaseReference.child("TinyReel").child("forYou")
+                        .child("videos").push().setValue(curVideo)
+                        .addOnSuccessListener {
+                            Toast.makeText(context, "Post video successfully!", Toast.LENGTH_SHORT).show()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(context, "Post video failed!", Toast.LENGTH_SHORT).show()
+                        }
+                    imgUri = null
+                }
+            )
         }
     }
 }
@@ -89,7 +177,9 @@ fun PostScreen(navController: NavController) {
 @Composable
 fun DescriptionAndImage(
     textValue: String,
-    onTextValueChange: (String) -> Unit // Changed the function signature
+    imgUri: Uri? = null,
+    onTextValueChange: (String) -> Unit, // Changed the function signature
+    onClicked: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -127,11 +217,11 @@ fun DescriptionAndImage(
                 },
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(top = 20.dp)
+                    .padding(start = 12.dp, top = 20.dp)
                     .background(
                         color = Color.Transparent // Make the TextField background transparent
                     ),
-                textStyle = Typography.bodySmall,
+                textStyle = Typography.displaySmall,
                 decorationBox = { innerTextField ->
                     Box(
                         modifier = Modifier.padding(horizontal = 8.dp),
@@ -167,37 +257,78 @@ fun DescriptionAndImage(
                     color = Color.Gray,
                     shape = RoundedCornerShape(16.dp) // Set rounded corners for the border
                 )
+                .clickable { onClicked() }
         ) {
             // Image
-            val imagePainter = painterResource(id = R.drawable.ic_home)
-            Image(
-                painter = imagePainter,
-                contentDescription = "Loaded Image",
-                modifier = Modifier
-                    .size(80.dp)
-                    .align(Alignment.Center)
-            )
-
-            // Text
-            // Box for text with background color
-            Box(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .height(100.dp)
-                    .fillMaxWidth()
-                    .background(
-                        color = Color(0x35D2F3F2),
-                        shape = RoundedCornerShape(16.dp) // Set rounded corners for the Box
+            if (imgUri != null) {
+                val contentResolver = LocalContext.current.contentResolver
+                val mimeTypeMap = MimeTypeMap.getSingleton()
+                val fileType = mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(imgUri))
+                if (fileType == "jpg") {
+                    AsyncImage(
+                        model = imgUri,
+                        contentDescription = "Loaded Image",
+                        modifier = Modifier
+                            .size(200.dp)
+                            .align(Alignment.Center)
+                            .clip(shape = RoundedCornerShape(16.dp)),
+                        contentScale = ContentScale.FillBounds
                     )
-            ) {
-                Text(
-                    text = "Chọn ảnh\nnổi bật",
+                }
+                else {
+                    val model = ImageRequest.Builder(LocalContext.current)
+                        .data(imgUri)
+                        .videoFrameMillis(10000)
+                        .decoderFactory { result, options, _ ->
+                            VideoFrameDecoder(
+                                result.source,
+                                options
+                            )
+                        }
+                        .build()
+                    AsyncImage(
+                        model = model,
+                        contentDescription = "Loaded Image",
+                        modifier = Modifier
+                            .size(200.dp)
+                            .align(Alignment.Center)
+                            .clip(shape = RoundedCornerShape(16.dp)),
+                        contentScale = ContentScale.FillBounds
+                    )
+                }
+
+            }
+            else {
+                val imagePainter = painterResource(id = R.drawable.ic_add)
+                Image(
+                    painter = imagePainter,
+                    contentDescription = null,
                     modifier = Modifier
-                        .padding(8.dp)
+                        .size(50.dp)
                         .align(Alignment.Center),
-                    style = Typography.displayMedium,
-                    textAlign = TextAlign.Center
                 )
+
+                // Text
+                // Box for text with background color
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .height(100.dp)
+                        .fillMaxWidth()
+                        .background(
+                            color = Color(0x35D2F3F2),
+                            shape = RoundedCornerShape(16.dp) // Set rounded corners for the Box
+                        )
+                ) {
+                    Text(
+                        text = "Chọn ảnh\nnổi bật",
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .align(Alignment.Center),
+                        style = Typography.displayMedium,
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
         }
     }
@@ -327,6 +458,25 @@ fun DropdownComponent() {
     }
 }
 
+@Composable
+fun PostButton(onClicked: () -> Unit) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        CustomButton(
+            buttonText = stringResource(id = R.string.post),
+            shape = RoundedCornerShape(24.dp),
+            modifier = Modifier.fillMaxWidth(0.65f),
+        ) {
+            onClicked()
+        }
+    }
+
+}
+
 @Preview
 @Composable
 fun PostScreenPreview() {
@@ -334,4 +484,8 @@ fun PostScreenPreview() {
     // For example, you can pass a NavController instance to simulate usage
     val navController = rememberNavController()
     PostScreen(navController = navController)
+}
+
+val pickVisualMediaRequest by lazy {
+    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageAndVideo)
 }
