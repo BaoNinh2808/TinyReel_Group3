@@ -14,7 +14,6 @@ import com.example.core.DestinationRoute.MY_PROFILE_ROUTE
 import com.example.core.DestinationRoute.POST_ROUTE
 import com.example.core.DestinationRoute.SEARCH_RESULT_ROUTE
 import com.example.core.DestinationRoute.SEARCH_ROUTE
-import com.example.core.DestinationRoute.CREATOR_PROFILE_ROUTE
 import com.example.creatorprofile.creatorProfileNavGraph
 import com.example.home.homeNavGraph
 import com.example.myprofile.myProfileNavGraph

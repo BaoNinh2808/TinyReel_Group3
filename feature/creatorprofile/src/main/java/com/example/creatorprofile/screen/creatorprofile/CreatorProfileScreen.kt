@@ -29,10 +29,6 @@ import com.example.core.DestinationRoute.CREATOR_VIDEO_ROUTE
 import com.example.core.utils.IntentUtils.redirectToApp
 import com.example.creatorprofile.component.*
 import com.example.data.model.SocialMediaType
-import com.example.data.model.UserModel
-import com.example.data.repository.creatorprofile.CreatorProfileRepository
-import com.example.domain.creatorprofile.GetCreatorProfileUseCase
-import com.example.domain.creatorprofile.GetCreatorPublicVideoUseCase
 import com.example.theme.*
 import com.example.theme.R
 import com.example.core.DestinationRoute.PassedKey.USER_ID
