@@ -84,15 +84,15 @@ fun Context.VideoGridItem(item: VideoModel, index: Int, onClickVideo: (VideoMode
                         onClickVideo(item, index)
                     }
             ) {
-                var thumbnail: Bitmap? by remember {
-                    mutableStateOf(null)
-                }
-//                var thumbnail by remember {
-//                    mutableStateOf<Pair<Bitmap?, Boolean>>(Pair(null, true))  //bitmap, isShow
+//                var thumbnail: Bitmap? by remember {
+//                    mutableStateOf(null)
 //                }
+                var thumbnail by remember {
+                    mutableStateOf<Pair<Bitmap?, Boolean>>(Pair(null, true))  //bitmap, isShow
+                }
                 AsyncImage(
-//                    model = thumbnail.first,
-                    model = thumbnail,
+                    model = thumbnail.first,
+//                    model = thumbnail,
                     contentDescription = null,
                     modifier = Modifier
                         .fillMaxSize()
@@ -110,25 +110,25 @@ fun Context.VideoGridItem(item: VideoModel, index: Int, onClickVideo: (VideoMode
                         },
                     contentScale = ContentScale.Crop
                 )
-//                LaunchedEffect(key1 = true) {
-//                    withContext(Dispatchers.IO) {
-//                        val bm = FileUtils.extractThumbnail2("https://firebasestorage.googleapis.com/v0/b/tinyreel2.appspot.com/o/${item.videoLink}?alt=media&token=8b9f9b9e-7b9a-4b7e-9b0a-9b9b9b9b9b9b", 0)
-//                        withContext(Dispatchers.Main) {
-//                            thumbnail = thumbnail.copy(first = bm, second = thumbnail.second)
-//                        }
-//                    }
-//                }
-
                 LaunchedEffect(key1 = true) {
                     withContext(Dispatchers.IO) {
-                        val bitmap = FileUtils.extractThumbnail(
-                            assets.openFd("videos/${item.videoLink}"), 1
-                        )
+                        val bm = FileUtils.extractThumbnail2("https://firebasestorage.googleapis.com/v0/b/tinyreel-4.appspot.com/o/${item.videoLink}?alt=media&token=8b9f9b9e-7b9a-4b7e-9b0a-9b9b9b9b9b9b", 0)
                         withContext(Dispatchers.Main) {
-                            thumbnail = bitmap
+                            thumbnail = thumbnail.copy(first = bm, second = thumbnail.second)
                         }
                     }
                 }
+
+//                LaunchedEffect(key1 = true) {
+//                    withContext(Dispatchers.IO) {
+//                        val bitmap = FileUtils.extractThumbnail(
+//                            assets.openFd("videos/${item.videoLink}"), 1
+//                        )
+//                        withContext(Dispatchers.Main) {
+//                            thumbnail = bitmap
+//                        }
+//                    }
+//                }
 
                 Row(
                     modifier = Modifier
