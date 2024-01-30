@@ -31,7 +31,7 @@ fun AppNavHost(
     loginViewModel: LoginWithEmailPhoneViewModel,
     navController: NavHostController = rememberNavController(),
     modifier: Modifier = Modifier,
-    startDestination: String = HOME_SCREEN_ROUTE
+    startDestination: String = AUTHENTICATION_ROUTE
 ) {
     NavHost(
         navController = navController,
@@ -42,11 +42,8 @@ fun AppNavHost(
         postNavGraph(navController)
         commentListingNavGraph(navController)
         creatorProfileNavGraph(navController)
-//        inboxNavGraph(navController)
         authenticationNavGraph(loginViewModel, navController)
         signUpNavGraph(loginViewModel, navController)
-//        loginEmailPhoneNavGraph(navController)
-//        friendsNavGraph(navController)
         myProfileNavGraph(loginViewModel, navController)
         settingNavGraph(loginViewModel, navController)
         cameraMediaNavGraph(navController)

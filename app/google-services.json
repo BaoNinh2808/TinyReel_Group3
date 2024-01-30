@@ -1,37 +1,27 @@
 {
   "project_info": {
-    "project_number": "62987572672",
-    "firebase_url": "https://tinyreel3-default-rtdb.asia-southeast1.firebasedatabase.app",
-    "project_id": "tinyreel3",
-    "storage_bucket": "tinyreel3.appspot.com"
+    "project_number": "635265007051",
+    "firebase_url": "https://tinyreel-4-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "tinyreel-4",
+    "storage_bucket": "tinyreel-4.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:62987572672:android:811283da67b7c00653e425",
+        "mobilesdk_app_id": "1:635265007051:android:541d68d26c26877304ca4e",
         "android_client_info": {
           "package_name": "com.example.tinyreel"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "62987572672-47rk4olfcs7rmsg9a4ptj8eig0f6psvh.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyA9FGlZNbbNfJuvfJYeLbsx1sJ08EpuPUw"
+          "current_key": "AIzaSyClKHtj-KFl8FgrLfgR0frexU2se2fcmGQ"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "62987572672-47rk4olfcs7rmsg9a4ptj8eig0f6psvh.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

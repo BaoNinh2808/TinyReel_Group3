@@ -302,7 +302,7 @@ fun SideItems(
                 onClickShare?.let { onClickShare.invoke() } ?: run {
                     context.share(
                         //link video trên firebase
-                        text = "https://firebasestorage.googleapis.com/v0/b/tinyreel-46587.appspot.com/o/${item.videoLink}?alt=media&token=8b9f9b9e-7b9a-4b7e-9b0a-9b9b9b9b9b9b"
+                        text = "https://firebasestorage.googleapis.com/v0/b/tinyreel-4.appspot.com/o/${item.videoLink}?alt=media&token=8b9f9b9e-7b9a-4b7e-9b0a-9b9b9b9b9b9b"
                     )
                 }
             }

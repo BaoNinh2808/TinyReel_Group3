@@ -75,6 +75,7 @@ fun RowScope.BottomItem(
                 painter = painterResource(id = icon),
                 contentDescription = null,
                 Modifier
+                    .padding(top = 4.dp)
                     .padding(bottom = 9.dp)
                     .size(iconSize)
                     .offset(y = offsetY),
